@@ -47,7 +47,7 @@
   main { padding-block: 1.4rem 2rem; }
   button, textarea { font: inherit; color: inherit; }
   button { cursor: pointer; }
-  button:focus-visible, textarea:focus-visible, [role="tabpanel"]:focus-visible {
+  button:focus-visible, textarea:focus-visible, input:focus-visible, summary:focus-visible, [role="tabpanel"]:focus-visible {
     outline: 3px solid #714bb4; outline-offset: 3px;
   }
   .section-head, .progress-meta, .dialog-actions {
@@ -233,6 +233,69 @@
     #home .index-card { min-height: 0; }
     #home .jersey-num { font-size: 2.8rem; }
   }
+
+  .completed-fold {
+    margin-top: 1.35rem;
+    border: 1px solid var(--line);
+    border-radius: .85rem;
+    background: #fbf8fd;
+    padding: .35rem 1rem .15rem;
+  }
+  .completed-fold summary {
+    cursor: pointer;
+    font-weight: 750;
+    color: var(--accent);
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .completed-fold summary span { color: var(--muted); font-weight: 650; }
+  .completed-fold[open] { padding-bottom: 1rem; }
+  .completed-fold .index-cards { margin-top: .35rem; }
+  .assignment-card { display: flex; flex-direction: column; }
+  .assignment-card > a {
+    color: inherit; text-decoration: none; display: flex; flex-direction: column; gap: .15rem; flex: 1;
+  }
+  .assignment-card > a:hover h3 { text-decoration: underline; }
+  .card-actions { margin-top: .85rem; }
+  .empty-note { margin: 0 0 1rem; }
+  .complete-bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem;
+    margin: 1.3rem 0 .4rem; padding: 1rem 1.05rem; background: white;
+    border: 1px solid var(--line); border-radius: .85rem;
+  }
+  .complete-bar .note { margin: 0; flex: 1; min-width: 12rem; }
+  .lesson-body > .prompt-text { margin: 0; padding: 1rem 0 0; }
+  .lesson-body > .prompt-text + .prompt-text { padding-top: .2rem; }
+  .question form { display: flex; flex-direction: column; align-items: stretch; gap: .75rem; }
+  .question > .primary, .self-actions { margin-top: .75rem; }
+  .question form button.primary { align-self: flex-start; }
+  .question button:disabled { opacity: .65; cursor: default; }
+  .self-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .table-scroll { max-width: 100%; overflow-x: auto; }
+  .ratio-table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .ratio-table th, .ratio-table td {
+    border: 1px solid #e0d0ea; padding: .35rem .6rem; text-align: center; background: white;
+  }
+  .ratio-table th { background: #f8f5fb; font-weight: 700; }
+  .ratio-table th[scope="row"] { text-align: left; white-space: nowrap; }
+  .ratio-table input, .unit-input {
+    font: inherit; color: inherit; width: 4.75rem; min-height: 2.5rem; text-align: center;
+    border: 1px solid #a89bb8; border-radius: .4rem; background: white;
+  }
+  .unit-input { width: 9.5rem; }
+  .ratio-table input:disabled, .unit-input:disabled { background: #f4f0f8; }
+  .ratio-table input.is-correct, .unit-input.is-correct { background: #eaf6ef; border-color: #6eaa88; }
+  .ratio-table input.is-wrong, .unit-input.is-wrong { background: #fff0eb; border-color: #cf9589; }
+  .choice .ratio-table { margin: .1rem 0; }
+  .choice[aria-pressed="true"] { border-color: var(--accent); background: #f6f0fd; box-shadow: inset 3px 0 0 var(--accent); }
+  .model-answer { margin-top: .8rem; background: #f3edf9; border-radius: .6rem; padding: .8rem .95rem; }
+  .model-answer h3 {
+    display: block; font-family: Georgia, serif; font-size: 1.15rem; margin: 0 0 .35rem;
+  }
+  .model-answer p { margin: .35rem 0; }
+  .model-answer p:last-child { margin-bottom: 0; }
   @media (max-width: 31rem) {
     .reading img { width: 6.25rem; margin-left: .65rem; }
     .dialog-actions button { width: 100%; }
@@ -281,7 +344,7 @@
           <span class="jersey-num" aria-hidden="true">13</span>
         </span>
         <div class="tile-copy">
-          <div class="kicker">1 assignment · Free-Throw Era</div>
+          <div class="kicker"><span id="math-count">2 to do</span> · Free-Throw Era</div>
           <h3>Math</h3>
           <p>Practice equivalent ratios, proportions, and scale factors.</p>
           <p class="tagline">Line them up and take the shot.</p>
@@ -297,7 +360,7 @@
           <span class="jersey-num" aria-hidden="true">6</span>
         </span>
         <div class="tile-copy">
-          <div class="kicker">2 assignments · Rally Era</div>
+          <div class="kicker"><span id="social-count">All caught up</span> · Rally Era</div>
           <h3>Social Studies</h3>
           <p>Read short history passages and answer the warm-up questions.</p>
           <p class="tagline">Read the rally, then send it back.</p>
@@ -307,16 +370,75 @@
   </section>
   <section id="math" class="screen" hidden aria-labelledby="math-title">
     <div class="index-heading"><h2 id="math-title" tabindex="-1">Math</h2><p>Choose an assignment to begin or continue.</p></div>
-    <div class="index-cards">
-      <a class="index-card" href="#lesson-3"><div class="kicker">Grade 6 · Module 2 · Topic 1</div><h3>Lesson 3 Assignment</h3><p>Equivalent ratios and proportions</p></a>
+    <p class="note empty-note" id="math-empty" hidden>You're all caught up. Finished assignments are under Completed.</p>
+    <div class="index-cards" id="math-active">
+      <article class="index-card assignment-card" data-assignment="unit-4" data-subject="math" data-order="2">
+        <a href="#unit-4">
+          <div class="kicker">3rd period &amp; Math Lab · No due date</div>
+          <h3>Unit 4 Practice</h3>
+          <p>12-question review of ratios and rates.</p>
+        </a>
+        <div class="card-actions" hidden>
+          <button type="button" class="plain" data-mark="unit-4">Undo / mark not completed</button>
+        </div>
+      </article>
+      <article class="index-card assignment-card" data-assignment="nearpod-ratios" data-subject="math" data-external="true" data-order="3">
+        <a href="https://app.nearpod.com/?pin=ts8g4" target="_blank" rel="noopener noreferrer">
+          <div class="kicker">Math Lab · Posted Nov 12 · No due date</div>
+          <h3>Nearpod: Ratios</h3>
+          <p>Join with your name; complete the lesson in Nearpod.</p>
+          <p class="note">Pin ts8g4. Opens in a new tab.</p>
+        </a>
+        <div class="card-actions">
+          <button type="button" class="plain" data-mark="nearpod-ratios">Mark as completed</button>
+        </div>
+      </article>
     </div>
+    <details class="completed-fold" id="math-completed-fold">
+      <summary>Completed <span id="math-completed-count">(1)</span></summary>
+      <div class="index-cards" id="math-completed">
+        <article class="index-card assignment-card" data-assignment="lesson-3" data-subject="math" data-order="1">
+          <a href="#lesson-3">
+            <div class="kicker">Grade 6 · Module 2 · Topic 1</div>
+            <h3>Lesson 3 Assignment</h3>
+            <p>Equivalent ratios and proportions</p>
+          </a>
+          <div class="card-actions">
+            <button type="button" class="plain" data-mark="lesson-3">Undo / mark not completed</button>
+          </div>
+        </article>
+      </div>
+    </details>
   </section>
   <section id="social-studies" class="screen" hidden aria-labelledby="social-title">
     <div class="index-heading"><h2 id="social-title" tabindex="-1">Social Studies</h2><p>Choose a week to begin or continue.</p></div>
-    <div class="index-cards">
-      <a class="index-card" href="#warm-up-october"><div class="kicker">October 26–30</div><h3>History Warm-Ups</h3><p>Erie Canal, Statue of Liberty, and the Rumble in the Jungle</p></a>
-      <a class="index-card" href="#warm-up-november"><div class="kicker">November 2–6</div><h3>History Warm-Ups</h3><p>KDKA’s broadcast, Tutankhamun’s tomb, and Lincoln’s election</p></a>
-    </div>
+    <p class="note empty-note" id="social-empty">You're all caught up. Finished weeks are under Completed.</p>
+    <div class="index-cards" id="social-active"></div>
+    <details class="completed-fold" id="social-completed-fold">
+      <summary>Completed <span id="social-completed-count">(2)</span></summary>
+      <div class="index-cards" id="social-completed">
+        <article class="index-card assignment-card" data-assignment="warm-up-october" data-subject="social" data-order="1">
+          <a href="#warm-up-october">
+            <div class="kicker">October 26–30</div>
+            <h3>History Warm-Ups</h3>
+            <p>Erie Canal, Statue of Liberty, and the Rumble in the Jungle</p>
+          </a>
+          <div class="card-actions">
+            <button type="button" class="plain" data-mark="warm-up-october">Undo / mark not completed</button>
+          </div>
+        </article>
+        <article class="index-card assignment-card" data-assignment="warm-up-november" data-subject="social" data-order="2">
+          <a href="#warm-up-november">
+            <div class="kicker">November 2–6</div>
+            <h3>History Warm-Ups</h3>
+            <p>KDKA’s broadcast, Tutankhamun’s tomb, and Lincoln’s election</p>
+          </a>
+          <div class="card-actions">
+            <button type="button" class="plain" data-mark="warm-up-november">Undo / mark not completed</button>
+          </div>
+        </article>
+      </div>
+    </details>
   </section>
   <section id="history-view" class="screen" hidden aria-labelledby="history-title">
     <div class="index-heading"><h2 id="history-title" tabindex="-1">History Warm-Ups</h2><p>Read each passage and check your answers as you go.</p></div>
@@ -330,6 +452,14 @@
       <p>Check your numerical answers as you go. Diagrams and explanations are for manual review.</p>
     </div>
     <div id="math-questions"></div>
+  </section>
+  <section id="unit-4" class="screen" hidden aria-labelledby="unit4-title">
+    <div class="index-heading">
+      <div class="kicker">Math · 3rd period &amp; Math Lab · Posted Nov 12 · No due date</div>
+      <h2 id="unit4-title" tabindex="-1">Unit 4 Practice</h2>
+      <p>Ratios and rates, 12 practice questions. Multiple choice and tables check themselves. For written parts, compare your work with the model answer.</p>
+    </div>
+    <div id="unit4-questions"></div>
   </section>
   <noscript>Enable JavaScript in your browser to use the quiz.</noscript>
   <div class="bottom">
@@ -349,7 +479,7 @@
 </dialog>
 <dialog id="reset-dialog" aria-labelledby="reset-title">
   <div class="dialog-top"><h2 class="dialog-title" id="reset-title">Reset all assignments?</h2></div>
-  <div class="dialog-body"><p>This clears answers, written responses, and diagrams in Math and Social Studies.</p></div>
+  <div class="dialog-body"><p>This clears answers, written responses, and diagrams. Completed checkmarks stay put.</p></div>
   <form method="dialog" class="dialog-actions">
     <button class="plain" value="cancel" autofocus>Keep my work</button>
     <button class="primary" value="reset">Reset all assignments</button>
@@ -377,7 +507,7 @@
   let storageWorks = true;
 
   function freshState() {
-    return { answers: {}, drafts: {}, numbers: {}, sketches: {} };
+    return { answers: {}, drafts: {}, numbers: {}, sketches: {}, multi: {} };
   }
 
   try {
@@ -389,9 +519,18 @@
   }
 
   function showStorageNote() {
-    storageNote.textContent = storageWorks
-      ? 'Progress and written responses are saved in this browser.'
-      : 'Progress and written responses are kept while this page stays open.';
+    const sync = completion.status();
+    const answers = storageWorks
+      ? 'Answers and written work stay on this device.'
+      : 'Answers and written work last while this page is open.';
+    let checks;
+    if (sync.rejected) checks = ' The sync address is not a Firebase database URL, so completed checkmarks stay on this device.';
+    else if (!sync.configured) checks = sync.localOk
+      ? ' Completed checkmarks stay on this device until sync is set up.'
+      : ' Completed checkmarks last while this page is open.';
+    else if (sync.remoteOk) checks = ' Completed checkmarks sync between devices.';
+    else checks = ' Completed checkmarks are saved on this device and will sync when the connection works.';
+    storageNote.textContent = answers + checks;
   }
 
   function save() {
@@ -429,7 +568,7 @@
   }
 
   function updateProgress(view) {
-    const solved = view.questions.filter(question => state.answers[question.id]?.status === 'correct').length;
+    const solved = view.questions.filter(question => (question.isSolved ? question.isSolved() : state.answers[question.id]?.status === 'correct')).length;
     const drafted = view.drafts.filter(draft => state.drafts[draft.id]?.trim() || state.sketches[draft.id]?.length).length;
     view.score.textContent = solved + ' of ' + view.questions.length + ' correct';
     view.progress.value = solved;
@@ -439,6 +578,10 @@
   }
 
   function updateQuestion(question) {
+    if (question.renderState) {
+      question.renderState();
+      return;
+    }
     const result = state.answers[question.id];
     const status = result?.status;
     const locked = status === 'correct' || status === 'locked';
@@ -448,17 +591,7 @@
       choice.classList.toggle('is-wrong', status === 'locked' && result.choice === index);
     });
     question.controls?.forEach(control => { control.disabled = locked; });
-    question.feedback.className = 'feedback';
-    if (status === 'correct') {
-      question.feedback.classList.add('correct');
-      question.feedback.textContent = 'Correct!';
-    } else if (status === 'locked') {
-      question.feedback.classList.add('incorrect');
-      question.feedback.textContent = 'Incorrect. Review the ' + (question.reference || 'passage') + ' to unlock this question.';
-    } else {
-      question.feedback.textContent = status === 'retry' ? (question.reference ? 'Reference' : 'Passage') + ' reviewed. Try again.' : '';
-    }
-    question.retry.hidden = status !== 'locked';
+    setCheckedFeedback(question, status);
   }
 
   function openSource(view, section, question = null) {
@@ -478,7 +611,7 @@
     section.passage.forEach(text => add(passage, 'p', '', text));
     if (section.hint) add(passage, 'p', 'review-hint', section.hint);
     sourceConfirm.hidden = !review;
-    sourceConfirm.textContent = 'I reviewed the ' + (question?.reference || 'passage') + '. Let me retry.';
+    sourceConfirm.textContent = 'I reviewed the ' + reviewName(question) + '. Let me retry.';
     sourceClose.textContent = review ? 'Back without unlocking' : 'Back to quiz';
     source.showModal();
     source.scrollTop = 0;
@@ -805,6 +938,844 @@
     return view;
   }
 
+  function reviewName(question) {
+    return question?.reviewWord || (question?.reference ? 'reference' : 'passage');
+  }
+
+  function setCheckedFeedback(question, status) {
+    const name = reviewName(question);
+    question.feedback.className = 'feedback';
+    if (status === 'correct') {
+      question.feedback.classList.add('correct');
+      question.feedback.textContent = 'Correct!';
+    } else if (status === 'locked') {
+      question.feedback.classList.add('incorrect');
+      question.feedback.textContent = question.lockedText
+        || ('Incorrect. Review the ' + name + ' to unlock this question.');
+    } else if (status === 'retry') {
+      question.feedback.textContent = name.charAt(0).toUpperCase() + name.slice(1) + ' reviewed. Try again.';
+    } else {
+      question.feedback.textContent = '';
+    }
+    if (question.retry) question.retry.hidden = status !== 'locked';
+  }
+
+  function ratioTable(rows, caption, rowHeaders) {
+    const table = document.createElement('table');
+    table.className = 'ratio-table';
+    if (caption) table.setAttribute('aria-label', caption);
+    rows.forEach(row => {
+      const tr = document.createElement('tr');
+      row.forEach((cell, index) => {
+        const element = document.createElement(rowHeaders && index === 0 ? 'th' : 'td');
+        if (rowHeaders && index === 0) element.scope = 'row';
+        if (cell instanceof Node) element.append(cell);
+        else element.textContent = String(cell);
+        tr.append(element);
+      });
+      table.append(tr);
+    });
+    return table;
+  }
+
+  function blankInput(label, value) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.inputMode = 'decimal';
+    input.autocomplete = 'off';
+    input.placeholder = '?';
+    input.setAttribute('aria-label', label);
+    input.value = value || '';
+    return input;
+  }
+
+  function valuesMatch(actual, expected) {
+    return Number.isFinite(actual) && Math.abs(actual - expected) < 1e-9;
+  }
+
+  // Cross-device completion. Paste a Firebase Realtime Database URL below
+  // after the one-time setup in README.md. Leave it empty to use this browser.
+  // Never put a secret token, service-account key, or GitHub password here.
+  const SYNC_CONFIG = {
+    firebaseDatabaseUrl: ''
+  };
+
+  const DEFAULT_COMPLETED = {
+    'lesson-3': true,
+    'warm-up-october': true,
+    'warm-up-november': true
+  };
+  const COMPLETION_KEY = 'brooke-homework-completed-v1';
+  const SEED_TIME = 1;
+
+  function createCompletion() {
+    let data = {};
+    let localOk = true;
+    let remoteOk = null;
+    let pulling = false;
+    let pullAgain = false;
+    const failedPush = new Map();
+    const listeners = new Set();
+
+    function firebaseOrigin() {
+      const raw = (SYNC_CONFIG.firebaseDatabaseUrl || '').trim();
+      if (!raw) return '';
+      try {
+        const parsed = new URL(raw);
+        const host = parsed.hostname;
+        const allowed = host.endsWith('.firebaseio.com') || host.endsWith('.firebasedatabase.app');
+        if (parsed.protocol !== 'https:' || parsed.username || parsed.password || !allowed) return '';
+        return parsed.origin;
+      } catch {
+        return '';
+      }
+    }
+
+    function sanitize(raw) {
+      const next = {};
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return next;
+      for (const [id, entry] of Object.entries(raw)) {
+        if (!/^[a-z0-9-]{1,40}$/.test(id)) continue;
+        if (!entry || typeof entry.value !== 'boolean' || typeof entry.updatedAt !== 'number') continue;
+        if (!Number.isFinite(entry.updatedAt) || entry.updatedAt <= 0) continue;
+        next[id] = { value: entry.value, updatedAt: entry.updatedAt };
+      }
+      return next;
+    }
+
+    function withDefaults(saved) {
+      const next = saved || {};
+      for (const [id, value] of Object.entries(DEFAULT_COMPLETED)) {
+        if (!next[id]) next[id] = { value, updatedAt: SEED_TIME };
+      }
+      return next;
+    }
+
+    function saveLocal() {
+      try {
+        localStorage.setItem(COMPLETION_KEY, JSON.stringify(data));
+        localOk = true;
+      } catch {
+        localOk = false;
+      }
+    }
+
+    function emit() {
+      listeners.forEach(listener => listener());
+    }
+
+    function status() {
+      const raw = (SYNC_CONFIG.firebaseDatabaseUrl || '').trim();
+      return {
+        configured: !!firebaseOrigin(),
+        rejected: !!raw && !firebaseOrigin(),
+        remoteOk,
+        localOk
+      };
+    }
+
+    async function pushOne(id) {
+      const origin = firebaseOrigin();
+      const entry = data[id];
+      if (!origin || !entry) return;
+      if (failedPush.get(id) === entry.updatedAt) return;
+      try {
+        const response = await fetch(origin + '/completed/' + encodeURIComponent(id) + '.json', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(entry)
+        });
+        if (response.ok) {
+          failedPush.delete(id);
+          remoteOk = true;
+          return;
+        }
+        remoteOk = false;
+        if (response.status === 401 || response.status === 403) {
+          failedPush.set(id, entry.updatedAt);
+          pull();
+        }
+      } catch {
+        remoteOk = false;
+      }
+      emit();
+    }
+
+    async function pullOnce() {
+      const origin = firebaseOrigin();
+      if (!origin) return;
+      const response = await fetch(origin + '/completed.json', { cache: 'no-store' });
+      if (!response.ok) throw new Error('sync ' + response.status);
+      const remote = sanitize(await response.json());
+      remoteOk = true;
+      for (const [id, entry] of Object.entries(remote)) {
+        const local = data[id];
+        if (!local || entry.updatedAt > local.updatedAt) {
+          data[id] = entry;
+          failedPush.delete(id);
+        }
+      }
+      const pending = [];
+      for (const [id, entry] of Object.entries(data)) {
+        const remoteEntry = remote[id];
+        if (!remoteEntry || entry.updatedAt > remoteEntry.updatedAt) pending.push(id);
+      }
+      saveLocal();
+      emit();
+      for (const id of pending) await pushOne(id);
+    }
+
+    async function pull() {
+      if (!firebaseOrigin()) return;
+      if (pulling) {
+        pullAgain = true;
+        return;
+      }
+      pulling = true;
+      try {
+        do {
+          pullAgain = false;
+          try {
+            await pullOnce();
+          } catch {
+            remoteOk = false;
+            emit();
+          }
+        } while (pullAgain);
+      } finally {
+        pulling = false;
+      }
+    }
+
+    function init() {
+      try {
+        data = withDefaults(sanitize(JSON.parse(localStorage.getItem(COMPLETION_KEY))));
+      } catch {
+        data = withDefaults(null);
+        localOk = false;
+      }
+      if (localOk) saveLocal();
+      pull();
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') pull();
+      });
+      window.addEventListener('focus', () => pull());
+    }
+
+    function isCompleted(id) {
+      if (data[id]) return data[id].value;
+      return !!DEFAULT_COMPLETED[id];
+    }
+
+    function setCompleted(id, value) {
+      data[id] = { value: !!value, updatedAt: Date.now() };
+      failedPush.delete(id);
+      saveLocal();
+      emit();
+      pushOne(id);
+    }
+
+    function onChange(listener) {
+      listeners.add(listener);
+    }
+
+    return { init, isCompleted, setCompleted, onChange, pull, status };
+  }
+
+  const completion = createCompletion();
+
+  function countPhrase(count) {
+    if (count === 0) return 'All caught up';
+    if (count === 1) return '1 to do';
+    return count + ' to do';
+  }
+
+  function refreshCompletionUI() {
+    ['math', 'social'].forEach(subject => {
+      const cards = [...document.querySelectorAll('[data-subject="' + subject + '"]')];
+      cards.sort((a, b) => Number(a.dataset.order) - Number(b.dataset.order));
+      const active = document.getElementById(subject + '-active');
+      const doneBox = document.getElementById(subject + '-completed');
+      cards.forEach(card => {
+        const done = completion.isCompleted(card.dataset.assignment);
+        (done ? doneBox : active).append(card);
+        const actions = card.querySelector('.card-actions');
+        const mark = card.querySelector('[data-mark]');
+        if (!actions || !mark) return;
+        actions.hidden = !(done || card.dataset.external === 'true');
+        mark.textContent = done ? 'Undo / mark not completed' : 'Mark as completed';
+      });
+      const activeCount = active.querySelectorAll('[data-assignment]').length;
+      const doneCount = doneBox.querySelectorAll('[data-assignment]').length;
+      document.getElementById(subject + '-empty').hidden = activeCount !== 0;
+      const fold = document.getElementById(subject + '-completed-fold');
+      fold.hidden = doneCount === 0;
+      document.getElementById(subject + '-completed-count').textContent = '(' + doneCount + ')';
+    });
+    document.getElementById('math-count').textContent = countPhrase(document.getElementById('math-active').querySelectorAll('[data-assignment]').length);
+    document.getElementById('social-count').textContent = countPhrase(document.getElementById('social-active').querySelectorAll('[data-assignment]').length);
+    document.querySelectorAll('.complete-bar').forEach(bar => {
+      const mark = bar.querySelector('[data-mark]');
+      const done = completion.isCompleted(mark.dataset.mark);
+      mark.textContent = done ? 'Undo / mark not completed' : 'Mark as completed';
+      mark.className = done ? 'plain' : 'primary';
+      bar.querySelector('.note').textContent = done
+        ? 'This assignment is in Completed. Bring it back if you still need it.'
+        : 'Finished? This moves it to the Completed list.';
+    });
+    showStorageNote();
+  }
+
+  function toggleComplete(id) {
+    const next = !completion.isCompleted(id);
+    completion.setCompleted(id, next);
+    if (!next) return;
+    const card = document.querySelector('[data-assignment="' + id + '"]');
+    const fold = card && document.getElementById(card.dataset.subject + '-completed-fold');
+    if (fold) fold.open = true;
+  }
+
+  function addCompleteBar(parent, id) {
+    const bar = add(parent, 'div', 'complete-bar');
+    const mark = add(bar, 'button', 'primary', 'Mark as completed');
+    mark.type = 'button';
+    mark.dataset.mark = id;
+    const note = add(bar, 'p', 'note', '');
+    note.setAttribute('aria-live', 'polite');
+  }
+
+  function buildUnit4() {
+    const view = { label: 'Unit 4', questions: [], drafts: [], workLabel: 'written answers' };
+    const parent = document.querySelector('#unit4-questions');
+    const summary = add(parent, 'div', 'progress-box');
+    const meta = add(summary, 'div', 'progress-meta');
+    meta.setAttribute('aria-live', 'polite');
+    view.score = add(meta, 'strong');
+    view.written = add(meta, 'span');
+    view.progress = add(summary, 'progress');
+    view.progress.setAttribute('aria-label', 'Unit 4 progress');
+
+    function hintFor(spec) {
+      return {
+        title: spec.title,
+        sourceLabel: 'Unit 4 · ' + spec.kicker,
+        passage: [
+          'An additive relationship adds the same amount each time. A multiplicative relationship multiplies by the same factor.',
+          'Equivalent ratios name the same comparison. For a part-to-whole ratio, add the parts to find one whole group, then scale every part by the same factor.'
+        ],
+        hint: spec.hint
+      };
+    }
+
+    function lesson(spec) {
+      const section = add(parent, 'section', 'lesson');
+      const head = add(section, 'div', 'section-head');
+      const heading = add(head, 'div');
+      add(heading, 'div', 'kicker', spec.kicker);
+      add(heading, 'h2', '', spec.title);
+      const body = add(section, 'div', 'lesson-body');
+      (spec.paragraphs || []).forEach(text => add(body, 'p', 'prompt-text', text));
+      return body;
+    }
+
+    function cardFor(body, prompt, id) {
+      const card = add(body, 'div', 'question');
+      const title = add(card, 'h3', '', prompt);
+      title.id = id + '-title';
+      return { card, title };
+    }
+
+    function attachRetry(card, question, spec) {
+      question.retry = button(card, 'plain retry', 'Review hint to retry', () => openSource(view, hintFor(spec), question));
+      question.retry.setAttribute('aria-haspopup', 'dialog');
+    }
+
+    function choicePart(body, spec) {
+      const { card, title } = cardFor(body, spec.prompt, spec.id);
+      if (spec.lead) {
+        const scroll = add(card, 'div', 'table-scroll');
+        scroll.append(ratioTable(spec.lead.rows, spec.lead.caption, true));
+      }
+      const question = { id: spec.id, reviewWord: 'hint' };
+      const group = add(card, 'div', 'options');
+      group.setAttribute('role', 'group');
+      group.setAttribute('aria-labelledby', title.id);
+      question.choices = (spec.tables || spec.choices).map((option, index) => {
+        const choice = button(group, 'choice', '', () => {
+          const status = state.answers[spec.id]?.status;
+          if (status === 'correct' || status === 'locked') return;
+          state.answers[spec.id] = { status: index === spec.correct ? 'correct' : 'locked', choice: index };
+          save();
+          updateQuestion(question);
+          updateProgress(view);
+        });
+        add(choice, 'span', 'letter', String.fromCharCode(65 + index));
+        if (spec.tables) choice.append(ratioTable(option));
+        else add(choice, 'span', '', option);
+        return choice;
+      });
+      question.feedback = add(card, 'p', 'feedback');
+      question.feedback.setAttribute('role', 'status');
+      attachRetry(card, question, spec);
+      view.questions.push(question);
+      updateQuestion(question);
+    }
+
+    function multiPart(body, spec) {
+      const { card, title } = cardFor(body, spec.prompt, spec.id);
+      const question = { id: spec.id, reviewWord: 'hint' };
+      const group = add(card, 'div', 'options');
+      group.setAttribute('role', 'group');
+      group.setAttribute('aria-labelledby', title.id);
+      const choices = spec.choices.map((option, index) => {
+        const choice = button(group, 'choice', '', () => {
+          const status = state.answers[spec.id]?.status;
+          if (status === 'correct' || status === 'locked') return;
+          const picked = new Set(state.multi[spec.id] || []);
+          if (picked.has(index)) picked.delete(index);
+          else picked.add(index);
+          state.multi[spec.id] = [...picked];
+          save();
+          updateQuestion(question);
+        });
+        choice.setAttribute('aria-pressed', 'false');
+        add(choice, 'span', 'letter', String.fromCharCode(65 + index));
+        add(choice, 'span', '', option);
+        return choice;
+      });
+      const check = add(card, 'button', 'primary', 'Check answer');
+      check.type = 'button';
+      check.addEventListener('click', () => {
+        const status = state.answers[spec.id]?.status;
+        if (status === 'correct' || status === 'locked') return;
+        const picked = state.multi[spec.id] || [];
+        if (picked.length !== spec.correct.length) {
+          question.feedback.className = 'feedback incorrect';
+          question.feedback.textContent = 'Select exactly two ratios, then check.';
+          question.retry.hidden = true;
+          return;
+        }
+        const chosen = new Set(picked);
+        const correct = spec.correct.every(index => chosen.has(index)) && picked.length === spec.correct.length;
+        state.answers[spec.id] = { status: correct ? 'correct' : 'locked' };
+        save();
+        updateQuestion(question);
+        updateProgress(view);
+        if (!correct) question.retry.focus();
+      });
+      question.feedback = add(card, 'p', 'feedback');
+      question.feedback.setAttribute('role', 'status');
+      attachRetry(card, question, spec);
+      question.controls = [check];
+      question.renderState = () => {
+        const status = state.answers[spec.id]?.status;
+        const locked = status === 'correct' || status === 'locked';
+        const picked = new Set(state.multi[spec.id] || []);
+        const correctSet = new Set(spec.correct);
+        choices.forEach((choice, index) => {
+          const selected = picked.has(index);
+          choice.setAttribute('aria-pressed', String(selected));
+          choice.setAttribute('aria-disabled', String(locked));
+          choice.classList.toggle('is-correct', status === 'correct' && correctSet.has(index));
+          choice.classList.toggle('is-wrong', status === 'locked' && selected && !correctSet.has(index));
+        });
+        check.disabled = locked;
+        setCheckedFeedback(question, status);
+      };
+      view.questions.push(question);
+      updateQuestion(question);
+    }
+
+    function blanksPart(body, owner, spec, track) {
+      const { card, title } = cardFor(body, spec.prompt, spec.id);
+      const question = { id: spec.id, reviewWord: 'hint' };
+      const form = add(card, 'form');
+      form.setAttribute('aria-labelledby', title.id);
+      const inputs = [];
+      const expected = [];
+      const scroll = add(form, 'div', 'table-scroll');
+      const rows = spec.rows.map(row => row.map(cell => {
+        if (!cell || typeof cell !== 'object' || !('expected' in cell)) return cell;
+        const input = blankInput(cell.label, '');
+        inputs.push(input);
+        expected.push(cell.expected);
+        return input;
+      }));
+      scroll.append(ratioTable(rows, spec.caption, true));
+      (spec.extra || []).forEach(field => {
+        const label = add(form, 'label', 'numeric-field');
+        add(label, 'span', '', field.unit);
+        const input = blankInput(field.label, '');
+        input.classList.add('unit-input');
+        label.append(input);
+        inputs.push(input);
+        expected.push(field.expected);
+      });
+      inputs.forEach((input, index) => {
+        input.value = state.numbers[spec.id]?.[index] || '';
+        input.addEventListener('input', () => {
+          state.numbers[spec.id] = inputs.map(field => field.value);
+          save();
+        });
+      });
+      const check = add(form, 'button', 'primary', 'Check answer');
+      check.type = 'submit';
+      question.feedback = add(card, 'p', 'feedback');
+      question.feedback.setAttribute('role', 'status');
+      attachRetry(card, question, owner);
+      question.controls = [...inputs, check];
+      question.renderState = () => {
+        const status = state.answers[spec.id]?.status;
+        const locked = status === 'correct' || status === 'locked';
+        const right = expected.filter((value, index) => valuesMatch(parseNumber(inputs[index].value), value)).length;
+        inputs.forEach((input, index) => {
+          const ok = valuesMatch(parseNumber(input.value), expected[index]);
+          input.disabled = locked;
+          input.classList.toggle('is-correct', (status === 'correct' || status === 'locked') && ok);
+          input.classList.toggle('is-wrong', status === 'locked' && !ok);
+          input.setAttribute('aria-invalid', status === 'locked' && !ok ? 'true' : 'false');
+        });
+        check.disabled = locked;
+        question.lockedText = expected.length === 1
+          ? ''
+          : 'Not quite. ' + right + ' of ' + expected.length + ' answers are correct. Review the hint to try again.';
+        setCheckedFeedback(question, status);
+      };
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        const status = state.answers[spec.id]?.status;
+        if (status === 'correct' || status === 'locked') return;
+        const numbers = inputs.map(input => parseNumber(input.value));
+        const invalid = numbers.findIndex(number => !Number.isFinite(number));
+        if (invalid !== -1) {
+          question.feedback.className = 'feedback incorrect';
+          question.feedback.textContent = 'Enter a number for each blank. You can use a decimal or a fraction.';
+          question.retry.hidden = true;
+          inputs[invalid].focus();
+          return;
+        }
+        state.numbers[spec.id] = inputs.map(input => input.value);
+        const correct = expected.every((value, index) => valuesMatch(numbers[index], value));
+        state.answers[spec.id] = { status: correct ? 'correct' : 'locked' };
+        save();
+        updateQuestion(question);
+        updateProgress(view);
+        if (!correct) question.retry.focus();
+      });
+      if (track) view.questions.push(question);
+      updateQuestion(question);
+      return question;
+    }
+
+    function selfPart(body, spec, track) {
+      const { card } = cardFor(body, spec.prompt, spec.id);
+      add(card, 'p', 'note', spec.note
+        ? spec.note + ' This part is not auto-graded. Compare what you wrote with the model.'
+        : 'This part is not auto-graded. Write your answer, then compare it with the model.');
+      const question = { id: spec.id, reviewWord: 'hint' };
+      const fields = spec.fields.map(([id, labelText]) => {
+        const area = add(card, 'div', 'math-work');
+        const label = add(area, 'label', '', labelText);
+        label.htmlFor = id;
+        const input = add(area, 'textarea');
+        input.id = id;
+        input.spellcheck = true;
+        input.value = state.drafts[id] || '';
+        input.addEventListener('input', () => {
+          state.drafts[id] = input.value;
+          save();
+          updateProgress(view);
+        });
+        view.drafts.push({ id, input });
+        return input;
+      });
+      const actions = add(card, 'div', 'self-actions');
+      const show = add(actions, 'button', 'primary', 'Show model answer');
+      show.type = 'button';
+      const match = add(actions, 'button', 'primary', 'My answer matches');
+      match.type = 'button';
+      const undo = add(actions, 'button', 'plain', 'Undo self-check');
+      undo.type = 'button';
+      const model = add(card, 'div', 'model-answer');
+      add(model, 'h3', '', 'Model answer');
+      spec.model.forEach(text => add(model, 'p', '', text));
+      question.feedback = add(card, 'p', 'feedback');
+      question.feedback.setAttribute('role', 'status');
+      question.renderState = () => {
+        const result = state.answers[spec.id] || {};
+        const revealed = !!result.revealed;
+        const matched = result.status === 'correct';
+        model.hidden = !revealed;
+        show.hidden = revealed;
+        match.hidden = !revealed || matched;
+        undo.hidden = !matched;
+        question.feedback.className = 'feedback' + (matched ? ' correct' : '');
+        question.feedback.textContent = matched
+          ? 'Checked against the model.'
+          : (revealed ? 'Compare your answer with the model, then mark it if it matches.' : '');
+      };
+      show.addEventListener('click', () => {
+        if (fields.some(input => !input.value.trim())) {
+          question.feedback.className = 'feedback incorrect';
+          question.feedback.textContent = 'Write your answer first, then compare it with the model.';
+          fields.find(input => !input.value.trim()).focus();
+          return;
+        }
+        const current = state.answers[spec.id] || {};
+        state.answers[spec.id] = { ...current, revealed: true };
+        save();
+        updateQuestion(question);
+        updateProgress(view);
+      });
+      match.addEventListener('click', () => {
+        state.answers[spec.id] = { revealed: true, status: 'correct' };
+        save();
+        updateQuestion(question);
+        updateProgress(view);
+      });
+      undo.addEventListener('click', () => {
+        state.answers[spec.id] = { revealed: true, status: 'draft' };
+        save();
+        updateQuestion(question);
+        updateProgress(view);
+        fields[0].focus();
+      });
+      if (track) view.questions.push(question);
+      updateQuestion(question);
+      return question;
+    }
+
+    function renderPart(body, owner, spec, track) {
+      if (spec.kind === 'choice') return choicePart(body, spec);
+      if (spec.kind === 'multi') return multiPart(body, spec);
+      if (spec.kind === 'blanks') return blanksPart(body, owner, spec, track);
+      if (spec.kind === 'self') return selfPart(body, spec, track);
+      return null;
+    }
+
+    const items = [
+      {
+        kicker: 'Question 1 of 12',
+        title: 'Additive or Multiplicative?',
+        hint: 'Subtract the top number from the bottom number in every column. An additive table has the same difference each time. A multiplicative table is scaled by the same factor.',
+        id: 'u4-q1',
+        prompt: 'Which table shows an ADDITIVE relationship?',
+        kind: 'choice',
+        correct: 3,
+        tables: [
+          [[1, 3, 5, 7], [4, 12, 20, 28]],
+          [[1, 2, 3, 4], [3, 6, 9, 12]],
+          [[2, 4, 6, 8], [10, 20, 30, 40]],
+          [[2, 4, 6, 8], [7, 9, 11, 13]]
+        ]
+      },
+      {
+        kicker: 'Question 2 of 12',
+        title: 'Equivalent Ratios',
+        hint: 'Divide both numbers in a choice by the same factor. An equivalent ratio lands on 4 and 7. You need both of them.',
+        paragraphs: ['A school orders 4 blue notebooks for every 7 red notebooks.'],
+        id: 'u4-q2',
+        prompt: 'Select TWO ratios equivalent to 4:7.',
+        kind: 'multi',
+        correct: [1, 2],
+        choices: ['8:12', '12:21', '16:28', '20:30', '7:4']
+      },
+      {
+        kicker: 'Question 3 of 12',
+        title: 'Part-to-Whole Ratios',
+        hint: 'Add the orange juice and the pineapple juice to find the size of one batch. See how many of those batches fit into 40 cups, then scale the pineapple juice.',
+        id: 'u4-q3',
+        prompt: 'A fruit punch recipe uses 3 cups of orange juice for every 5 cups of pineapple juice. How many cups of pineapple juice are needed to make 40 cups of punch?',
+        kind: 'choice',
+        correct: 2,
+        choices: ['15 cups', '20 cups', '25 cups', '30 cups']
+      },
+      {
+        kicker: 'Question 4 of 12',
+        title: 'Identify the Correct Ratio Table',
+        hint: 'Every pair should simplify to 2 seventh-graders for every 3 eighth-graders. Multiplying both numbers by 2, then 3, then 4 should stay on the correct table.',
+        id: 'u4-q4',
+        prompt: 'A team has 2 seventh-graders for every 3 eighth-graders. Which table is correct?',
+        kind: 'choice',
+        correct: 0,
+        choices: ['(2, 3), (4, 6), (6, 9), (8, 12)', '(2, 3), (4, 5), (6, 8), (8, 11)']
+      },
+      {
+        kicker: 'Question 5 of 12',
+        title: 'Interpret a Ratio Table',
+        hint: 'Divide the bottom row by the top row. The situation should use that same "for every" relationship.',
+        id: 'u4-q5',
+        prompt: 'Which situation matches the relationship?',
+        kind: 'choice',
+        correct: 0,
+        lead: { caption: 'Ratio table', rows: [['x', 2, 4, 6, 10], ['y', 6, 12, 18, 30]] },
+        choices: [
+          'Mia earns $3 for every $1 Jay earns.',
+          'Mia earns $4 for every $1 Jay earns.',
+          'Mia earns $5 for every $2 Jay earns.',
+          'Mia earns $6 for every $3 Jay earns.'
+        ]
+      },
+      {
+        kicker: 'Question 6 of 12',
+        title: 'Write Equations',
+        hint: 'If the length is a certain amount greater, add that amount. If the length is a number of times the width, multiply. The multiplicative group is the one that uses multiplication.',
+        paragraphs: [
+          'Group A: Rectangle length is 6 units greater than width.',
+          'Group B: Rectangle length is 3 times width.'
+        ],
+        id: 'u4-q6',
+        prompt: 'Write an equation for each group (width = x; length = y). Which group is MULTIPLICATIVE? Explain.',
+        kind: 'self',
+        fields: [
+          ['u4-q6-a', 'Group A equation'],
+          ['u4-q6-b', 'Group B equation'],
+          ['u4-q6-why', 'Which group is multiplicative? Explain.']
+        ],
+        model: [
+          'Group A: y = x + 6. The length is 6 more than the width, so this relationship is additive. y = 6 + x means the same thing.',
+          'Group B: y = 3x. The length is 3 times the width. y = 3 × x or y = 3*x means the same thing.',
+          'Group B is multiplicative. You multiply the width by 3 to get the length. Group A adds 6 instead of multiplying.'
+        ]
+      },
+      {
+        kicker: 'Question 7 of 12',
+        title: 'Double Number Line',
+        hint: 'Two cups of flour line up with 16 muffins. Find how many groups of 16 muffins are in 80, then use that many groups of 2 cups.',
+        paragraphs: ['A bakery uses 2 cups of flour for 16 muffins.'],
+        id: 'u4-q7',
+        prompt: 'How many cups of flour are needed for 80 muffins?',
+        kind: 'blanks',
+        caption: 'Flour and muffins',
+        rows: [
+          ['Flour (cups)', 0, 2, 4, 6, { expected: 10, label: 'Cups of flour for 80 muffins' }],
+          ['Muffins', 0, 16, 32, 48, 80]
+        ]
+      },
+      {
+        kicker: 'Question 8 of 12',
+        title: 'Compare Two Ratios',
+        hint: 'Give each box exactly 20 sugar cookies. Scale the other cookies in that ratio, add them to 20, and compare the two totals.',
+        paragraphs: [
+          'Box A: 2 chocolate cookies for every 5 sugar cookies.',
+          'Box B: 3 peanut butter cookies for every 4 sugar cookies.'
+        ],
+        id: 'u4-q8',
+        prompt: 'If EACH box has 20 sugar cookies, which box has more TOTAL cookies? Show your work and explain.',
+        kind: 'self',
+        fields: [['u4-q8-work', 'Show your work and explain.']],
+        model: [
+          'Box A: 20 ÷ 5 = 4 groups, so chocolate cookies = 2 × 4 = 8. Total cookies = 8 + 20 = 28.',
+          'Box B: 20 ÷ 4 = 5 groups, so peanut butter cookies = 3 × 5 = 15. Total cookies = 15 + 20 = 35.',
+          'Box B has more total cookies, because 35 is more than 28.'
+        ]
+      },
+      {
+        kicker: 'Question 9 of 12',
+        title: 'Graph a Proportional Relationship',
+        hint: 'Each ticket costs $6, so multiply the number of tickets by 6. The graph of a proportional relationship is a straight line through the origin. The equation uses that same factor.',
+        paragraphs: ['Movie tickets cost $6 each.'],
+        id: 'u4-q9',
+        parts: [
+          {
+            id: 'u4-q9-table',
+            prompt: '1. Complete the table.',
+            kind: 'blanks',
+            caption: 'Ticket cost',
+            rows: [
+              ['Tickets (x)', 1, 2, 3, 5, 8],
+              ['Cost (y)',
+                { expected: 6, label: 'Cost for 1 ticket' },
+                { expected: 12, label: 'Cost for 2 tickets' },
+                { expected: 18, label: 'Cost for 3 tickets' },
+                { expected: 30, label: 'Cost for 5 tickets' },
+                { expected: 48, label: 'Cost for 8 tickets' }]
+            ]
+          },
+          {
+            id: 'u4-q9-graph',
+            prompt: '2. Graph the ordered pairs on your paper.',
+            note: 'Write a sentence about the graph you drew.',
+            kind: 'self',
+            fields: [['u4-q9-graph-note', 'Describe the graph you drew.']],
+            model: [
+              'Put tickets (x) on the horizontal axis and cost (y) on the vertical axis. Plot (1, 6), (2, 12), (3, 18), (5, 30), and (8, 48).',
+              'The points line up on a straight line through (0, 0).'
+            ]
+          },
+          {
+            id: 'u4-q9-eq',
+            prompt: '3. Write an equation for y in terms of x.',
+            kind: 'self',
+            fields: [['u4-q9-eq-note', 'Equation']],
+            model: ['y = 6x. The cost is 6 times the number of tickets. y = 6 × x or y = 6*x means the same thing.']
+          }
+        ]
+      },
+      {
+        kicker: 'Question 10 of 12',
+        title: 'Find the Unit Rate',
+        hint: 'Divide 120 pages by 40 minutes to get the pages read in one minute. Multiply that rate by each time in the table.',
+        paragraphs: ['A student reads 120 pages in 40 minutes at a constant rate.'],
+        id: 'u4-q10',
+        prompt: 'Complete the table. What is the unit rate in pages per minute?',
+        kind: 'blanks',
+        caption: 'Reading rate',
+        rows: [
+          ['Time (min)', 5, 10, 20, 40, 60],
+          ['Pages',
+            { expected: 15, label: 'Pages in 5 minutes' },
+            { expected: 30, label: 'Pages in 10 minutes' },
+            { expected: 60, label: 'Pages in 20 minutes' },
+            120,
+            { expected: 180, label: 'Pages in 60 minutes' }]
+        ],
+        extra: [{ expected: 3, label: 'Unit rate in pages per minute', unit: 'Pages per minute' }]
+      },
+      {
+        kicker: 'Question 11 of 12',
+        title: 'Percent of a Whole',
+        hint: 'The grid has 100 squares. Out of 100, the number of shaded squares is the percent.',
+        id: 'u4-q11',
+        prompt: 'A grid contains 100 equal-sized squares. 65 squares are shaded. What percent of the grid is shaded?',
+        kind: 'choice',
+        correct: 2,
+        choices: ['35%', '50%', '65%', '75%']
+      },
+      {
+        kicker: 'Question 12 of 12',
+        title: 'Part-to-Whole Ratios',
+        hint: 'Add the red, blue, and green marbles to find the original total. Scale that total up to 60, and scale the green marbles by the same factor.',
+        id: 'u4-q12',
+        prompt: 'A bag contains 5 red marbles, 4 blue marbles, and 3 green marbles. If a larger bag contains 60 marbles in the SAME ratio, how many marbles are green?',
+        kind: 'choice',
+        correct: 1,
+        choices: ['10', '15', '20', '25']
+      }
+    ];
+
+    items.forEach(spec => {
+      const body = lesson(spec);
+      if (!spec.parts) {
+        renderPart(body, spec, spec, true);
+        return;
+      }
+      const parts = spec.parts.map(part => renderPart(body, spec, part, false));
+      const group = {
+        id: spec.id,
+        controls: parts.flatMap(part => part?.controls || []),
+        isSolved: () => parts.every(part => state.answers[part.id]?.status === 'correct'),
+        renderState() { parts.forEach(part => part.renderState?.()); }
+      };
+      view.questions.push(group);
+    });
+
+    addCompleteBar(parent, 'unit-4');
+    view.progress.max = view.questions.length;
+    updateProgress(view);
+    return view;
+  }
+
   const weekRoutes = ['warm-up-october', 'warm-up-november'];
   const screens = [...document.querySelectorAll('.screen')];
   const navLinks = [...document.querySelectorAll('.nav-links a')];
@@ -820,7 +1791,8 @@
     const route = location.hash.slice(1) || 'home';
     const week = weekRoutes.indexOf(route);
     const screen = week >= 0 ? 'history-view' : screens.find(item => item.id === route)?.id || 'home';
-    const subject = screen === 'history-view' ? 'social-studies' : screen === 'lesson-3' ? 'math' : screen;
+    const mathScreen = screen === 'lesson-3' || screen === 'unit-4';
+    const subject = screen === 'history-view' ? 'social-studies' : mathScreen ? 'math' : screen;
     if (week >= 0) selectWeek(week);
     screens.forEach(item => { item.hidden = item.id !== screen; });
     navLinks.forEach(link => {
@@ -834,12 +1806,24 @@
     currentScreen = screen;
   }
 
+  completion.onChange(refreshCompletionUI);
+  completion.init();
   weeks.forEach((week, index) => views.push(buildWeek(week, index)));
   const mathView = buildMath();
+  const unitView = buildUnit4();
+  addCompleteBar(views[0].panel, 'warm-up-october');
+  addCompleteBar(views[1].panel, 'warm-up-november');
+  addCompleteBar(document.querySelector('#math-questions'), 'lesson-3');
+  refreshCompletionUI();
   selectWeek(0);
   showRoute();
   window.addEventListener('hashchange', () => showRoute(true));
-  showStorageNote();
+
+  document.addEventListener('click', event => {
+    const mark = event.target.closest('[data-mark]');
+    if (!mark) return;
+    toggleComplete(mark.dataset.mark);
+  });
 
   document.querySelector('.tabs').addEventListener('keydown', event => {
     const last = views.length - 1;
@@ -861,16 +1845,16 @@
     if (event.submitter?.value !== 'reset') return;
     state = freshState();
     save();
-    [...views, mathView].forEach(view => {
-      view.questions.forEach(updateQuestion);
+    [...views, mathView, unitView].forEach(view => {
+      view.questions.forEach(question => {
+        question.controls?.filter(control => control.tagName === 'INPUT').forEach(input => { input.value = ''; });
+        updateQuestion(question);
+      });
       view.drafts.forEach(draft => {
         draft.input.value = '';
         draft.draw?.();
       });
       updateProgress(view);
-    });
-    mathView.questions.forEach(question => {
-      question.controls.filter(control => control.tagName === 'INPUT').forEach(input => { input.value = ''; });
     });
   });
 })();
