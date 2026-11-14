@@ -296,6 +296,24 @@
   }
   .model-answer p { margin: .35rem 0; }
   .model-answer p:last-child { margin-bottom: 0; }
+  .missing-badge {
+    display: inline-flex; align-items: center; flex-shrink: 0;
+    background: #ffe4ec; color: #9d2348; border: 1px solid #e7a0b4;
+    border-radius: 999px; padding: .12rem .55rem;
+    font-family: system-ui, sans-serif; font-size: .72rem; font-weight: 800;
+    letter-spacing: .08em; text-transform: uppercase; line-height: 1.4;
+  }
+  .card-kicker-row { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .55rem; }
+  .link-row { display: flex; flex-wrap: wrap; gap: .55rem; margin: 1rem 0 .35rem; }
+  a.link-button { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; text-align: center; }
+  a.link-button:focus-visible { outline: 3px solid #714bb4; outline-offset: 3px; }
+  .checklist { list-style: none; margin: 0; padding: .2rem 0 1rem; }
+  .checklist li { padding: .9rem 0; border-top: 1px solid var(--line); }
+  .checklist li:first-child { border-top: 0; }
+  .checklist label { display: flex; gap: .75rem; align-items: flex-start; cursor: pointer; }
+  .checklist input { width: 1.25rem; height: 1.25rem; margin-top: .2rem; accent-color: var(--accent); flex-shrink: 0; }
+  .checklist strong { display: block; }
+  .checklist p { margin: .2rem 0 0; }
   @media (max-width: 31rem) {
     .reading img { width: 6.25rem; margin-left: .65rem; }
     .dialog-actions button { width: 100%; }
@@ -304,10 +322,16 @@
 </head>
 <body>
 <header class="hero">
-  <svg class="hero-ball hero-ball-volley" viewBox="0 0 64 64" aria-hidden="true">
-    <circle cx="32" cy="32" r="28" fill="#f7f3ea" stroke="#2a1834" stroke-width="2.5"/>
-    <path d="M32 4c9 9 12 16 8 28s-1 19-8 28M32 4c-9 9-12 16-8 28s1 19 8 28" fill="none" stroke="#2a1834" stroke-width="2.2"/>
-    <path d="M6 24c12 2 20 2 26-6M6 42c14-2 22-1 28 8M58 24c-12 2-20 2-26-6M58 42c-14-2-22-1-28 8" fill="none" stroke="#e45d9a" stroke-width="2"/>
+  <svg class="hero-ball hero-ball-volley" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="10.5" fill="#f7f3ea" stroke="#2a1834" stroke-width="1"/>
+    <g fill="none" stroke="#2a1834" stroke-width="0.95" stroke-linecap="round" transform="translate(12 12) scale(1.1667) translate(-12 -12)">
+      <path d="M12 12a8 8 0 0 0 8 4"/>
+      <path d="M7.5 13.5a12 12 0 0 0 8.5 6.5"/>
+      <path d="M12 12a8 8 0 0 0 -7.464 4.928"/>
+      <path d="M12.951 7.353a12 12 0 0 0 -9.88 4.111"/>
+      <path d="M12 12a8 8 0 0 0 -.536 -8.928"/>
+      <path d="M15.549 15.147a12 12 0 0 0 1.38 -10.611"/>
+    </g>
   </svg>
   <svg class="hero-ball hero-ball-basket" viewBox="0 0 64 64" aria-hidden="true">
     <circle cx="32" cy="32" r="28" fill="#ef7a2f" stroke="#7a2e10" stroke-width="2.5"/>
@@ -360,7 +384,7 @@
           <span class="jersey-num" aria-hidden="true">6</span>
         </span>
         <div class="tile-copy">
-          <div class="kicker"><span id="social-count">All caught up</span> · Rally Era</div>
+          <div class="kicker"><span id="social-count">1 to do</span> · Rally Era</div>
           <h3>Social Studies</h3>
           <p>Read short history passages and answer the warm-up questions.</p>
           <p class="tagline">Read the rally, then send it back.</p>
@@ -411,9 +435,23 @@
     </details>
   </section>
   <section id="social-studies" class="screen" hidden aria-labelledby="social-title">
-    <div class="index-heading"><h2 id="social-title" tabindex="-1">Social Studies</h2><p>Choose a week to begin or continue.</p></div>
-    <p class="note empty-note" id="social-empty">You're all caught up. Finished weeks are under Completed.</p>
-    <div class="index-cards" id="social-active"></div>
+    <div class="index-heading"><h2 id="social-title" tabindex="-1">Social Studies</h2><p>Choose an assignment to begin or continue.</p></div>
+    <p class="note empty-note" id="social-empty" hidden>You're all caught up. Finished assignments are under Completed.</p>
+    <div class="index-cards" id="social-active">
+      <article class="index-card assignment-card" data-assignment="postcard-brazil" data-subject="social" data-order="0">
+        <a href="#postcard">
+          <div class="card-kicker-row">
+            <div class="kicker">Mr. Connolly · 6th period · Posted Nov 5 · 100 points</div>
+            <span class="missing-badge">Missing</span>
+          </div>
+          <h3>South American Country Postcard Project (Brazil)</h3>
+          <p>Assessment grade. No due date in Classroom. The parent portal marked it Missing on Nov 6.</p>
+        </a>
+        <div class="card-actions" hidden>
+          <button type="button" class="plain" data-mark="postcard-brazil">Undo / mark not completed</button>
+        </div>
+      </article>
+    </div>
     <details class="completed-fold" id="social-completed-fold">
       <summary>Completed <span id="social-completed-count">(2)</span></summary>
       <div class="index-cards" id="social-completed">
@@ -439,6 +477,165 @@
         </article>
       </div>
     </details>
+  </section>
+  <section id="postcard" class="screen" hidden aria-labelledby="postcard-title">
+    <div class="index-heading">
+      <div class="card-kicker-row">
+        <div class="kicker">Social Studies · Mr. Connolly · 6th period · Posted Nov 5 · 100 points</div>
+        <span class="missing-badge">Missing</span>
+      </div>
+      <h2 id="postcard-title" tabindex="-1">South American Country Postcard Project (Brazil)</h2>
+      <p>Assessment grade. Classroom does not show a due date. The parent portal marked this Missing on Nov 6. Check off each part as you finish it on your slide. Use your own words. This list does not write the postcard for you.</p>
+    </div>
+    <div class="link-row">
+      <a class="primary link-button" href="https://docs.google.com/presentation/d/1WnYpoQHPwEC4_8GrYgK8fLp7EvZEE5yThm_Bc-ZoVeI/edit" target="_blank" rel="noopener noreferrer">Open my postcard (Google Slides)</a>
+      <a class="plain link-button" href="https://classroom.google.com/c/ODcxOTYyMTc0MTUw/a/ODk3ODUxNDg4NjA4/details" target="_blank" rel="noopener noreferrer">Open in Google Classroom</a>
+    </div>
+    <p class="note">Turn it in from Classroom when you are done.</p>
+    <div class="progress-box">
+      <div class="progress-meta" aria-live="polite"><strong id="postcard-score">0 of 14 sections checked</strong></div>
+      <progress id="postcard-progress" max="14" value="0" aria-label="Postcard checklist progress"></progress>
+    </div>
+    <section class="lesson">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Still to fill on your slide</div>
+          <h2>Postcard checklist</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <ul class="checklist" id="postcard-checklist">
+          <li>
+            <label>
+              <input type="checkbox" data-check="country-name">
+              <span>
+                <strong>Country name</strong>
+                <p>Write the name of the country on the postcard. This project is about Brazil.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="location">
+              <span>
+                <strong>Location</strong>
+                <p>Include the latitude and longitude of the capital city. The capital is Brasília. Look up the numbers yourself. Also include where Brazil is in South America.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="history">
+              <span>
+                <strong>Quick History</strong>
+                <p>Write 3 to 5 ORIGINAL sentences about the history of the country. Original means your own words, not copied from a website or a friend.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="climate">
+              <span>
+                <strong>Climate</strong>
+                <p>Write 3 sentences about the country's climate, which means its usual weather.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="food">
+              <span>
+                <strong>Food</strong>
+                <p>Include 3 traditional or popular foods.</p>
+                <p class="tip">Tip: Brigadeiro is a food. On your slide it is under Things to Do. Move it to Food. You still need 3 foods, in your own words.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="things">
+              <span>
+                <strong>Things to Do</strong>
+                <p>Include 3 attractions or popular destinations. You already have Christ the Redeemer. Add two more that you choose, and describe them yourself.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="ethnic">
+              <span>
+                <strong>Largest ethnic groups</strong>
+                <p>Include the three largest ethnic groups or tribes in the country. Look them up, then write them in your own words.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="religion">
+              <span>
+                <strong>Religion and language</strong>
+                <p>List the top 3 religious groups and the top 3 languages. Write what you find in your own words.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="resources">
+              <span>
+                <strong>Natural resources</strong>
+                <p>Give 3 examples of natural resources found in the country. A natural resource is something people use that comes from the land, water, or underground.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="events">
+              <span>
+                <strong>Current events</strong>
+                <p>Write about 3 current or recent events in the country. Pick events you can explain in your own words.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="landmarks">
+              <span>
+                <strong>Landmarks or famous places</strong>
+                <p>You can include historical landmarks or places that have cultural importance. Add a short note for each one you choose.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="flag">
+              <span>
+                <strong>Flag</strong>
+                <p>The flag picture looks done. Delete the leftover placeholder text that tells you to add a picture of the flag.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="captions">
+              <span>
+                <strong>Photo captions</strong>
+                <p>Every picture needs a caption. Replace “Type caption describing photo here” with your own sentence for each photo.</p>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" data-check="spelling">
+              <span>
+                <strong>Spell-check</strong>
+                <p>Read every word and fix spelling. On the slide right now: Beazil should be Brazil, sqward should be squad, stares should be stars, millon should be million, and whether should be weather when you mean the climate.</p>
+              </span>
+            </label>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <div id="postcard-complete"></div>
   </section>
   <section id="history-view" class="screen" hidden aria-labelledby="history-title">
     <div class="index-heading"><h2 id="history-title" tabindex="-1">History Warm-Ups</h2><p>Read each passage and check your answers as you go.</p></div>
@@ -507,12 +704,12 @@
   let storageWorks = true;
 
   function freshState() {
-    return { answers: {}, drafts: {}, numbers: {}, sketches: {}, multi: {} };
+    return { answers: {}, drafts: {}, numbers: {}, sketches: {}, multi: {}, checks: {} };
   }
 
   try {
     const saved = JSON.parse(localStorage.getItem(key));
-    if (saved && saved.answers && saved.drafts) state = {...freshState(), ...saved};
+    if (saved && saved.answers && saved.drafts) state = {...freshState(), ...saved, checks: {...freshState().checks, ...(saved.checks || {})}};
     localStorage.setItem(key, JSON.stringify(state));
   } catch {
     storageWorks = false;
@@ -1792,7 +1989,8 @@
     const week = weekRoutes.indexOf(route);
     const screen = week >= 0 ? 'history-view' : screens.find(item => item.id === route)?.id || 'home';
     const mathScreen = screen === 'lesson-3' || screen === 'unit-4';
-    const subject = screen === 'history-view' ? 'social-studies' : mathScreen ? 'math' : screen;
+    const socialScreen = screen === 'history-view' || screen === 'postcard';
+    const subject = socialScreen ? 'social-studies' : mathScreen ? 'math' : screen;
     if (week >= 0) selectWeek(week);
     screens.forEach(item => { item.hidden = item.id !== screen; });
     navLinks.forEach(link => {
@@ -1814,6 +2012,25 @@
   addCompleteBar(views[0].panel, 'warm-up-october');
   addCompleteBar(views[1].panel, 'warm-up-november');
   addCompleteBar(document.querySelector('#math-questions'), 'lesson-3');
+  addCompleteBar(document.querySelector('#postcard-complete'), 'postcard-brazil');
+  const postcardBoxes = [...document.querySelectorAll('#postcard-checklist input[type="checkbox"]')];
+  const postcardScore = document.querySelector('#postcard-score');
+  const postcardProgress = document.querySelector('#postcard-progress');
+  function paintPostcard() {
+    const done = postcardBoxes.filter(box => box.checked).length;
+    postcardScore.textContent = done + ' of ' + postcardBoxes.length + ' sections checked';
+    postcardProgress.max = postcardBoxes.length;
+    postcardProgress.value = done;
+  }
+  postcardBoxes.forEach(box => {
+    box.checked = !!state.checks[box.dataset.check];
+    box.addEventListener('change', () => {
+      state.checks[box.dataset.check] = box.checked;
+      save();
+      paintPostcard();
+    });
+  });
+  paintPostcard();
   refreshCompletionUI();
   selectWeek(0);
   showRoute();
@@ -1856,6 +2073,8 @@
       });
       updateProgress(view);
     });
+    postcardBoxes.forEach(box => { box.checked = false; });
+    paintPostcard();
   });
 })();
 </script>
