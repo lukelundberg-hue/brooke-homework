@@ -318,6 +318,188 @@
     .reading img { width: 6.25rem; margin-left: .65rem; }
     .dialog-actions button { width: 100%; }
   }
+
+  .nav-links a.nav-sober[aria-current] {
+    background: #e8e8e8;
+    color: #1a1a1a;
+    border-color: #e8e8e8;
+  }
+  .suspension-callout {
+    border: 2px solid #2a2a2a;
+    background: #f2f2f2;
+    color: #1a1a1a;
+    padding: 1rem 1.1rem 1.05rem;
+    margin: 0 0 1.5rem;
+  }
+  .suspension-callout h2 {
+    font-family: system-ui, sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: 0;
+    color: #1a1a1a;
+    margin: .15rem 0 .45rem;
+  }
+  .suspension-callout p { margin: .35rem 0; color: #1a1a1a; }
+  .suspension-callout a { color: #1a1a1a; font-weight: 750; }
+  .suspension { color: #1a1a1a; }
+  .suspension a:any-link { color: #1a1a1a; text-underline-offset: .15em; }
+  .suspension h2 {
+    font-family: system-ui, sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0;
+    color: #1a1a1a;
+    margin: 0;
+  }
+  .suspension h3,
+  .suspension h4 {
+    font-family: system-ui, sans-serif;
+    color: #1a1a1a;
+  }
+  .suspension h3 { font-size: 1.2rem; margin: .15rem 0; }
+  .suspension h4 { font-size: 1.02rem; margin: 1.05rem 0 .4rem; }
+  .suspension-kicker {
+    margin: 0;
+    color: #333;
+    font-size: .78rem;
+    font-weight: 750;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .suspension-intro { max-width: 40rem; }
+  .suspension-intro p,
+  .suspension-teacher,
+  .suspension-body p { margin: .4rem 0; }
+  .suspension-teacher { color: #222; }
+  .suspension-item {
+    border: 1px solid #3a3a3a;
+    background: #fff;
+    margin: 0 0 1.25rem;
+  }
+  .suspension-head {
+    padding: .85rem 1rem;
+    background: #ececec;
+    border-bottom: 1px solid #3a3a3a;
+  }
+  .suspension-body { padding: .35rem 1rem 0; }
+  body:has(#suspension:not([hidden])) { background: #fff; }
+  body:has(#suspension:not([hidden])) .hero {
+    background: #ececec;
+    color: #1a1a1a;
+  }
+  body:has(#suspension:not([hidden])) .hero .kicker,
+  body:has(#suspension:not([hidden])) .hero .wrap > p,
+  body:has(#suspension:not([hidden])) .hero-ball,
+  body:has(#suspension:not([hidden])) .spark { display: none; }
+  body:has(#suspension:not([hidden])) .hero h1 {
+    font-family: system-ui, sans-serif;
+    font-size: 1.65rem;
+    letter-spacing: 0;
+    color: #1a1a1a;
+    margin: 0 0 .8rem;
+  }
+  body:has(#suspension:not([hidden])) .nav-links a {
+    color: #1a1a1a;
+    background: #fff;
+    border-color: #3a3a3a;
+  }
+  body:has(#suspension:not([hidden])) .nav-links a[aria-current] {
+    background: #2a2a2a;
+    color: #fff;
+    border-color: #2a2a2a;
+  }
+  body:has(#suspension:not([hidden])) .utilities .plain {
+    color: #1a1a1a;
+    background: #fff;
+    border-color: #3a3a3a;
+  }
+  body:has(#suspension:not([hidden])) .utilities .plain:hover { background: #eee; }
+  .suspension ol,
+  .suspension ul { margin: .25rem 0 .8rem; padding-left: 1.25rem; }
+  .suspension li { margin: .3rem 0; }
+  .suspension-example {
+    border: 1px solid #3a3a3a;
+    background: #f4f4f4;
+    padding: .75rem .9rem;
+    margin: .7rem 0 1rem;
+    overflow-x: auto;
+  }
+  .suspension-example h4 { margin-top: 0; }
+  .suspension-starter {
+    margin: .25rem 0 .7rem;
+    padding: .45rem .7rem;
+    border-left: 3px solid #555;
+    color: #222;
+  }
+  .suspension table { width: 100%; border-collapse: collapse; margin: .4rem 0 .9rem; }
+  .suspension caption { caption-side: top; text-align: left; font-weight: 750; padding-bottom: .35rem; color: #1a1a1a; }
+  .suspension th,
+  .suspension td {
+    border: 1px solid #3a3a3a;
+    padding: .4rem .55rem;
+    text-align: left;
+    vertical-align: top;
+    background: #fff;
+    color: #1a1a1a;
+  }
+  .suspension th { background: #e6e6e6; font-weight: 750; }
+  .suspension-step { margin: 0 0 .85rem; }
+  .suspension-step label { display: block; font-weight: 700; margin-bottom: .25rem; }
+  .suspension input[type="text"],
+  .suspension textarea {
+    display: block;
+    width: 100%;
+    max-width: 36rem;
+    font: inherit;
+    color: #1a1a1a;
+    background: #fff;
+    border: 1px solid #3a3a3a;
+    border-radius: 2px;
+    padding: .45rem .6rem;
+  }
+  .suspension input[type="text"] { min-height: 2.75rem; }
+  .suspension textarea { min-height: 6rem; }
+  .suspension textarea.short { min-height: 3.4rem; }
+  .suspension .note { color: #333; }
+  .suspension .complete-bar {
+    margin: 1rem -1rem 0;
+    border: 0;
+    border-top: 1px solid #3a3a3a;
+    border-radius: 0;
+    background: #f5f5f5;
+  }
+  .suspension .primary,
+  .suspension .plain { border-radius: 2px; }
+  .suspension .primary { background: #222; border-color: #222; color: #fff; }
+  .suspension .primary:hover { background: #000; }
+  .suspension .plain { background: #fff; color: #1a1a1a; border-color: #3a3a3a; }
+  .suspension .plain:hover { background: #eee; }
+  .suspension .completed-fold {
+    background: #f3f3f3;
+    border: 1px solid #3a3a3a;
+    border-radius: 0;
+  }
+  .suspension .completed-fold summary,
+  .suspension .completed-fold summary span { color: #1a1a1a; }
+  .suspension-key { margin-top: .4rem; }
+  .suspension-key summary {
+    cursor: pointer;
+    font-weight: 750;
+    color: #1a1a1a;
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+  }
+  @media print {
+    body:has(#suspension:not([hidden])) .hero,
+    body:has(#suspension:not([hidden])) .utilities,
+    body:has(#suspension:not([hidden])) footer { display: none !important; }
+    .suspension, .suspension-callout { background: #fff !important; color: #000 !important; }
+    .suspension-head,
+    .suspension-example,
+    .suspension th,
+    .suspension .complete-bar,
+    .suspension .completed-fold { background: #fff !important; }
+    .suspension .primary { background: #fff !important; color: #000 !important; border: 1px solid #000 !important; }
+  }
 </style>
 </head>
 <body>
@@ -343,6 +525,7 @@
     <h1>Hey Brooke!</h1>
     <p>Choose a subject and work through an assignment at your own pace.</p>
     <nav class="nav-links" aria-label="Subjects">
+      <a class="nav-sober" href="#suspension">Suspension Work</a>
       <a href="#home">Home</a>
       <a href="#math">Math</a>
       <a href="#social-studies">Social Studies</a>
@@ -352,6 +535,12 @@
 <main class="wrap">
   <div class="utilities"><button type="button" class="plain" id="reset">Reset all progress</button></div>
   <section id="home" class="screen" aria-labelledby="home-title">
+    <aside class="suspension-callout" aria-labelledby="suspension-callout-title">
+      <p class="suspension-kicker">Required · November 18, 2026</p>
+      <h2 id="suspension-callout-title" tabindex="-1">Required Make-Up Work – Suspension</h2>
+      <p>This work is separate from the usual assignments. Complete every class, then the written reflection. About 2 hours 25 minutes.</p>
+      <p><a href="#suspension">Open suspension work</a> (<span id="suspension-home-count">9 remaining</span>)</p>
+    </aside>
     <div class="index-heading">
       <h2 id="home-title" tabindex="-1">Choose a subject</h2>
       <p>Two courts are open. Grab a jersey, then start the assignment.</p>
@@ -657,6 +846,376 @@
       <p>Ratios and rates, 12 practice questions. Multiple choice and tables check themselves. For written parts, compare your work with the model answer.</p>
     </div>
     <div id="unit4-questions"></div>
+  </section>
+  <section id="suspension" class="screen suspension" hidden aria-labelledby="suspension-title">
+    <div class="suspension-intro">
+      <p class="suspension-kicker">Required · Tuesday, November 18, 2026</p>
+      <h2 id="suspension-title" tabindex="-1">Required Make-Up Work – Suspension</h2>
+      <p>This page is the work for the suspension day. It is separate from the usual assignments.</p>
+      <p>Complete the assignments from top to bottom. Core classes are first. Electives are shorter. The written reflection at the end is required. Plan on about 2 hours 25 minutes. Take a short break between assignments.</p>
+      <p>Each assignment is split into short steps. When you finish one, use Mark as completed at the bottom of that assignment. It moves to the Completed list. Open Completed if you need the assignment again. Written answers stay on this device.</p>
+    </div>
+    <p class="note empty-note" id="suspension-empty" hidden>All make-up work is listed under Completed.</p>
+    <div id="suspension-active">
+      <article class="suspension-item" data-assignment="sus-math" data-subject="suspension" data-order="1" aria-labelledby="sus-math-title">
+        <header class="suspension-head">
+          <p class="suspension-kicker">Class 1 of 8 · about 25 minutes</p>
+          <h3 id="sus-math-title">MATH - 6 ADV</h3>
+          <p class="suspension-teacher">Brittney D. Jackson</p>
+        </header>
+        <div class="suspension-body">
+          <p>Ratios, scale factors, and unit rates from the current unit. Do one problem at a time. Use the same three steps as the example.</p>
+          <p>More practice is on the Math page if you want it later. This set is the required make-up work. <a href="#unit-4">Unit 4 Practice</a></p>
+          <div class="suspension-example">
+            <h4>Example — already solved</h4>
+            <p>A painter mixes 2 cups of blue paint with 5 cups of white paint. How many cups of white paint mix with 6 cups of blue paint?</p>
+            <table>
+              <caption>Worked example</caption>
+              <thead>
+                <tr><th scope="col">Step</th><th scope="col">What to do</th><th scope="col">This example</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">1. Ratio</th><td>Write the two amounts in order.</td><td>2 cups blue to 5 cups white</td></tr>
+                <tr><th scope="row">2. Scale factor</th><td>Divide the new amount by the matching old amount.</td><td>6 ÷ 2 = 3</td></tr>
+                <tr><th scope="row">3. Other amount</th><td>Multiply the other amount by the scale factor.</td><td>5 × 3 = 15 cups of white</td></tr>
+              </tbody>
+            </table>
+            <p>If you get stuck, cover the last column and do the example again. Then try only the next step of your problem.</p>
+          </div>
+          <h4>Problem 1</h4>
+          <p>A trail mix uses 3 cups of nuts for every 2 cups of raisins. How many cups of raisins go with 12 cups of nuts?</p>
+          <div class="suspension-step">
+            <label for="sus-m1-ratio">Step 1. Write the ratio of nuts to raisins.</label>
+            <input id="sus-m1-ratio" data-draft="sus-m1-ratio" type="text" autocomplete="off">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-m1-scale">Step 2. Scale factor. Divide 12 by 3.</label>
+            <input id="sus-m1-scale" data-draft="sus-m1-scale" type="text" autocomplete="off" inputmode="decimal">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-m1-result">Step 3. Cups of raisins. Multiply 2 by the scale factor.</label>
+            <input id="sus-m1-result" data-draft="sus-m1-result" type="text" autocomplete="off" inputmode="decimal">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-m1-work">Step 4. Write the operations in one sentence.</label>
+            <p class="suspension-starter">Sentence starter: I divided 12 by 3 and got ___. Then I multiplied 2 by ___.</p>
+            <textarea id="sus-m1-work" data-draft="sus-m1-work" class="short"></textarea>
+          </div>
+          <h4>Problem 2</h4>
+          <p>A student reads 90 pages in 3 hours at a steady rate.</p>
+          <div class="suspension-step">
+            <label for="sus-m2-rate">Step 1. Unit rate. Divide 90 by 3. Write the pages in one hour.</label>
+            <input id="sus-m2-rate" data-draft="sus-m2-rate" type="text" autocomplete="off" inputmode="decimal">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-m2-result">Step 2. Pages in 5 hours. Multiply the unit rate by 5.</label>
+            <input id="sus-m2-result" data-draft="sus-m2-result" type="text" autocomplete="off" inputmode="decimal">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-m2-work">Step 3. Write both operations in one sentence.</label>
+            <textarea id="sus-m2-work" data-draft="sus-m2-work" class="short"></textarea>
+          </div>
+          <h4>Problem 3</h4>
+          <p>A bag has 4 green counters and 12 yellow counters.</p>
+          <div class="suspension-step">
+            <label for="sus-m3-total">Step 1. How many counters are in the bag? Add 4 and 12.</label>
+            <input id="sus-m3-total" data-draft="sus-m3-total" type="text" autocomplete="off" inputmode="decimal">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-m3-ratio">Step 2. Write the ratio of green counters to all counters in simplest form. 4 to 16 simplifies by dividing both numbers by 4.</label>
+            <input id="sus-m3-ratio" data-draft="sus-m3-ratio" type="text" autocomplete="off">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-m3-result">Step 3. A larger bag has 40 counters in the same ratio. How many are green?</label>
+            <input id="sus-m3-result" data-draft="sus-m3-result" type="text" autocomplete="off" inputmode="decimal">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-m3-work">Step 4. Write the operation for step 3 in one sentence.</label>
+            <p class="suspension-starter">Sentence starter: Green is 1 out of 4 counters, so I found 1/4 of 40 by ___.</p>
+            <textarea id="sus-m3-work" data-draft="sus-m3-work" class="short"></textarea>
+          </div>
+          <details class="suspension-key">
+            <summary>Answer check — open only after you try</summary>
+            <p>Problem 1: ratio 3 to 2. Scale factor 4. 8 cups of raisins.</p>
+            <p>Problem 2: 30 pages in one hour. 150 pages in 5 hours.</p>
+            <p>Problem 3: 16 counters. Simplest ratio 1 to 4. 10 green counters.</p>
+          </details>
+          <div class="complete-bar">
+            <button type="button" class="primary" data-mark="sus-math">Mark as completed</button>
+            <p class="note" aria-live="polite"></p>
+          </div>
+        </div>
+      </article>
+      <article class="suspension-item" data-assignment="sus-social" data-subject="suspension" data-order="2" aria-labelledby="sus-social-title">
+        <header class="suspension-head">
+          <p class="suspension-kicker">Class 2 of 8 · about 20 minutes</p>
+          <h3 id="sus-social-title">SOCIAL S. 6</h3>
+          <p class="suspension-teacher">Michael B. Connolly</p>
+        </header>
+        <div class="suspension-body">
+          <p>Read the paragraph. Then write a short summary in your own words. This connects to the Brazil postcard. It does not replace that project.</p>
+          <p>The Brazil postcard is still on the Social Studies page. <a href="#postcard">Open the Brazil postcard checklist</a></p>
+          <h4>Reading</h4>
+          <p>Brazil is the largest country in South America. The capital city is Brasília. Brasília is inland. Many of the largest cities, including São Paulo and Rio de Janeiro, are on or near the Atlantic coast. Portugal ruled Brazil for a long time. Brazil became independent in 1822. Portuguese is the country’s official language. In the north, the Amazon River runs through a huge rainforest. The climate is not the same everywhere. The Amazon region is hot and wet. The south is milder. Parts of the northeast are dry.</p>
+          <div class="suspension-step">
+            <label for="sus-ss-facts">Step 1. Read the paragraph once. Read it again. Write three facts: the capital, the official language, and one fact about the land or the climate.</label>
+            <textarea id="sus-ss-facts" data-draft="sus-ss-facts" class="short"></textarea>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-ss-summary">Step 2. Scroll the paragraph up so you cannot see it. Write a summary in your own words. Use 4 or 5 sentences. Do not copy a whole sentence from the reading.</label>
+            <p class="suspension-starter">Sentence starter: Brazil is ___. Its capital is ___. One fact about the land or climate is ___.</p>
+            <textarea id="sus-ss-summary" data-draft="sus-ss-summary"></textarea>
+          </div>
+          <p>Step 3. Read your summary once. If a sentence matches the reading word for word, rewrite that sentence.</p>
+          <div class="complete-bar">
+            <button type="button" class="primary" data-mark="sus-social">Mark as completed</button>
+            <p class="note" aria-live="polite"></p>
+          </div>
+        </div>
+      </article>
+      <article class="suspension-item" data-assignment="sus-rla" data-subject="suspension" data-order="3" aria-labelledby="sus-rla-title">
+        <header class="suspension-head">
+          <p class="suspension-kicker">Class 3 of 8 · about 25 minutes</p>
+          <h3 id="sus-rla-title">RLA-6 ADV</h3>
+          <p class="suspension-teacher">Aidan C. Frazier</p>
+        </header>
+        <div class="suspension-body">
+          <p>Read the passage. Answer two short questions. Then write one paragraph.</p>
+          <h4>Ten Minutes at a Time</h4>
+          <p>Jordan had a book report due on Friday. On Monday he put the book in his backpack and decided to start after dinner. After dinner he watched a show. On Tuesday he told himself the same thing. By Thursday the report was still a blank page. He asked his aunt to hold his phone in the other room. He wrote only the heading and the book title. Then he set a timer for ten minutes and wrote until it rang. He had half a paragraph. He stood up, drank some water, and set the timer again. He did that three times. The draft was messy, and it was done before bed.</p>
+          <div class="suspension-step">
+            <label for="sus-rla-q1">Step 1. What kept getting in the way at the start? Write one sentence.</label>
+            <textarea id="sus-rla-q1" data-draft="sus-rla-q1" class="short"></textarea>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-rla-q2">Step 2. What is one change Jordan made? Write one sentence.</label>
+            <textarea id="sus-rla-q2" data-draft="sus-rla-q2" class="short"></textarea>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-rla-paragraph">Step 3. Write one paragraph of 5 to 7 sentences. Explain what helped Jordan finish, and how a student could use that idea on a school day. Include one detail from the passage.</label>
+            <p class="suspension-starter">Sentence starter: Jordan had trouble starting because ___. One change that helped was ___. A student could use this by ___.</p>
+            <textarea id="sus-rla-paragraph" data-draft="sus-rla-paragraph"></textarea>
+          </div>
+          <div class="complete-bar">
+            <button type="button" class="primary" data-mark="sus-rla">Mark as completed</button>
+            <p class="note" aria-live="polite"></p>
+          </div>
+        </div>
+      </article>
+      <article class="suspension-item" data-assignment="sus-science" data-subject="suspension" data-order="4" aria-labelledby="sus-science-title">
+        <header class="suspension-head">
+          <p class="suspension-kicker">Class 4 of 8 · about 20 minutes</p>
+          <h3 id="sus-science-title">SCIENCE - 6</h3>
+          <p class="suspension-teacher">Raylee Mclain</p>
+        </header>
+        <div class="suspension-body">
+          <p>Read about states of matter. Then write short definitions in your own words. A few words for each word is enough.</p>
+          <h4>Reading</h4>
+          <p>Matter is anything that has mass and takes up space. In a solid, particles stay close together and vibrate in place, so a solid keeps its shape. In a liquid, particles slide past one another, so a liquid takes the shape of its container. In a gas, particles move quickly and spread out to fill the container. Adding heat makes particles move faster. When a solid gains enough heat, it melts into a liquid. When a liquid gains enough heat, it evaporates into a gas. Taking heat away slows particles down. A gas can condense into a liquid, and a liquid can freeze into a solid.</p>
+          <h4>Vocabulary</h4>
+          <div class="suspension-step">
+            <label for="sus-sci-solid">solid</label>
+            <input id="sus-sci-solid" data-draft="sus-sci-solid" type="text" autocomplete="off">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-sci-liquid">liquid</label>
+            <input id="sus-sci-liquid" data-draft="sus-sci-liquid" type="text" autocomplete="off">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-sci-gas">gas</label>
+            <input id="sus-sci-gas" data-draft="sus-sci-gas" type="text" autocomplete="off">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-sci-melt">melting</label>
+            <input id="sus-sci-melt" data-draft="sus-sci-melt" type="text" autocomplete="off">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-sci-evap">evaporation</label>
+            <input id="sus-sci-evap" data-draft="sus-sci-evap" type="text" autocomplete="off">
+          </div>
+          <h4>Questions</h4>
+          <div class="suspension-step">
+            <label for="sus-sci-q1">Step 1. Why does a solid keep its shape? Write one sentence.</label>
+            <textarea id="sus-sci-q1" data-draft="sus-sci-q1" class="short"></textarea>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-sci-q2">Step 2. What happens to particle motion when heat is added? Write one sentence.</label>
+            <textarea id="sus-sci-q2" data-draft="sus-sci-q2" class="short"></textarea>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-sci-q3">Step 3. Write one sentence that uses both “liquid” and “evaporation” correctly.</label>
+            <textarea id="sus-sci-q3" data-draft="sus-sci-q3" class="short"></textarea>
+          </div>
+          <div class="complete-bar">
+            <button type="button" class="primary" data-mark="sus-science">Mark as completed</button>
+            <p class="note" aria-live="polite"></p>
+          </div>
+        </div>
+      </article>
+      <article class="suspension-item" data-assignment="sus-winlab" data-subject="suspension" data-order="5" aria-labelledby="sus-winlab-title">
+        <header class="suspension-head">
+          <p class="suspension-kicker">Elective · Class 5 of 8 · about 10 minutes</p>
+          <h3 id="sus-winlab-title">WIN LAB 6</h3>
+          <p class="suspension-teacher">Brittney D. Jackson · math lab</p>
+        </header>
+        <div class="suspension-body">
+          <p>Two short problems. Use multiplication. Show the operation, then the answer.</p>
+          <div class="suspension-example">
+            <h4>Example — already solved</h4>
+            <p>1 pencil costs $3. Four pencils cost 3 × 4 = $12.</p>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-win-cost">Problem 1. One eraser costs $2. How much do 5 erasers cost? Write the operation and the answer.</label>
+            <input id="sus-win-cost" data-draft="sus-win-cost" type="text" autocomplete="off">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-win-sheets">Problem 2. The lab uses 2 sheets of paper for every student. How many sheets are needed for 8 students? Write the operation and the answer.</label>
+            <input id="sus-win-sheets" data-draft="sus-win-sheets" type="text" autocomplete="off">
+          </div>
+          <details class="suspension-key">
+            <summary>Answer check — open only after you try</summary>
+            <p>Problem 1: 2 × 5 = $10.</p>
+            <p>Problem 2: 2 × 8 = 16 sheets.</p>
+          </details>
+          <div class="complete-bar">
+            <button type="button" class="primary" data-mark="sus-winlab">Mark as completed</button>
+            <p class="note" aria-live="polite"></p>
+          </div>
+        </div>
+      </article>
+      <article class="suspension-item" data-assignment="sus-athletics" data-subject="suspension" data-order="6" aria-labelledby="sus-athletics-title">
+        <header class="suspension-head">
+          <p class="suspension-kicker">Elective · Class 6 of 8 · about 10 minutes</p>
+          <h3 id="sus-athletics-title">ATHLETICS - 6 G</h3>
+          <p class="suspension-teacher">Moesha Reagins</p>
+        </header>
+        <div class="suspension-body">
+          <p>Write a short plan for the athletics class you are missing. Keep the movement easy.</p>
+          <div class="suspension-step">
+            <label for="sus-ath-warm">Step 1. Write a warm-up of about 10 minutes. Include an easy walk or a light jog in place, plus two stretches you already know.</label>
+            <textarea id="sus-ath-warm" data-draft="sus-ath-warm" class="short"></textarea>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-ath-skill">Step 2. Write one skill you will practice at the next athletics class.</label>
+            <textarea id="sus-ath-skill" data-draft="sus-ath-skill" class="short"></textarea>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-ath-checkin">Step 3. Write one sentence you can say to Coach Reagins when you return.</label>
+            <p class="suspension-starter">Sentence starter: I wrote a plan for the missed class, and I will practice ___.</p>
+            <textarea id="sus-ath-checkin" data-draft="sus-ath-checkin" class="short"></textarea>
+          </div>
+          <div class="complete-bar">
+            <button type="button" class="primary" data-mark="sus-athletics">Mark as completed</button>
+            <p class="note" aria-live="polite"></p>
+          </div>
+        </div>
+      </article>
+      <article class="suspension-item" data-assignment="sus-theatre" data-subject="suspension" data-order="7" aria-labelledby="sus-theatre-title">
+        <header class="suspension-head">
+          <p class="suspension-kicker">Elective · Class 7 of 8 · about 15 minutes</p>
+          <h3 id="sus-theatre-title">Musical Theatre / THEATRE INTRO</h3>
+          <p class="suspension-teacher">Corrina C. Weatherly</p>
+        </header>
+        <div class="suspension-body">
+          <p>Read the scene once. Then answer the three steps. You do not have to make it funny.</p>
+          <h4>Scene</h4>
+          <p>ALEX: We have to mark the entrance before class ends.</p>
+          <p>JORDAN: I only have the first page of the script.</p>
+          <p>ALEX: Then we will block just that page.</p>
+          <p>JORDAN: Where do you want me to stand?</p>
+          <p>ALEX: Start at the door. Walk to the chair when I say “now.”</p>
+          <p>JORDAN: Let me find that line.</p>
+          <div class="suspension-step">
+            <label for="sus-th-want">Step 1. What does Alex want in this scene? Write one sentence.</label>
+            <textarea id="sus-th-want" data-draft="sus-th-want" class="short"></textarea>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-th-problem">Step 2. What problem does Jordan have? Write one sentence.</label>
+            <textarea id="sus-th-problem" data-draft="sus-th-problem" class="short"></textarea>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-th-lines">Step 3. Write the next two lines. Start each line with the name ALEX or JORDAN.</label>
+            <textarea id="sus-th-lines" data-draft="sus-th-lines" class="short"></textarea>
+          </div>
+          <div class="complete-bar">
+            <button type="button" class="primary" data-mark="sus-theatre">Mark as completed</button>
+            <p class="note" aria-live="polite"></p>
+          </div>
+        </div>
+      </article>
+      <article class="suspension-item" data-assignment="sus-band" data-subject="suspension" data-order="8" aria-labelledby="sus-band-title">
+        <header class="suspension-head">
+          <p class="suspension-kicker">Elective · Class 8 of 8 · about 10 minutes</p>
+          <h3 id="sus-band-title">BEGBAND</h3>
+          <p class="suspension-teacher">Dustin P. Wright</p>
+        </header>
+        <div class="suspension-body">
+          <p>Count these rhythms. You do not need an instrument. In 4/4 time, a quarter note lasts one beat and a half note lasts two beats. Two eighth notes share one beat.</p>
+          <div class="suspension-example">
+            <h4>Example — already counted</h4>
+            <p>Notes: quarter, quarter, half.</p>
+            <p>Counts: 1, 2, 3-4.</p>
+            <p>The half note holds beats 3 and 4, so the count is written 3-4.</p>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-band-1">Line 1. Notes: quarter, quarter, quarter, quarter. Write the counts.</label>
+            <input id="sus-band-1" data-draft="sus-band-1" type="text" autocomplete="off">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-band-2">Line 2. Notes: half, quarter, quarter. Write the counts.</label>
+            <input id="sus-band-2" data-draft="sus-band-2" type="text" autocomplete="off">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-band-3">Line 3. Notes: quarter, eighth, eighth, half. Write the counts.</label>
+            <input id="sus-band-3" data-draft="sus-band-3" type="text" autocomplete="off">
+          </div>
+          <div class="suspension-step">
+            <label for="sus-band-next">Step 4. Write one sentence about what you will do at the next band rehearsal.</label>
+            <p class="suspension-starter">Sentence starter: I will ask for the music I missed and start at the measure I am given.</p>
+            <textarea id="sus-band-next" data-draft="sus-band-next" class="short"></textarea>
+          </div>
+          <details class="suspension-key">
+            <summary>Answer check — open only after you try</summary>
+            <p>Line 1: 1, 2, 3, 4.</p>
+            <p>Line 2: 1-2, 3, 4.</p>
+            <p>Line 3: 1, 2 &amp;, 3-4.</p>
+          </details>
+          <div class="complete-bar">
+            <button type="button" class="primary" data-mark="sus-band">Mark as completed</button>
+            <p class="note" aria-live="polite"></p>
+          </div>
+        </div>
+      </article>
+      <article class="suspension-item" data-assignment="sus-reflect" data-subject="suspension" data-order="9" aria-labelledby="sus-reflect-title">
+        <header class="suspension-head">
+          <p class="suspension-kicker">Required · about 10 minutes</p>
+          <h3 id="sus-reflect-title">Written reflection</h3>
+          <p class="suspension-teacher">Required for this suspension day</p>
+        </header>
+        <div class="suspension-body">
+          <p>Write about your own choice. You do not need to write about any other student. Stick to what you did, what happened next, and what you will do differently.</p>
+          <div class="suspension-step">
+            <label for="sus-ref-choice">Step 1. In 3 to 5 sentences, describe the choice that led to this suspension and what happened because of that choice.</label>
+            <p class="suspension-starter">Sentence starter: The choice I made was ___. What happened next was ___.</p>
+            <textarea id="sus-ref-choice" data-draft="sus-ref-choice"></textarea>
+          </div>
+          <div class="suspension-step">
+            <label for="sus-ref-next">Step 2. In 2 to 3 sentences, write what you will do differently next time you are in a similar situation. Name one specific action.</label>
+            <p class="suspension-starter">Sentence starter: Next time I will ___. I will do that before ___.</p>
+            <textarea id="sus-ref-next" data-draft="sus-ref-next"></textarea>
+          </div>
+          <p>Step 3. Read both parts once. Start each sentence with a capital letter.</p>
+          <div class="complete-bar">
+            <button type="button" class="primary" data-mark="sus-reflect">Mark as completed</button>
+            <p class="note" aria-live="polite"></p>
+          </div>
+        </div>
+      </article>
+    </div>
+    <details class="completed-fold" id="suspension-completed-fold" hidden>
+      <summary>Completed <span id="suspension-completed-count">(0)</span></summary>
+      <div id="suspension-completed"></div>
+    </details>
   </section>
   <noscript>Enable JavaScript in your browser to use the quiz.</noscript>
   <div class="bottom">
@@ -1388,7 +1947,7 @@
   }
 
   function refreshCompletionUI() {
-    ['math', 'social'].forEach(subject => {
+    ['math', 'social', 'suspension'].forEach(subject => {
       const cards = [...document.querySelectorAll('[data-subject="' + subject + '"]')];
       cards.sort((a, b) => Number(a.dataset.order) - Number(b.dataset.order));
       const active = document.getElementById(subject + '-active');
@@ -1411,16 +1970,30 @@
     });
     document.getElementById('math-count').textContent = countPhrase(document.getElementById('math-active').querySelectorAll('[data-assignment]').length);
     document.getElementById('social-count').textContent = countPhrase(document.getElementById('social-active').querySelectorAll('[data-assignment]').length);
+    const suspensionLeft = document.getElementById('suspension-active').querySelectorAll('[data-assignment]').length;
+    document.getElementById('suspension-home-count').textContent = suspensionLeft + ' remaining';
     document.querySelectorAll('.complete-bar').forEach(bar => {
       const mark = bar.querySelector('[data-mark]');
       const done = completion.isCompleted(mark.dataset.mark);
+      const sober = !!bar.closest('.suspension');
       mark.textContent = done ? 'Undo / mark not completed' : 'Mark as completed';
       mark.className = done ? 'plain' : 'primary';
       bar.querySelector('.note').textContent = done
-        ? 'This assignment is in Completed. Bring it back if you still need it.'
-        : 'Finished? This moves it to the Completed list.';
+        ? 'This assignment is in Completed. ' + (sober ? 'Open it again if you still need it.' : 'Bring it back if you still need it.')
+        : (sober ? 'When you are done, this moves the assignment to the Completed list.' : 'Finished? This moves it to the Completed list.');
     });
     showStorageNote();
+  }
+
+  function bindSuspensionDrafts() {
+    document.querySelectorAll('#suspension [data-draft]').forEach(field => {
+      const id = field.dataset.draft;
+      if (typeof state.drafts[id] === 'string') field.value = state.drafts[id];
+      field.addEventListener('input', () => {
+        state.drafts[id] = field.value;
+        save();
+      });
+    });
   }
 
   function toggleComplete(id) {
@@ -2031,6 +2604,7 @@
     });
   });
   paintPostcard();
+  bindSuspensionDrafts();
   refreshCompletionUI();
   selectWeek(0);
   showRoute();
@@ -2075,6 +2649,7 @@
     });
     postcardBoxes.forEach(box => { box.checked = false; });
     paintPostcard();
+    document.querySelectorAll('#suspension [data-draft]').forEach(field => { field.value = ''; });
   });
 })();
 </script>
