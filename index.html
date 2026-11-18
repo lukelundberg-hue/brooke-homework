@@ -314,6 +314,70 @@
   .checklist input { width: 1.25rem; height: 1.25rem; margin-top: .2rem; accent-color: var(--accent); flex-shrink: 0; }
   .checklist strong { display: block; }
   .checklist p { margin: .2rem 0 0; }
+  .packet-reminder {
+    background: #f8f5fb; border: 1px solid var(--line); border-radius: .85rem;
+    padding: .9rem 1.05rem; margin: .15rem 0 1.15rem;
+  }
+  .packet-reminder p { margin: .4rem 0; }
+  .packet-reminder p:first-child { margin-top: 0; }
+  .packet-reminder p:last-child { margin-bottom: 0; }
+  .page-map { margin: .35rem 0 0; padding-left: 1.2rem; }
+  .page-map li { margin: .15rem 0; }
+  #computation-practice .lesson-body { padding-bottom: .35rem; }
+  .chunk { padding: 1rem 0; border-top: 1px solid var(--line); }
+  .chunk:first-of-type { border-top: 0; }
+  .chunk h3, .reflection h3 {
+    font-family: Georgia, serif; font-size: 1.28rem; margin: 0 0 .4rem;
+  }
+  .chunk-stop { margin: .7rem 0 0; }
+  .worked-example {
+    background: #f3edf9; border-radius: .6rem; padding: .8rem .95rem; margin: 0 0 .85rem;
+  }
+  .worked-example h4 { margin: 0 0 .35rem; font-size: 1.02rem; }
+  .worked-example p, .organizer p, .reflection p { margin: .35rem 0; }
+  .worked-example p:last-child, .organizer p:last-child { margin-bottom: 0; }
+  .worked-example ol, .organizer ol { margin: .35rem 0 .2rem; padding-left: 1.25rem; }
+  .worked-example li, .organizer li { margin: .2rem 0; }
+  pre.work-lines {
+    font-family: "Courier New", ui-monospace, monospace; font-size: 1.02rem; line-height: 1.35;
+    margin: .45rem 0; padding: 0; white-space: pre; overflow-x: auto;
+    background: transparent; color: inherit; border: 0;
+  }
+  .organizer {
+    margin: .15rem 0 .8rem; padding: .55rem .75rem;
+    border-left: 3px solid var(--accent); background: #fbf8fd;
+  }
+  .problem-list { list-style: none; margin: 0; padding: 0; }
+  .problem-list li { padding: .7rem 0; border-top: 1px solid var(--line); }
+  .problem-list li:first-child { border-top: 0; padding-top: .15rem; }
+  .problem-expr {
+    display: block; font-size: 1.22rem; font-weight: 750;
+    font-variant-numeric: tabular-nums; letter-spacing: .01em;
+  }
+  .problem-list .note { margin: .15rem 0 0; }
+  .reflection {
+    margin: .2rem 0 .95rem; padding: .75rem .9rem;
+    background: #fff8e8; border: 1px solid #ead7a4; border-radius: .6rem;
+  }
+  .answer-key {
+    margin: .2rem 0 1.05rem; border: 1px dashed var(--accent);
+    border-radius: .7rem; background: white; padding: 0 .95rem;
+  }
+  .answer-key summary {
+    cursor: pointer; font-weight: 750; color: var(--accent);
+    min-height: 2.75rem; display: flex; align-items: center; gap: .55rem;
+    list-style: none;
+  }
+  .answer-key summary::-webkit-details-marker { display: none; }
+  .answer-key summary::before {
+    content: "";
+    width: .45rem; height: .45rem; flex-shrink: 0;
+    border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent);
+    transform: rotate(-45deg);
+  }
+  .answer-key[open] summary::before { transform: rotate(45deg); }
+  .answer-key ul { margin: .15rem 0 .85rem; padding-left: 1.2rem; }
+  .answer-key li { margin: .2rem 0; }
   @media (max-width: 31rem) {
     .reading img { width: 6.25rem; margin-left: .65rem; }
     .dialog-actions button { width: 100%; }
@@ -557,9 +621,9 @@
           <span class="jersey-num" aria-hidden="true">13</span>
         </span>
         <div class="tile-copy">
-          <div class="kicker"><span id="math-count">2 to do</span> · Free-Throw Era</div>
+          <div class="kicker"><span id="math-count">3 to do</span> · Free-Throw Era</div>
           <h3>Math</h3>
-          <p>Practice equivalent ratios, proportions, and scale factors.</p>
+          <p>Practice ratios, rates, and the computation packet.</p>
           <p class="tagline">Line them up and take the shot.</p>
         </div>
       </a>
@@ -585,6 +649,16 @@
     <div class="index-heading"><h2 id="math-title" tabindex="-1">Math</h2><p>Choose an assignment to begin or continue.</p></div>
     <p class="note empty-note" id="math-empty" hidden>You're all caught up. Finished assignments are under Completed.</p>
     <div class="index-cards" id="math-active">
+      <article class="index-card assignment-card" data-assignment="computation-practice" data-subject="math" data-order="0">
+        <a href="#computation-practice">
+          <div class="kicker">Ms. Jackson · WIN LAB 6 · Posted Nov 16 · 100 points · No due date</div>
+          <h3>Computation Practice</h3>
+          <p>Four-page packet. Whole numbers, decimals, and fractions. Write the work on paper.</p>
+        </a>
+        <div class="card-actions" hidden>
+          <button type="button" class="plain" data-mark="computation-practice">Undo / mark not completed</button>
+        </div>
+      </article>
       <article class="index-card assignment-card" data-assignment="unit-4" data-subject="math" data-order="2">
         <a href="#unit-4">
           <div class="kicker">3rd period &amp; Math Lab · No due date</div>
@@ -846,6 +920,363 @@
       <p>Ratios and rates, 12 practice questions. Multiple choice and tables check themselves. For written parts, compare your work with the model answer.</p>
     </div>
     <div id="unit4-questions"></div>
+  </section>
+  <section id="computation-practice" class="screen" hidden aria-labelledby="computation-title">
+    <div class="index-heading">
+      <div class="kicker">Math · Ms. Jackson's Math Lab · WIN LAB 6 · Posted Nov 16 · No due date · 100 points</div>
+      <h2 id="computation-title" tabindex="-1">Computation Practice</h2>
+      <p>Ms. Jackson posted the whole packet on Nov 16. Do all four pages, Grade 3 through Grade 6. Assigned, still to turn in.</p>
+    </div>
+    <div class="link-row">
+      <a class="primary link-button" href="https://classroom.google.com/u/0/c/ODc2MTQ4OTI2MTk3/a/ODk5Nzk1NjU1MDM5/details" target="_blank" rel="noopener noreferrer">Open in Google Classroom</a>
+      <a class="plain link-button" href="packets/Math_Computation_Packet_Grades_3-6_Student_Copy.pdf" target="_blank" rel="noopener noreferrer">Open the packet (PDF)</a>
+      <a class="plain link-button" href="https://drive.google.com/file/d/1FnD_GV8Kg1V0EsXeBsZOoq99awMY8qde/view?usp=classroom_web&amp;authuser=0" target="_blank" rel="noopener noreferrer">Packet on Google Drive</a>
+    </div>
+    <div class="packet-reminder">
+      <p><strong>Write it on paper.</strong> Solve each problem on the printed packet or on notebook paper. Show your work in the space provided. Put your name, the date, and the period at the top.</p>
+      <p>This page keeps the work in short parts and holds the answer checks. When the packet is finished, turn it in through Google Classroom.</p>
+      <p>Directions: Solve each problem. Show your work in the space provided. Check your answers before turning in your packet.</p>
+      <ol class="page-map">
+        <li>Grade 3 — add, subtract, multiply, divide</li>
+        <li>Grade 4 — larger whole numbers</li>
+        <li>Grade 5 — decimals, then fractions</li>
+        <li>Grade 6 — decimals, then fractions</li>
+      </ol>
+    </div>
+
+    <section class="lesson">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Page 1 of 4</div>
+          <h2>Grade 3</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p class="prompt-text">Solve each problem. Show your work in the space provided. Check your answers before turning in your packet.</p>
+        <div class="chunk">
+          <h3>Part 1 of 3 · Adding and subtracting</h3>
+          <div class="worked-example">
+            <h4>Example — already solved</h4>
+            <p>Practice numbers, different from the packet. Line up the places. Start at the ones.</p>
+            <p>258 + 167</p>
+            <pre class="work-lines">  258
++ 167</pre>
+            <ol>
+              <li>Ones: 8 + 7 = 15. Write 5, carry 1.</li>
+              <li>Tens: 5 + 6 + 1 = 12. Write 2, carry 1.</li>
+              <li>Hundreds: 2 + 1 + 1 = 4.</li>
+            </ol>
+            <p>258 + 167 = 425.</p>
+            <p>403 − 176. The tens digit is 0, so borrow from the hundreds first.</p>
+            <pre class="work-lines">  403
+− 176</pre>
+            <ol>
+              <li>Ones needs more. Hundreds 4 becomes 3. Tens becomes 10, then gives 1 to the ones, so tens is 9 and ones is 13.</li>
+              <li>13 − 6 = 7. Then 9 − 7 = 2. Then 3 − 1 = 2.</li>
+            </ol>
+            <p>403 − 176 = 227. Check: 176 + 227 = 403.</p>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">1. 348 + 276</span></li>
+            <li><span class="problem-expr">2. 905 − 487</span></li>
+            <li><span class="problem-expr">3. 47 + 386 + 125</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. When these three are on your paper, start Part 2.</p>
+        </div>
+        <div class="chunk">
+          <h3>Part 2 of 3 · Multiplying</h3>
+          <div class="worked-example">
+            <h4>Example — already solved</h4>
+            <p>4 × 6 means 4 groups of 6: 6, 12, 18, 24.</p>
+            <p>4 × 6 = 24. The order can switch: 6 × 4 = 24.</p>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">4. 8 × 7</span></li>
+            <li><span class="problem-expr">5. 6 × 9</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. When both facts are on your paper, start Part 3.</p>
+        </div>
+        <div class="chunk">
+          <h3>Part 3 of 3 · Dividing</h3>
+          <div class="worked-example">
+            <h4>Example — already solved</h4>
+            <p>56 ÷ 7. Ask what number times 7 equals 56.</p>
+            <p>7 × 8 = 56, so 56 ÷ 7 = 8. Check: 8 × 7 = 56.</p>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">6. 84 ÷ 7</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. Problem 6 is on your paper. Then write the reflection.</p>
+        </div>
+        <div class="reflection">
+          <h3>Reflection</h3>
+          <p>Which problem was most challenging? Why?</p>
+          <p class="note">Write this on the packet, on the line at the bottom of the Grade 3 page.</p>
+        </div>
+        <details class="answer-key">
+          <summary>Grade 3 answer check — open after you try the page</summary>
+          <p>Compare these with your paper. Then fix anything that does not match.</p>
+          <ul>
+            <li>1. 624</li>
+            <li>2. 418</li>
+            <li>3. 558</li>
+            <li>4. 56</li>
+            <li>5. 54</li>
+            <li>6. 12</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <section class="lesson">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Page 2 of 4</div>
+          <h2>Grade 4</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p class="prompt-text">Solve each problem. Show your work in the space provided. Check your answers before turning in your packet.</p>
+        <div class="chunk">
+          <h3>Part 1 of 3 · Adding and subtracting</h3>
+          <div class="organizer">
+            <p>Same steps as the Grade 3 adding and subtracting example. Line up the places. Start at the ones.</p>
+            <p>8,004 − 2,678 has zeros in the hundreds and tens. Borrow from the thousands before you subtract.</p>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">1. 2,746 + 3,895</span></li>
+            <li><span class="problem-expr">2. 8,004 − 2,678</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. When both are on your paper, start Part 2.</p>
+        </div>
+        <div class="chunk">
+          <h3>Part 2 of 3 · Multiplying</h3>
+          <div class="organizer">
+            <p>36 × 7 has one digit on the bottom. Multiply the ones, then the tens. Carry when a product is 10 or more.</p>
+            <p>24 × 13 has a tens digit:</p>
+            <ol>
+              <li>Multiply 24 by 3.</li>
+              <li>Multiply 24 by 10. Write that product one column to the left.</li>
+              <li>Add the two products.</li>
+            </ol>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">3. 36 × 7</span></li>
+            <li><span class="problem-expr">4. 24 × 13</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. When both are on your paper, start Part 3.</p>
+        </div>
+        <div class="chunk">
+          <h3>Part 3 of 3 · Dividing</h3>
+          <div class="organizer">
+            <p>Same idea as the Grade 3 division example, one digit at a time.</p>
+            <ol>
+              <li>How many times the divisor fits into the first digits. Write that digit.</li>
+              <li>Multiply and subtract.</li>
+              <li>Bring down the next digit and repeat until every digit is used.</li>
+              <li>Check: multiply your answer by the divisor.</li>
+            </ol>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">5. 936 ÷ 6</span></li>
+            <li><span class="problem-expr">6. 1,248 ÷ 8</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. Then write the reflection.</p>
+        </div>
+        <div class="reflection">
+          <h3>Reflection</h3>
+          <p>Which problem was most challenging? Why?</p>
+          <p class="note">Write this on the packet, on the line at the bottom of the Grade 4 page.</p>
+        </div>
+        <details class="answer-key">
+          <summary>Grade 4 answer check — open after you try the page</summary>
+          <p>Compare these with your paper. Then fix anything that does not match.</p>
+          <ul>
+            <li>1. 6,641</li>
+            <li>2. 5,326</li>
+            <li>3. 252</li>
+            <li>4. 312</li>
+            <li>5. 156</li>
+            <li>6. 156</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <section class="lesson">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Page 3 of 4</div>
+          <h2>Grade 5</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p class="prompt-text">Solve each problem. Show your work in the space provided. Check your answers before turning in your packet.</p>
+        <div class="chunk">
+          <h3>Part 1 of 3 · Decimals</h3>
+          <div class="worked-example">
+            <h4>Example — already solved</h4>
+            <p>Line up the decimal points. Fill an empty place with 0.</p>
+            <p>2.4 + 1.35</p>
+            <pre class="work-lines">  2.40
++ 1.35
+------
+  3.75</pre>
+            <p>The decimal point in 3.75 stays in line with the points above it.</p>
+            <p>5.2 − 1.46 uses the same lineup. Write 5.20 − 1.46, borrow where you need to, and subtract. 5.2 − 1.46 = 3.74.</p>
+            <p>To multiply decimals, multiply as whole numbers, then give the product as many decimal places as both factors have together. To divide by a decimal, slide the decimal point the same number of places in both numbers until the divisor is a whole number, then divide.</p>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">1. 18.75 + 6.48</span></li>
+            <li><span class="problem-expr">2. 40.2 − 17.86</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. Line up the decimal points on your paper, then start Part 2.</p>
+        </div>
+        <div class="chunk">
+          <h3>Part 2 of 3 · Decimal multiply and whole-number divide</h3>
+          <div class="organizer">
+            <p>3.6 × 4.2</p>
+            <ol>
+              <li>Multiply 36 × 42.</li>
+              <li>3.6 has 1 decimal place and 4.2 has 1, so the product needs 2 decimal places.</li>
+            </ol>
+            <p>225 ÷ 15 uses the Grade 4 division steps. 15 is the divisor. Check: your answer × 15 should equal 225.</p>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">3. 3.6 × 4.2</span></li>
+            <li><span class="problem-expr">4. 225 ÷ 15</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. When both are on your paper, start Part 3.</p>
+        </div>
+        <div class="chunk">
+          <h3>Part 3 of 3 · Fractions</h3>
+          <div class="worked-example">
+            <h4>Example — already solved</h4>
+            <p>1/2 + 1/4. The denominators are 2 and 4. Use 4 for both.</p>
+            <p>1/2 = 2/4. Then 2/4 + 1/4 = 3/4.</p>
+            <p>Subtraction uses the same first step: make the denominators match, then subtract the numerators. To divide fractions, keep the first fraction, flip the second, and multiply.</p>
+          </div>
+          <div class="organizer">
+            <p>3/4 + 1/8: use 8 as the denominator for both, then add.</p>
+            <p>5/6 − 1/3: use 6 as the denominator for both, then subtract. Simplify the answer.</p>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">5. 3/4 + 1/8</span></li>
+            <li><span class="problem-expr">6. 5/6 − 1/3</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. Then write the reflection.</p>
+        </div>
+        <div class="reflection">
+          <h3>Reflection</h3>
+          <p>Which problem was most challenging? Why?</p>
+          <p class="note">Write this on the packet, on the line at the bottom of the Grade 5 page.</p>
+        </div>
+        <details class="answer-key">
+          <summary>Grade 5 answer check — open after you try the page</summary>
+          <p>Compare these with your paper. Then fix anything that does not match.</p>
+          <ul>
+            <li>1. 25.23</li>
+            <li>2. 22.34</li>
+            <li>3. 15.12</li>
+            <li>4. 15</li>
+            <li>5. 7/8</li>
+            <li>6. 1/2. If you have 3/6, divide the top and bottom by 3.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <section class="lesson">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Page 4 of 4</div>
+          <h2>Grade 6</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <p class="prompt-text">Solve each problem. Show your work in the space provided. Check your answers before turning in your packet.</p>
+        <div class="chunk">
+          <h3>Part 1 of 3 · Adding and subtracting decimals</h3>
+          <div class="organizer">
+            <p>Same lineup as the Grade 5 decimal example. The decimal points go in one column.</p>
+            <p>12.48 has two decimal places and 7.965 has three. Write 12.480 so the thousandths line up, then add.</p>
+            <p>35.2 has one decimal place and 18.76 has two. Write 35.20 so the hundredths line up, then subtract. You will need to borrow.</p>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">1. 12.48 + 7.965</span></li>
+            <li><span class="problem-expr">2. 35.2 − 18.76</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. When both are on your paper, start Part 2.</p>
+        </div>
+        <div class="chunk">
+          <h3>Part 2 of 3 · Multiplying and dividing decimals</h3>
+          <div class="organizer">
+            <p>4.5 × 2.08</p>
+            <ol>
+              <li>Multiply 45 × 208 as whole numbers.</li>
+              <li>4.5 has 1 decimal place and 2.08 has 2, so the product has 3 decimal places.</li>
+            </ol>
+            <p>18.9 ÷ 0.3</p>
+            <ol>
+              <li>0.3 has one decimal place. Move the decimal one place to the right in 0.3 and in 18.9.</li>
+              <li>Divide the whole numbers you get.</li>
+              <li>Check: your answer × 0.3 should equal 18.9.</li>
+            </ol>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">3. 4.5 × 2.08</span></li>
+            <li><span class="problem-expr">4. 18.9 ÷ 0.3</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. When both are on your paper, start Part 3.</p>
+        </div>
+        <div class="chunk">
+          <h3>Part 3 of 3 · Fractions</h3>
+          <div class="organizer">
+            <p>Same fraction steps as the Grade 5 example.</p>
+            <p>2/3 + 5/6</p>
+            <ol>
+              <li>A common denominator is 6.</li>
+              <li>Rewrite 2/3 with denominator 6.</li>
+              <li>Add the numerators. Simplify.</li>
+            </ol>
+            <p>3/4 ÷ 1/2</p>
+            <ol>
+              <li>Keep 3/4.</li>
+              <li>Flip 1/2 so it becomes 2/1.</li>
+              <li>Multiply. Simplify.</li>
+            </ol>
+          </div>
+          <ul class="problem-list">
+            <li><span class="problem-expr">5. 2/3 + 5/6</span></li>
+            <li><span class="problem-expr">6. 3/4 ÷ 1/2</span></li>
+          </ul>
+          <p class="chunk-stop">Stop here. Then write the reflection.</p>
+        </div>
+        <div class="reflection">
+          <h3>Reflection</h3>
+          <p>Which problem was most challenging? Why?</p>
+          <p class="note">Write this on the packet, on the line at the bottom of the Grade 6 page.</p>
+        </div>
+        <details class="answer-key">
+          <summary>Grade 6 answer check — open after you try the page</summary>
+          <p>Compare these with your paper. Then fix anything that does not match.</p>
+          <ul>
+            <li>1. 20.445</li>
+            <li>2. 16.44</li>
+            <li>3. 9.36</li>
+            <li>4. 63</li>
+            <li>5. 1 1/2. That is the same as 3/2 or 9/6.</li>
+            <li>6. 1 1/2. That is the same as 3/2 or 6/4.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <p>The packet is ready to turn in when every page has work, an answer, and a reflection. Turn it in through Google Classroom. Then mark it completed here.</p>
+    <div class="complete-bar">
+      <button type="button" class="primary" data-mark="computation-practice">Mark as completed</button>
+      <p class="note" aria-live="polite"></p>
+    </div>
   </section>
   <section id="suspension" class="screen suspension" hidden aria-labelledby="suspension-title">
     <div class="suspension-intro">
@@ -2561,7 +2992,7 @@
     const route = location.hash.slice(1) || 'home';
     const week = weekRoutes.indexOf(route);
     const screen = week >= 0 ? 'history-view' : screens.find(item => item.id === route)?.id || 'home';
-    const mathScreen = screen === 'lesson-3' || screen === 'unit-4';
+    const mathScreen = screen === 'lesson-3' || screen === 'unit-4' || screen === 'computation-practice';
     const socialScreen = screen === 'history-view' || screen === 'postcard';
     const subject = socialScreen ? 'social-studies' : mathScreen ? 'math' : screen;
     if (week >= 0) selectWeek(week);
