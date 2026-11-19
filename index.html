@@ -354,6 +354,23 @@
     display: block; font-size: 1.22rem; font-weight: 750;
     font-variant-numeric: tabular-nums; letter-spacing: .01em;
   }
+  .answer-entry { margin-top: .45rem; }
+  .answer-entry label { display: block; font-weight: 650; margin-bottom: .2rem; }
+  .answer-row { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+  .answer-row input {
+    font: inherit; color: inherit; flex: 1 1 8rem; width: 8rem; max-width: 16rem; min-width: 0;
+    min-height: 2.75rem; padding: .45rem .65rem; border: 1px solid #a89bb8; border-radius: .45rem;
+    background: white;
+  }
+  .answer-row button { flex: 0 0 auto; }
+  .answer-entry .feedback { margin: .35rem 0 0; }
+  .answer-row input.is-correct { background: #eaf6ef; border-color: #6eaa88; }
+  .answer-row input.is-wrong { background: #fff0eb; border-color: #cf9589; }
+  .answer-lock { margin: .2rem 0 .35rem; }
+  @media (max-width: 31rem) {
+    .answer-row input { max-width: none; flex-basis: 100%; }
+    .answer-row button { width: 100%; }
+  }
   .problem-list .note { margin: .15rem 0 0; }
   .reflection {
     margin: .2rem 0 .95rem; padding: .75rem .9rem;
@@ -934,7 +951,8 @@
     </div>
     <div class="packet-reminder">
       <p><strong>Write it on paper.</strong> Solve each problem on the printed packet or on notebook paper. Show your work in the space provided. Put your name, the date, and the period at the top.</p>
-      <p>This page keeps the work in short parts and holds the answer checks. When the packet is finished, turn it in through Google Classroom.</p>
+      <p>Type the answer under each problem and press Check. You will see Correct, or Not quite — try again. The check does not show the answer. The same value can be written more than one way, such as 1 1/2, 3/2, or 1.5.</p>
+      <p>When the packet is finished, turn it in through Google Classroom.</p>
       <p>Directions: Solve each problem. Show your work in the space provided. Check your answers before turning in your packet.</p>
       <ol class="page-map">
         <li>Grade 3 — add, subtract, multiply, divide</li>
@@ -977,9 +995,39 @@
             <p>403 − 176 = 227. Check: 176 + 227 = 403.</p>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">1. 348 + 276</span></li>
-            <li><span class="problem-expr">2. 905 − 487</span></li>
-            <li><span class="problem-expr">3. 47 + 386 + 125</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g3-1-label">1. 348 + 276</span>
+              <div class="answer-entry">
+                <label for="comp-g3-1">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g3-1" data-draft="comp-g3-1" data-comp-page="3" data-expect="624" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g3-1-label" aria-describedby="comp-g3-1-feedback">
+                  <button type="button" class="primary" data-check="comp-g3-1">Check</button>
+                </div>
+                <p class="feedback" id="comp-g3-1-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g3-2-label">2. 905 − 487</span>
+              <div class="answer-entry">
+                <label for="comp-g3-2">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g3-2" data-draft="comp-g3-2" data-comp-page="3" data-expect="418" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g3-2-label" aria-describedby="comp-g3-2-feedback">
+                  <button type="button" class="primary" data-check="comp-g3-2">Check</button>
+                </div>
+                <p class="feedback" id="comp-g3-2-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g3-3-label">3. 47 + 386 + 125</span>
+              <div class="answer-entry">
+                <label for="comp-g3-3">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g3-3" data-draft="comp-g3-3" data-comp-page="3" data-expect="558" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g3-3-label" aria-describedby="comp-g3-3-feedback">
+                  <button type="button" class="primary" data-check="comp-g3-3">Check</button>
+                </div>
+                <p class="feedback" id="comp-g3-3-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. When these three are on your paper, start Part 2.</p>
         </div>
@@ -991,8 +1039,28 @@
             <p>4 × 6 = 24. The order can switch: 6 × 4 = 24.</p>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">4. 8 × 7</span></li>
-            <li><span class="problem-expr">5. 6 × 9</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g3-4-label">4. 8 × 7</span>
+              <div class="answer-entry">
+                <label for="comp-g3-4">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g3-4" data-draft="comp-g3-4" data-comp-page="3" data-expect="56" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g3-4-label" aria-describedby="comp-g3-4-feedback">
+                  <button type="button" class="primary" data-check="comp-g3-4">Check</button>
+                </div>
+                <p class="feedback" id="comp-g3-4-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g3-5-label">5. 6 × 9</span>
+              <div class="answer-entry">
+                <label for="comp-g3-5">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g3-5" data-draft="comp-g3-5" data-comp-page="3" data-expect="54" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g3-5-label" aria-describedby="comp-g3-5-feedback">
+                  <button type="button" class="primary" data-check="comp-g3-5">Check</button>
+                </div>
+                <p class="feedback" id="comp-g3-5-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. When both facts are on your paper, start Part 3.</p>
         </div>
@@ -1004,7 +1072,17 @@
             <p>7 × 8 = 56, so 56 ÷ 7 = 8. Check: 8 × 7 = 56.</p>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">6. 84 ÷ 7</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g3-6-label">6. 84 ÷ 7</span>
+              <div class="answer-entry">
+                <label for="comp-g3-6">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g3-6" data-draft="comp-g3-6" data-comp-page="3" data-expect="12" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g3-6-label" aria-describedby="comp-g3-6-feedback">
+                  <button type="button" class="primary" data-check="comp-g3-6">Check</button>
+                </div>
+                <p class="feedback" id="comp-g3-6-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. Problem 6 is on your paper. Then write the reflection.</p>
         </div>
@@ -1013,8 +1091,9 @@
           <p>Which problem was most challenging? Why?</p>
           <p class="note">Write this on the packet, on the line at the bottom of the Grade 3 page.</p>
         </div>
-        <details class="answer-key">
-          <summary>Grade 3 answer check — open after you try the page</summary>
+        <p class="note answer-lock" data-comp-lock="3" hidden>Check each problem on this page first. Then you can open the answers.</p>
+        <details class="answer-key" data-comp-page="3">
+          <summary>Show answers for Grade 3</summary>
           <p>Compare these with your paper. Then fix anything that does not match.</p>
           <ul>
             <li>1. 624</li>
@@ -1044,8 +1123,28 @@
             <p>8,004 − 2,678 has zeros in the hundreds and tens. Borrow from the thousands before you subtract.</p>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">1. 2,746 + 3,895</span></li>
-            <li><span class="problem-expr">2. 8,004 − 2,678</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g4-1-label">1. 2,746 + 3,895</span>
+              <div class="answer-entry">
+                <label for="comp-g4-1">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g4-1" data-draft="comp-g4-1" data-comp-page="4" data-expect="6641" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g4-1-label" aria-describedby="comp-g4-1-feedback">
+                  <button type="button" class="primary" data-check="comp-g4-1">Check</button>
+                </div>
+                <p class="feedback" id="comp-g4-1-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g4-2-label">2. 8,004 − 2,678</span>
+              <div class="answer-entry">
+                <label for="comp-g4-2">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g4-2" data-draft="comp-g4-2" data-comp-page="4" data-expect="5326" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g4-2-label" aria-describedby="comp-g4-2-feedback">
+                  <button type="button" class="primary" data-check="comp-g4-2">Check</button>
+                </div>
+                <p class="feedback" id="comp-g4-2-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. When both are on your paper, start Part 2.</p>
         </div>
@@ -1061,8 +1160,28 @@
             </ol>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">3. 36 × 7</span></li>
-            <li><span class="problem-expr">4. 24 × 13</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g4-3-label">3. 36 × 7</span>
+              <div class="answer-entry">
+                <label for="comp-g4-3">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g4-3" data-draft="comp-g4-3" data-comp-page="4" data-expect="252" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g4-3-label" aria-describedby="comp-g4-3-feedback">
+                  <button type="button" class="primary" data-check="comp-g4-3">Check</button>
+                </div>
+                <p class="feedback" id="comp-g4-3-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g4-4-label">4. 24 × 13</span>
+              <div class="answer-entry">
+                <label for="comp-g4-4">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g4-4" data-draft="comp-g4-4" data-comp-page="4" data-expect="312" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g4-4-label" aria-describedby="comp-g4-4-feedback">
+                  <button type="button" class="primary" data-check="comp-g4-4">Check</button>
+                </div>
+                <p class="feedback" id="comp-g4-4-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. When both are on your paper, start Part 3.</p>
         </div>
@@ -1078,8 +1197,28 @@
             </ol>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">5. 936 ÷ 6</span></li>
-            <li><span class="problem-expr">6. 1,248 ÷ 8</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g4-5-label">5. 936 ÷ 6</span>
+              <div class="answer-entry">
+                <label for="comp-g4-5">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g4-5" data-draft="comp-g4-5" data-comp-page="4" data-expect="156" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g4-5-label" aria-describedby="comp-g4-5-feedback">
+                  <button type="button" class="primary" data-check="comp-g4-5">Check</button>
+                </div>
+                <p class="feedback" id="comp-g4-5-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g4-6-label">6. 1,248 ÷ 8</span>
+              <div class="answer-entry">
+                <label for="comp-g4-6">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g4-6" data-draft="comp-g4-6" data-comp-page="4" data-expect="156" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g4-6-label" aria-describedby="comp-g4-6-feedback">
+                  <button type="button" class="primary" data-check="comp-g4-6">Check</button>
+                </div>
+                <p class="feedback" id="comp-g4-6-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. Then write the reflection.</p>
         </div>
@@ -1088,8 +1227,9 @@
           <p>Which problem was most challenging? Why?</p>
           <p class="note">Write this on the packet, on the line at the bottom of the Grade 4 page.</p>
         </div>
-        <details class="answer-key">
-          <summary>Grade 4 answer check — open after you try the page</summary>
+        <p class="note answer-lock" data-comp-lock="4" hidden>Check each problem on this page first. Then you can open the answers.</p>
+        <details class="answer-key" data-comp-page="4">
+          <summary>Show answers for Grade 4</summary>
           <p>Compare these with your paper. Then fix anything that does not match.</p>
           <ul>
             <li>1. 6,641</li>
@@ -1127,8 +1267,28 @@
             <p>To multiply decimals, multiply as whole numbers, then give the product as many decimal places as both factors have together. To divide by a decimal, slide the decimal point the same number of places in both numbers until the divisor is a whole number, then divide.</p>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">1. 18.75 + 6.48</span></li>
-            <li><span class="problem-expr">2. 40.2 − 17.86</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g5-1-label">1. 18.75 + 6.48</span>
+              <div class="answer-entry">
+                <label for="comp-g5-1">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g5-1" data-draft="comp-g5-1" data-comp-page="5" data-expect="25.23" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g5-1-label" aria-describedby="comp-g5-1-feedback">
+                  <button type="button" class="primary" data-check="comp-g5-1">Check</button>
+                </div>
+                <p class="feedback" id="comp-g5-1-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g5-2-label">2. 40.2 − 17.86</span>
+              <div class="answer-entry">
+                <label for="comp-g5-2">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g5-2" data-draft="comp-g5-2" data-comp-page="5" data-expect="22.34" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g5-2-label" aria-describedby="comp-g5-2-feedback">
+                  <button type="button" class="primary" data-check="comp-g5-2">Check</button>
+                </div>
+                <p class="feedback" id="comp-g5-2-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. Line up the decimal points on your paper, then start Part 2.</p>
         </div>
@@ -1143,8 +1303,28 @@
             <p>225 ÷ 15 uses the Grade 4 division steps. 15 is the divisor. Check: your answer × 15 should equal 225.</p>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">3. 3.6 × 4.2</span></li>
-            <li><span class="problem-expr">4. 225 ÷ 15</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g5-3-label">3. 3.6 × 4.2</span>
+              <div class="answer-entry">
+                <label for="comp-g5-3">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g5-3" data-draft="comp-g5-3" data-comp-page="5" data-expect="15.12" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g5-3-label" aria-describedby="comp-g5-3-feedback">
+                  <button type="button" class="primary" data-check="comp-g5-3">Check</button>
+                </div>
+                <p class="feedback" id="comp-g5-3-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g5-4-label">4. 225 ÷ 15</span>
+              <div class="answer-entry">
+                <label for="comp-g5-4">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g5-4" data-draft="comp-g5-4" data-comp-page="5" data-expect="15" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g5-4-label" aria-describedby="comp-g5-4-feedback">
+                  <button type="button" class="primary" data-check="comp-g5-4">Check</button>
+                </div>
+                <p class="feedback" id="comp-g5-4-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. When both are on your paper, start Part 3.</p>
         </div>
@@ -1161,8 +1341,28 @@
             <p>5/6 − 1/3: use 6 as the denominator for both, then subtract. Simplify the answer.</p>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">5. 3/4 + 1/8</span></li>
-            <li><span class="problem-expr">6. 5/6 − 1/3</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g5-5-label">5. 3/4 + 1/8</span>
+              <div class="answer-entry">
+                <label for="comp-g5-5">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g5-5" data-draft="comp-g5-5" data-comp-page="5" data-expect="7/8" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g5-5-label" aria-describedby="comp-g5-5-feedback">
+                  <button type="button" class="primary" data-check="comp-g5-5">Check</button>
+                </div>
+                <p class="feedback" id="comp-g5-5-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g5-6-label">6. 5/6 − 1/3</span>
+              <div class="answer-entry">
+                <label for="comp-g5-6">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g5-6" data-draft="comp-g5-6" data-comp-page="5" data-expect="1/2" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g5-6-label" aria-describedby="comp-g5-6-feedback">
+                  <button type="button" class="primary" data-check="comp-g5-6">Check</button>
+                </div>
+                <p class="feedback" id="comp-g5-6-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. Then write the reflection.</p>
         </div>
@@ -1171,8 +1371,9 @@
           <p>Which problem was most challenging? Why?</p>
           <p class="note">Write this on the packet, on the line at the bottom of the Grade 5 page.</p>
         </div>
-        <details class="answer-key">
-          <summary>Grade 5 answer check — open after you try the page</summary>
+        <p class="note answer-lock" data-comp-lock="5" hidden>Check each problem on this page first. Then you can open the answers.</p>
+        <details class="answer-key" data-comp-page="5">
+          <summary>Show answers for Grade 5</summary>
           <p>Compare these with your paper. Then fix anything that does not match.</p>
           <ul>
             <li>1. 25.23</li>
@@ -1203,8 +1404,28 @@
             <p>35.2 has one decimal place and 18.76 has two. Write 35.20 so the hundredths line up, then subtract. You will need to borrow.</p>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">1. 12.48 + 7.965</span></li>
-            <li><span class="problem-expr">2. 35.2 − 18.76</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g6-1-label">1. 12.48 + 7.965</span>
+              <div class="answer-entry">
+                <label for="comp-g6-1">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g6-1" data-draft="comp-g6-1" data-comp-page="6" data-expect="20.445" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g6-1-label" aria-describedby="comp-g6-1-feedback">
+                  <button type="button" class="primary" data-check="comp-g6-1">Check</button>
+                </div>
+                <p class="feedback" id="comp-g6-1-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g6-2-label">2. 35.2 − 18.76</span>
+              <div class="answer-entry">
+                <label for="comp-g6-2">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g6-2" data-draft="comp-g6-2" data-comp-page="6" data-expect="16.44" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g6-2-label" aria-describedby="comp-g6-2-feedback">
+                  <button type="button" class="primary" data-check="comp-g6-2">Check</button>
+                </div>
+                <p class="feedback" id="comp-g6-2-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. When both are on your paper, start Part 2.</p>
         </div>
@@ -1224,8 +1445,28 @@
             </ol>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">3. 4.5 × 2.08</span></li>
-            <li><span class="problem-expr">4. 18.9 ÷ 0.3</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g6-3-label">3. 4.5 × 2.08</span>
+              <div class="answer-entry">
+                <label for="comp-g6-3">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g6-3" data-draft="comp-g6-3" data-comp-page="6" data-expect="9.36" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g6-3-label" aria-describedby="comp-g6-3-feedback">
+                  <button type="button" class="primary" data-check="comp-g6-3">Check</button>
+                </div>
+                <p class="feedback" id="comp-g6-3-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g6-4-label">4. 18.9 ÷ 0.3</span>
+              <div class="answer-entry">
+                <label for="comp-g6-4">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g6-4" data-draft="comp-g6-4" data-comp-page="6" data-expect="63" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g6-4-label" aria-describedby="comp-g6-4-feedback">
+                  <button type="button" class="primary" data-check="comp-g6-4">Check</button>
+                </div>
+                <p class="feedback" id="comp-g6-4-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. When both are on your paper, start Part 3.</p>
         </div>
@@ -1247,8 +1488,28 @@
             </ol>
           </div>
           <ul class="problem-list">
-            <li><span class="problem-expr">5. 2/3 + 5/6</span></li>
-            <li><span class="problem-expr">6. 3/4 ÷ 1/2</span></li>
+            <li>
+              <span class="problem-expr" id="comp-g6-5-label">5. 2/3 + 5/6</span>
+              <div class="answer-entry">
+                <label for="comp-g6-5">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g6-5" data-draft="comp-g6-5" data-comp-page="6" data-expect="3/2" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g6-5-label" aria-describedby="comp-g6-5-feedback">
+                  <button type="button" class="primary" data-check="comp-g6-5">Check</button>
+                </div>
+                <p class="feedback" id="comp-g6-5-feedback" role="status"></p>
+              </div>
+            </li>
+            <li>
+              <span class="problem-expr" id="comp-g6-6-label">6. 3/4 ÷ 1/2</span>
+              <div class="answer-entry">
+                <label for="comp-g6-6">Answer</label>
+                <div class="answer-row">
+                  <input id="comp-g6-6" data-draft="comp-g6-6" data-comp-page="6" data-expect="3/2" type="text" inputmode="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-labelledby="comp-g6-6-label" aria-describedby="comp-g6-6-feedback">
+                  <button type="button" class="primary" data-check="comp-g6-6">Check</button>
+                </div>
+                <p class="feedback" id="comp-g6-6-feedback" role="status"></p>
+              </div>
+            </li>
           </ul>
           <p class="chunk-stop">Stop here. Then write the reflection.</p>
         </div>
@@ -1257,8 +1518,9 @@
           <p>Which problem was most challenging? Why?</p>
           <p class="note">Write this on the packet, on the line at the bottom of the Grade 6 page.</p>
         </div>
-        <details class="answer-key">
-          <summary>Grade 6 answer check — open after you try the page</summary>
+        <p class="note answer-lock" data-comp-lock="6" hidden>Check each problem on this page first. Then you can open the answers.</p>
+        <details class="answer-key" data-comp-page="6">
+          <summary>Show answers for Grade 6</summary>
           <p>Compare these with your paper. Then fix anything that does not match.</p>
           <ul>
             <li>1. 20.445</li>
@@ -2416,6 +2678,158 @@
     showStorageNote();
   }
 
+  function bindComputationAnswers() {
+    const root = document.querySelector('#computation-practice');
+    if (!root) return;
+
+    function parseRational(raw) {
+      if (typeof raw !== 'string') return null;
+      const text = raw.trim().replace(/[−–—]/g, '-').replace(/,/g, '').replace(/\s+/g, ' ');
+      if (!text) return null;
+      const remainder = text.match(/^([+-]?\d+)\s*r\s*(\d+)$/i);
+      if (remainder) {
+        const quotient = Number(remainder[1]);
+        const rest = Number(remainder[2]);
+        if (!Number.isInteger(quotient) || !Number.isInteger(rest)) return null;
+        if (rest !== 0) return { remainder: true, q: quotient, r: rest };
+        return { num: quotient, den: 1 };
+      }
+      const mixed = text.match(/^([+-]?)(\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+      if (mixed) {
+        const sign = mixed[1] === '-' ? -1 : 1;
+        const whole = Number(mixed[2]);
+        const numerator = Number(mixed[3]);
+        const denominator = Number(mixed[4]);
+        if (denominator === 0) return null;
+        return { num: sign * (whole * denominator + numerator), den: denominator };
+      }
+      const fraction = text.match(/^([+-]?\d+)\s*\/\s*([+-]?\d+)$/);
+      if (fraction) {
+        const numerator = Number(fraction[1]);
+        const denominator = Number(fraction[2]);
+        if (denominator === 0) return null;
+        return { num: numerator, den: denominator };
+      }
+      const compact = text.replace(/ /g, '');
+      const decimal = compact.match(/^([+-]?)(\d*)(?:\.(\d*))?$/);
+      if (!decimal) return null;
+      const whole = decimal[2] || '';
+      const places = decimal[3] || '';
+      if (!whole && !places) return null;
+      const sign = decimal[1] === '-' ? -1 : 1;
+      const num = sign * Number((whole || '0') + places);
+      const den = 10 ** places.length;
+      if (!Number.isSafeInteger(num) || !Number.isSafeInteger(den)) return null;
+      return { num, den };
+    }
+
+    function sameValue(input, expected) {
+      const actual = parseRational(input);
+      const target = parseRational(String(expected));
+      if (!actual || !target) return false;
+      if (actual.remainder || target.remainder) {
+        return !!(actual.remainder && target.remainder && actual.q === target.q && actual.r === target.r);
+      }
+      return actual.num * target.den === target.num * actual.den;
+    }
+
+    function paint(input, status) {
+      const feedback = document.getElementById(input.id + '-feedback');
+      input.classList.remove('is-correct', 'is-wrong');
+      input.removeAttribute('aria-invalid');
+      feedback.className = 'feedback';
+      if (status === 'correct') {
+        input.classList.add('is-correct');
+        input.setAttribute('aria-invalid', 'false');
+        feedback.classList.add('correct');
+        feedback.textContent = 'Correct';
+      } else if (status === 'retry') {
+        input.classList.add('is-wrong');
+        input.setAttribute('aria-invalid', 'true');
+        feedback.classList.add('incorrect');
+        feedback.textContent = 'Not quite — try again';
+      } else if (status === 'empty') {
+        feedback.textContent = 'Enter an answer, then check.';
+      } else {
+        feedback.textContent = '';
+      }
+    }
+
+    function pageReady(page) {
+      const inputs = [...root.querySelectorAll('input[data-comp-page="' + page + '"]')];
+      return inputs.length > 0 && inputs.every(input => {
+        const saved = state.answers[input.dataset.draft];
+        return saved && (saved.status === 'correct' || saved.status === 'retry');
+      });
+    }
+
+    function checkOne(input) {
+      const id = input.dataset.draft;
+      const value = input.value;
+      state.drafts[id] = value;
+      if (!value.trim()) {
+        paint(input, 'empty');
+        save();
+        input.focus();
+        return;
+      }
+      const status = sameValue(value, input.dataset.expect) ? 'correct' : 'retry';
+      state.answers[id] = { status, value };
+      paint(input, status);
+      save();
+      const note = root.querySelector('[data-comp-lock="' + input.dataset.compPage + '"]');
+      if (note && pageReady(input.dataset.compPage)) note.hidden = true;
+    }
+
+    root.querySelectorAll('input[data-expect]').forEach(input => {
+      const id = input.dataset.draft;
+      if (typeof state.drafts[id] === 'string') input.value = state.drafts[id];
+      const saved = state.answers[id];
+      if (saved && saved.value === input.value && (saved.status === 'correct' || saved.status === 'retry')) {
+        paint(input, saved.status);
+      }
+      input.addEventListener('input', () => {
+        state.drafts[id] = input.value;
+        const prior = state.answers[id];
+        paint(input, prior && prior.value === input.value ? prior.status : '');
+        save();
+      });
+      input.addEventListener('keydown', event => {
+        if (event.key !== 'Enter') return;
+        event.preventDefault();
+        checkOne(input);
+      });
+    });
+
+    root.querySelectorAll('[data-check]').forEach(button => {
+      button.addEventListener('click', () => {
+        const input = root.querySelector('#' + CSS.escape(button.dataset.check));
+        if (input) checkOne(input);
+      });
+    });
+
+    root.querySelectorAll('details.answer-key').forEach(details => {
+      const page = details.dataset.compPage;
+      const note = root.querySelector('[data-comp-lock="' + page + '"]');
+      let locking = false;
+      details.querySelector('summary').addEventListener('click', event => {
+        if (details.open || pageReady(page)) {
+          if (note) note.hidden = true;
+          return;
+        }
+        event.preventDefault();
+        if (note) note.hidden = false;
+      });
+      details.addEventListener('toggle', () => {
+        if (locking || !details.open || pageReady(page)) return;
+        locking = true;
+        details.open = false;
+        locking = false;
+        if (note) note.hidden = false;
+      });
+    });
+  }
+
   function bindSuspensionDrafts() {
     document.querySelectorAll('#suspension [data-draft]').forEach(field => {
       const id = field.dataset.draft;
@@ -3036,6 +3450,7 @@
   });
   paintPostcard();
   bindSuspensionDrafts();
+  bindComputationAnswers();
   refreshCompletionUI();
   selectWeek(0);
   showRoute();
@@ -3081,6 +3496,18 @@
     postcardBoxes.forEach(box => { box.checked = false; });
     paintPostcard();
     document.querySelectorAll('#suspension [data-draft]').forEach(field => { field.value = ''; });
+    document.querySelectorAll('#computation-practice input[data-draft]').forEach(field => {
+      field.value = '';
+      field.classList.remove('is-correct', 'is-wrong');
+      field.removeAttribute('aria-invalid');
+      const feedback = document.getElementById(field.id + '-feedback');
+      if (feedback) {
+        feedback.className = 'feedback';
+        feedback.textContent = '';
+      }
+    });
+    document.querySelectorAll('#computation-practice details.answer-key').forEach(details => { details.open = false; });
+    document.querySelectorAll('#computation-practice [data-comp-lock]').forEach(note => { note.hidden = true; });
   });
 })();
 </script>
