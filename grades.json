@@ -1,0 +1,123 @@
+{
+  "_readme": "Update this file when new grades are posted. The page reads this file and builds the table and cards. Keep Math and Social Studies first; table and card order follows this list. cycle1, cycle2, and cycle3 are cycle averages; use null when a cycle has no grade yet. The page computes Overall as the average of the cycles that have grades, rounded to a whole number. assignments are Cycle 3 only. The page sorts them most recent first (same date keeps the order here). score X means excused and is not counted. End date with * when the portal had no due date. category is DG (daily grade) or A (assessment).",
+  "header": "Grades as of Fri 11/20 (school closed 11/23-27)",
+  "courses": [
+    {
+      "name": "MATH - 6 ADV",
+      "teacher": "Brittney D. Jackson",
+      "cycle1": 90,
+      "cycle2": 83,
+      "cycle3": 85,
+      "assignments": [
+        { "name": "IXL- Ratio,Rates,Proportions", "score": 100, "category": "DG", "date": "11/16*" },
+        { "name": "Unit 4 Assessment", "score": 74, "category": "A", "date": "11/16*" },
+        { "name": "Rate/Ratios tables", "score": 100, "category": "DG", "date": "11/16*" },
+        { "name": "pg 252", "score": 100, "category": "DG", "date": "11/16*" },
+        { "name": "Take Home Quiz pg 259-262", "score": 50, "category": "A", "date": "11/11*" }
+      ]
+    },
+    {
+      "name": "SOCIAL S. 6",
+      "teacher": "Michael B. Connolly",
+      "cycle1": 84,
+      "cycle2": 77,
+      "cycle3": 79,
+      "assignments": [
+        { "name": "South America Test", "score": 50, "category": "A", "date": "11/19" },
+        { "name": "South American Test Review", "score": 90, "category": "DG", "date": "11/19" },
+        { "name": "Ancient Greek Webquest", "score": 94, "category": "DG", "date": "11/19" },
+        { "name": "Map of Europe", "score": 100, "category": "DG", "date": "11/13" },
+        { "name": "South American Geography and Countries", "score": 75, "category": "DG", "date": "11/06" },
+        { "name": "South American Postcard Project", "score": 70, "category": "A", "date": "11/06" },
+        { "name": "South America Internet/Crossword", "score": 98, "category": "DG", "date": "11/04" }
+      ]
+    },
+    {
+      "name": "RLA-6 ADV",
+      "teacher": "Aidan C. Frazier",
+      "cycle1": 77,
+      "cycle2": 76,
+      "cycle3": 80,
+      "assignments": [
+        { "name": "Journal Check 14", "score": 63, "category": "DG", "date": "11/20" },
+        { "name": "Source Credibility Notes", "score": 100, "category": "DG", "date": "11/16" },
+        { "name": "Journal Check 13", "score": 63, "category": "DG", "date": "11/13" },
+        { "name": "Text Dissection 1", "score": 100, "category": "DG", "date": "11/13" },
+        { "name": "Journal Check 12", "score": 63, "category": "DG", "date": "11/06" },
+        { "name": "Unit 2B Test", "score": 77, "category": "A", "date": "11/06" },
+        { "name": "Unit 2B Review", "score": 100, "category": "DG", "date": "11/04" }
+      ]
+    },
+    {
+      "name": "SCIENCE - 6",
+      "teacher": "Raylee Mclain",
+      "cycle1": 83,
+      "cycle2": 90,
+      "cycle3": 92,
+      "assignments": [
+        { "name": "Unit 4 test", "score": 74, "category": "A", "date": "11/19" },
+        { "name": "Warm up4", "score": 100, "category": "DG", "date": "11/13" },
+        { "name": "Warm up3", "score": 100, "category": "DG", "date": "11/11" },
+        { "name": "Warm up2", "score": 100, "category": "DG", "date": "11/06" },
+        { "name": "Pop Quiz", "score": "X", "category": "A", "date": "11/06" },
+        { "name": "Warm-up1", "score": 100, "category": "DG", "date": "11/05" },
+        { "name": "Unit 3 Test", "score": 88, "category": "A", "date": "10/30" },
+        { "name": "Energy Notes", "score": "X", "category": "DG", "date": "10/30" }
+      ]
+    },
+    {
+      "name": "ATHLETICS - 6 G",
+      "teacher": "Moesha Reagins",
+      "cycle1": 100,
+      "cycle2": 95,
+      "cycle3": 100,
+      "assignments": [
+        { "name": "Basketball 104", "score": 100, "category": "DG", "date": "11/11*" },
+        { "name": "Basketball 105", "score": 100, "category": "DG", "date": "11/11*" },
+        { "name": "Basketball 106", "score": 100, "category": "DG", "date": "11/11*" },
+        { "name": "Basketball 2", "score": 100, "category": "A", "date": "11/11*" }
+      ]
+    },
+    {
+      "name": "WIN LAB 6",
+      "teacher": "Brittney D. Jackson",
+      "cycle1": 94,
+      "cycle2": 100,
+      "cycle3": null,
+      "assignments": []
+    },
+    {
+      "name": "Musical Theatre",
+      "teacher": "Corrina C. Weatherly",
+      "cycle1": 91,
+      "cycle2": 100,
+      "cycle3": null,
+      "assignments": []
+    },
+    {
+      "name": "THEATRE INTRO",
+      "teacher": "Corrina C. Weatherly",
+      "cycle1": 100,
+      "cycle2": 100,
+      "cycle3": null,
+      "assignments": []
+    },
+    {
+      "name": "BEGBAND",
+      "teacher": "Dustin P. Wright",
+      "cycle1": 100,
+      "cycle2": 98,
+      "cycle3": 94,
+      "assignments": [
+        { "name": "Attendance & Participation: Week 15", "score": 100, "category": "DG", "date": "11/20" },
+        { "name": "Staccato vs Legatto", "score": 100, "category": "DG", "date": "11/19" },
+        { "name": "Rhythm & Clapping: Managing 8th Notes", "score": 100, "category": "A", "date": "11/17" },
+        { "name": "Attendance & Participation: Week 14", "score": 80, "category": "DG", "date": "11/13" },
+        { "name": "Beginner Reading: Jingle Bells", "score": 100, "category": "DG", "date": "11/09" },
+        { "name": "Attendance & Participation: Week 13", "score": 60, "category": "DG", "date": "11/06" },
+        { "name": "Fingering Charts: 1 - 5", "score": 100, "category": "DG", "date": "11/05" },
+        { "name": "Concert F: 1 - 5", "score": 100, "category": "A", "date": "11/05" }
+      ]
+    }
+  ]
+}
