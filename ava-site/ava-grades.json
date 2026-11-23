@@ -1,0 +1,147 @@
+{
+  "_readme": "Update this file when new grades are posted. The page reads this file and builds the table. Each course name opens that course's Cycle 3 assignments. Table order follows this list. cycle1, cycle2, and cycle3 are cycle averages; use null when a cycle has no grade yet. The page computes Overall as the average of the cycles that have grades, rounded to a whole number. assignments are Cycle 3 only. The page sorts them most recent first (same date keeps the order here). score X means excused and is not counted. A score string like 0.0/0 is ungraded and shows as — (not counted). A score string like 2.0/0 shows as +2 bonus. End date with * when the portal had no due date. category is DG (daily grade) or A (assessment). Optional withdrawn is a date string; that row is shown muted.",
+  "header": "Grades as of 11/23/2026",
+  "courses": [
+    {
+      "name": "P1 ROYALS DANCE",
+      "teacher": "Jennifer D. Brosang",
+      "cycle1": 97,
+      "cycle2": 96,
+      "cycle3": 95,
+      "assignments": [
+        { "name": "Week Nov 16 Partcipation", "score": 100, "category": "DG", "date": "11/20" },
+        { "name": "Competition Dance Choreo", "score": 95, "category": "A", "date": "11/18" },
+        { "name": "1st Varsity BBall Game", "score": 100, "category": "A", "date": "11/17" },
+        { "name": "Week Nov 9 Participation", "score": 90, "category": "DG", "date": "11/13" },
+        { "name": "Jazz Smooth Criminal Choreo", "score": 90, "category": "A", "date": "11/13" },
+        { "name": "Week Nov 2 Participation", "score": 90, "category": "DG", "date": "11/06" },
+        { "name": "Mistletoe Magic", "score": 100, "category": "A", "date": "11/06" }
+      ]
+    },
+    {
+      "name": "P2 DOLSENSE FRESH",
+      "teacher": "LARRIMY B. BROWN",
+      "cycle1": null,
+      "cycle2": null,
+      "cycle3": null,
+      "withdrawn": "08/24/2026",
+      "assignments": []
+    },
+    {
+      "name": "P2 PUBLIC SPEAKING",
+      "teacher": "LARRIMY B. BROWN",
+      "cycle1": null,
+      "cycle2": null,
+      "cycle3": null,
+      "assignments": []
+    },
+    {
+      "name": "P3 ENGLISH1 HONORS",
+      "teacher": "AMY L. CLAY",
+      "cycle1": 94,
+      "cycle2": 92,
+      "cycle3": 100,
+      "assignments": [
+        { "name": "Project Prep", "score": 100, "category": "DG", "date": "11/19" },
+        { "name": "Summary Practice", "score": 100, "category": "DG", "date": "11/17" },
+        { "name": "SCR: Text Features Advance Author's Purpose", "score": "0.0/0", "category": "DG", "date": "11/09" },
+        { "name": "Paraphrase - Wayground", "score": 100, "category": "DG", "date": "11/05" },
+        { "name": "Class Notes", "score": 100, "category": "DG", "date": "11/05" }
+      ]
+    },
+    {
+      "name": "P4 BIOLOGY HON",
+      "teacher": "LARRIMY B. BROWN",
+      "cycle1": 91,
+      "cycle2": 96,
+      "cycle3": 96,
+      "assignments": [
+        { "name": "Chromosome Structure Quiz", "score": 90, "category": "A", "date": "11/13" },
+        { "name": "Mitosis Virtual Lab Report", "score": 100, "category": "DG", "date": "11/11" },
+        { "name": "Chromosome Structure Word Search", "score": 96, "category": "DG", "date": "11/10" },
+        { "name": "Unit 4 Review", "score": 100, "category": "DG", "date": "11/05" },
+        { "name": "Unit 4 Exam", "score": 98, "category": "A", "date": "11/05" },
+        { "name": "Plasma Membrane & Passive Transport Quiz", "score": 90, "category": "A", "date": "11/02" },
+        { "name": "Membrane Transport Virtual Lab", "score": 96, "category": "DG", "date": "11/02" },
+        { "name": "Membrane Transport Lab Participation", "score": 100, "category": "DG", "date": "11/02" }
+      ]
+    },
+    {
+      "name": "P5 ART 1",
+      "teacher": "Sarah E. Mays",
+      "cycle1": 100,
+      "cycle2": 100,
+      "cycle3": 94,
+      "assignments": [
+        { "name": "4. Color Schemes", "score": 100, "category": "DG", "date": "11/20" },
+        { "name": "5. Soft Pastels", "score": 100, "category": "DG", "date": "11/20" },
+        { "name": "1. Vocabulary", "score": 100, "category": "DG", "date": "11/13" },
+        { "name": "2. Art Movements", "score": 100, "category": "DG", "date": "11/13" },
+        { "name": "3. Artists", "score": 100, "category": "DG", "date": "11/13" },
+        { "name": "Warm-Up (Nature)", "score": 100, "category": "DG", "date": "11/13" },
+        { "name": "Warm-Up (Georgia O'Keeffe)", "score": 100, "category": "DG", "date": "11/06" },
+        { "name": "UNIT 2 ASSESSMENT", "score": 84, "category": "A", "date": "11/04" },
+        { "name": "Fish Design", "score": 100, "category": "DG", "date": "10/29" },
+        { "name": "Warm-Up (Halloween)", "score": 100, "category": "DG", "date": "10/29" }
+      ]
+    },
+    {
+      "name": "P6 MUSICALTHEATER",
+      "teacher": "LONNIE A. COOK",
+      "cycle1": 97,
+      "cycle2": 100,
+      "cycle3": null,
+      "assignments": []
+    },
+    {
+      "name": "P7 Entrepreneurshi",
+      "teacher": "DARI BRADSHAW",
+      "cycle1": 94,
+      "cycle2": 92,
+      "cycle3": 87,
+      "assignments": [
+        { "name": "assignment 2", "score": 90, "category": "DG", "date": "11/17*" },
+        { "name": "assignment 3", "score": 80, "category": "DG", "date": "11/17*" },
+        { "name": "assignment 4", "score": 100, "category": "DG", "date": "11/17*" },
+        { "name": "assignment 5", "score": 85, "category": "DG", "date": "11/17*" },
+        { "name": "assignment 6", "score": 80, "category": "DG", "date": "11/17*" },
+        { "name": "test 1", "score": 88, "category": "A", "date": "11/17*" }
+      ]
+    },
+    {
+      "name": "P8 GEOMETRY HON",
+      "teacher": "Kristen N. Banda",
+      "cycle1": 96,
+      "cycle2": 95,
+      "cycle3": 97,
+      "assignments": [
+        { "name": "HW3: Circumcenter and Incenter", "score": 90, "category": "DG", "date": "11/20" },
+        { "name": "HW2: Perpendicular Bisectors and Angle Bisectors", "score": 96, "category": "DG", "date": "11/17" },
+        { "name": "HW1: Triangle Midsegments", "score": 100, "category": "DG", "date": "11/13" },
+        { "name": "Unit 4 Review: Congruent Triangles Part 2", "score": 92, "category": "DG", "date": "11/09" },
+        { "name": "Unit 4 Test: Congruent Triangles", "score": 98, "category": "A", "date": "11/09" },
+        { "name": "HW6: Triangle Congruence- ASA, AAS and HL", "score": 100, "category": "DG", "date": "11/05" },
+        { "name": "Unit 4 Review: Congruent Triangles Part 1", "score": 100, "category": "DG", "date": "11/05" },
+        { "name": "HW5: Triangle Congruence- SSS and SAS", "score": 100, "category": "DG", "date": "11/02" }
+      ]
+    },
+    {
+      "name": "P9 WORLD GEO HON",
+      "teacher": "JAMES D. TAYLOR",
+      "cycle1": 100,
+      "cycle2": 96,
+      "cycle3": 91,
+      "assignments": [
+        { "name": "WG Lat & Long South America", "score": 96, "category": "DG", "date": "11/19" },
+        { "name": "Central America and the Caribbean Test", "score": 81, "category": "A", "date": "11/13" },
+        { "name": "Bonus Question Central America Test", "score": "2.0/0", "category": "A", "date": "11/13" },
+        { "name": "WG Central America and Caribbean Review", "score": 95, "category": "DG", "date": "11/11" },
+        { "name": "WG Why Cuba is a Museum of American Cars", "score": 100, "category": "DG", "date": "11/10" },
+        { "name": "Panama Canal Timeline", "score": 100, "category": "DG", "date": "11/06" },
+        { "name": "WG From a Guatemalan Hillside to Your Morning Cup", "score": 100, "category": "DG", "date": "11/06" },
+        { "name": "WG Central America and Caribbean Lat & Long", "score": 92, "category": "DG", "date": "11/06" },
+        { "name": "WG Panama Canal Analysis", "score": 89, "category": "DG", "date": "11/04" }
+      ]
+    }
+  ]
+}
