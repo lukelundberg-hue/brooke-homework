@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Grades</title>
+<style>
+  :root {
+    color-scheme: light;
+    --ink: #2a1834;
+    --muted: #5c4d68;
+    --accent: #6d2a86;
+    --tint: #fde8f6;
+    --line: #ead7e6;
+    --paper: #fff7fb;
+    --correct: #216245;
+    --gold: #e6b325;
+    --pink: #e45d9a;
+    font: 100%/1.55 system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; }
+  .wrap { width: min(100% - 2rem, 53rem); margin-inline: auto; }
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 92% 8%, #ffb0dc55, transparent 26%),
+      radial-gradient(circle at 6% 100%, #e6b32544, transparent 28%),
+      linear-gradient(155deg, #241033 0%, #4a1868 58%, #7a2468 100%);
+    color: white;
+    padding: 2.1rem 0 1.7rem;
+  }
+  .hero p { color: #f6e9ff; margin: .6rem 0 0; max-width: 38rem; }
+  .hero-ball { position: absolute; pointer-events: none; }
+  .hero-ball-volley { width: 4.6rem; height: 4.6rem; left: 1.1rem; bottom: .85rem; }
+  .hero-ball-basket { width: 4.2rem; height: 4.2rem; right: 1.1rem; top: .85rem; }
+  .kicker { font-size: .78rem; font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
+  .hero .kicker { color: #ffd56a; }
+  h1, h2, h3 { font-family: Georgia, serif; line-height: 1.15; }
+  h1 { margin: .35rem 0 0; font-size: clamp(2.35rem, 7vw, 4rem); letter-spacing: -.035em; }
+  h2 { margin: .15rem 0 0; font-size: clamp(1.45rem, 4.4vw, 1.85rem); }
+  .spark { color: var(--gold); }
+  a:focus-visible { outline: 3px solid #714bb4; outline-offset: 3px; }
+  .nav-links { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1.05rem; }
+  .nav-links a {
+    display: inline-flex; align-items: center; min-height: 2.75rem;
+    color: #fff8ff; text-decoration: none; font-weight: 650;
+    background: #ffffff1f; border: 1px solid #ffffff55; border-radius: 999px;
+    padding: .35rem .85rem;
+  }
+  .nav-links a[aria-current] { background: var(--gold); color: #2a1834; border-color: var(--gold); font-weight: 750; }
+  .nav-links a:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+  main { padding-block: 1.4rem 2.4rem; }
+  .note { font-size: .9rem; color: var(--muted); margin: .3rem 0; }
+  .as-of {
+    margin: .15rem 0 1rem;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: .85rem;
+    padding: .95rem 1.05rem;
+  }
+  .table-scroll { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .grade-table-wrap {
+    border: 1px solid var(--line);
+    border-radius: .85rem;
+    background: white;
+  }
+  .grade-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 36rem; }
+  .grade-table caption {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  .grade-table th, .grade-table td {
+    padding: .65rem .7rem;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+    background: white;
+  }
+  .grade-table thead th {
+    background: #f8f5fb;
+    font-size: .78rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .grade-table th[scope="row"],
+  .grade-table thead th:first-child { text-align: left; }
+  .grade-table tbody tr:last-child th,
+  .grade-table tbody tr:last-child td { border-bottom: 0; }
+  .grade-table th[scope="row"] {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    white-space: nowrap;
+    font-family: Georgia, serif;
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .grade-table thead th:first-child { position: sticky; left: 0; z-index: 2; }
+  .grade-table td { white-space: nowrap; }
+  .grade-table tbody tr:hover th,
+  .grade-table tbody tr:hover td { background: #fbf8fd; }
+  .grade-table a { color: var(--accent); font-weight: 750; text-decoration: none; }
+  .grade-table a:hover { text-decoration: underline; }
+  .avg {
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.7rem;
+    padding: .08rem .42rem;
+    border-radius: .4rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 750;
+    line-height: 1.45;
+  }
+  .avg-high { background: #e5f6ec; color: #1d6844; }
+  .avg-steady { background: #e7f1fb; color: #1d4e86; }
+  .avg-growing { background: #fff1d2; color: #6d4a06; }
+  .avg-focus { background: #f8d6d2; color: #7c332c; }
+  .avg-none { color: var(--muted); font-weight: 650; min-width: 1.2rem; background: transparent; }
+  .avg-overall { box-shadow: inset 0 0 0 1.5px currentColor; }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: .45rem .55rem;
+    list-style: none; margin: .85rem 0 .35rem; padding: 0;
+  }
+  .notes { margin: .15rem 0 1.45rem; }
+  .grade-card {
+    border: 1px solid var(--line);
+    background: white;
+    border-radius: .85rem;
+    margin-bottom: 1.15rem;
+    overflow: hidden;
+    scroll-margin-top: .8rem;
+  }
+  .section-head {
+    background: #f8f5fb;
+    padding: 1.05rem clamp(.9rem, 4vw, 1.45rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .grade-card h3 { margin: 0; font-size: clamp(1.35rem, 4vw, 1.7rem); }
+  .teacher { margin: .25rem 0 0; color: var(--muted); font-weight: 650; }
+  .card-body { padding: .95rem clamp(.9rem, 4vw, 1.45rem) 1.15rem; }
+  .avg-strip {
+    display: flex; flex-wrap: wrap; gap: .5rem .95rem;
+    list-style: none; margin: 0; padding: 0;
+  }
+  .avg-strip li { display: flex; align-items: center; gap: .4rem; min-height: 2.2rem; }
+  .avg-strip .label { color: var(--muted); font-size: .85rem; font-weight: 700; }
+  .grade-card h4 {
+    font-family: Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 1.05rem 0 .15rem;
+  }
+  .assign-list { list-style: none; margin: 0; padding: 0; }
+  .assign-list li {
+    padding: .72rem 0;
+    border-top: 1px solid var(--line);
+    overflow-wrap: anywhere;
+  }
+  .assign-list li:first-child { border-top: 0; }
+  .assign-list li.is-under-70 {
+    background: #fff8f6;
+    box-shadow: inset 3px 0 0 #e7b2aa;
+    margin-inline: -.4rem;
+    padding-inline: .7rem .4rem;
+    border-radius: .4rem;
+  }
+  .score-under-70 {
+    background: #f8d6d2;
+    color: #7c332c;
+    border-radius: .3rem;
+    padding: .02rem .32rem;
+    font-weight: 750;
+  }
+  .score-excused { color: var(--muted); font-weight: 650; }
+  .empty-assignments { margin: .7rem 0 .15rem; }
+  @media (max-width: 68rem) {
+    .hero-ball { display: none; }
+  }
+  @media (max-width: 42rem) {
+    .grade-table { min-width: 0; }
+    .grade-table th, .grade-table td { padding: .5rem .28rem; }
+    .grade-table thead th { font-size: .68rem; letter-spacing: .03em; }
+    .grade-table th[scope="row"] { white-space: normal; font-size: .95rem; }
+    .avg { min-width: 2.15rem; padding: .04rem .22rem; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <svg class="hero-ball hero-ball-volley" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="10.5" fill="#f7f3ea" stroke="#2a1834" stroke-width="1"/>
+    <g fill="none" stroke="#2a1834" stroke-width="0.95" stroke-linecap="round" transform="translate(12 12) scale(1.1667) translate(-12 -12)">
+      <path d="M12 12a8 8 0 0 0 8 4"/>
+      <path d="M7.5 13.5a12 12 0 0 0 8.5 6.5"/>
+      <path d="M12 12a8 8 0 0 0 -7.464 4.928"/>
+      <path d="M12.951 7.353a12 12 0 0 0 -9.88 4.111"/>
+      <path d="M12 12a8 8 0 0 0 -.536 -8.928"/>
+      <path d="M15.549 15.147a12 12 0 0 0 1.38 -10.611"/>
+    </g>
+  </svg>
+  <svg class="hero-ball hero-ball-basket" viewBox="0 0 64 64" aria-hidden="true">
+    <circle cx="32" cy="32" r="28" fill="#ef7a2f" stroke="#7a2e10" stroke-width="2.5"/>
+    <path d="M32 4v56M4 32h56" fill="none" stroke="#7a2e10" stroke-width="2.2"/>
+    <path d="M12 14c7 6 11 12 11 18s-4 12-11 18M52 14c-7 6-11 12-11 18s4 12 11 18" fill="none" stroke="#7a2e10" stroke-width="2.2"/>
+  </svg>
+  <div class="wrap">
+    <div class="kicker"><span class="spark" aria-hidden="true">✦ </span>Assignment hub<span class="spark" aria-hidden="true"> ✦</span></div>
+    <h1>My Grades</h1>
+    <p>Averages for each class, plus the latest Cycle 3 assignments.</p>
+    <nav class="nav-links" aria-label="Hub pages">
+      <a class="nav-sober" href="index.html#suspension">Suspension Work</a>
+      <a href="index.html#home">Home</a>
+      <a href="index.html#math">Math</a>
+      <a href="index.html#social-studies">Social Studies</a>
+      <a href="grades.html" aria-current="page">My Grades</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <p class="note" id="grades-status" role="status">Loading grades…</p>
+  <div id="grades-root"></div>
+</main>
+<noscript><p class="wrap note">Turn on JavaScript to see the grades.</p></noscript>
+<script>
+(function () {
+  var OVERALL_NOTE = "Overall = average of the cycle grades so far (the portal doesn't show a year average yet).";
+  var STAR_NOTE = '* no due date in the portal; date is when it first showed up.';
+  var EMPTY_NOTE = 'No Cycle 3 assignments yet';
+  var statusNode = document.getElementById('grades-status');
+  var root = document.getElementById('grades-root');
+
+  fetch('grades.json', { cache: 'no-cache' })
+    .then(function (response) {
+      if (!response.ok) throw new Error('grades.json returned ' + response.status);
+      return response.json();
+    })
+    .then(renderGrades)
+    .catch(function (error) {
+      console.error(error);
+      statusNode.hidden = false;
+      statusNode.textContent = 'Grades could not be loaded. Try refreshing the page.';
+    });
+
+  function renderGrades(data) {
+    var courses = data && Array.isArray(data.courses) ? data.courses : null;
+    if (!courses) throw new Error('grades.json needs a courses list');
+
+    statusNode.hidden = true;
+    root.replaceChildren();
+
+    var header = document.createElement('h2');
+    header.className = 'as-of';
+    header.id = 'as-of';
+    header.textContent = data.header || 'Grades as of Fri 11/20 (school closed 11/23-27)';
+    root.append(header);
+
+    var scroller = document.createElement('div');
+    scroller.className = 'table-scroll grade-table-wrap';
+    var table = document.createElement('table');
+    table.className = 'grade-table';
+    var caption = document.createElement('caption');
+    caption.textContent = 'Cycle averages by course';
+    var thead = document.createElement('thead');
+    var headRow = document.createElement('tr');
+    var overallHeader;
+    ['Course', 'Cycle 1', 'Cycle 2', 'Cycle 3', 'Overall'].forEach(function (label, index) {
+      var th = document.createElement('th');
+      th.scope = 'col';
+      th.textContent = label;
+      if (index === 4) overallHeader = th;
+      headRow.append(th);
+    });
+    thead.append(headRow);
+    table.append(caption, thead);
+    var tbody = document.createElement('tbody');
+    table.append(tbody);
+    scroller.append(table);
+
+    var cards = document.createElement('div');
+    cards.className = 'grade-cards';
+    var anyStar = false;
+
+    courses.forEach(function (course) {
+      var name = course.name || 'Course';
+      var cycles = [cycleNumber(course.cycle1), cycleNumber(course.cycle2), cycleNumber(course.cycle3)];
+      var overall = overallOf(cycles);
+      var slug = courseSlug(name);
+      var assignments = sortedAssignments(course.assignments || []);
+      assignments.forEach(function (item) {
+        if (String(item.date || '').trim().endsWith('*')) anyStar = true;
+      });
+
+      var row = document.createElement('tr');
+      var rowHead = document.createElement('th');
+      rowHead.scope = 'row';
+      var jump = document.createElement('a');
+      jump.href = '#' + slug;
+      jump.textContent = name;
+      rowHead.append(jump);
+      row.append(rowHead);
+      cycles.forEach(function (value) { row.append(averageCell(value, false)); });
+      row.append(averageCell(overall, true));
+      tbody.append(row);
+
+      cards.append(courseCard(course, slug, cycles, overall, assignments));
+    });
+
+    var notes = document.createElement('div');
+    notes.className = 'notes';
+    var legend = document.createElement('ul');
+    legend.className = 'legend';
+    legend.setAttribute('aria-label', 'Average colors');
+    [
+      ['high', '90+'],
+      ['steady', '80\u201389'],
+      ['growing', '70\u201379'],
+      ['focus', 'Under 70']
+    ].forEach(function (item) {
+      var li = document.createElement('li');
+      var pill = document.createElement('span');
+      pill.className = 'avg avg-' + item[0];
+      pill.textContent = item[1];
+      li.append(pill);
+      legend.append(li);
+    });
+    var overallNote = document.createElement('p');
+    overallNote.className = 'note';
+    overallNote.id = 'overall-note';
+    overallNote.textContent = OVERALL_NOTE;
+    overallHeader.id = 'overall-col';
+    overallHeader.setAttribute('aria-describedby', 'overall-note');
+    var keyNote = document.createElement('p');
+    keyNote.className = 'note';
+    keyNote.textContent = 'DG is a daily grade. A is an assessment.';
+    var encourage = document.createElement('p');
+    encourage.className = 'note';
+    encourage.textContent = 'The colors are a quick look at the averages. A lower number is a spot the next assignments can lift.';
+    notes.append(overallNote, legend, encourage, keyNote);
+    if (anyStar) {
+      var starNote = document.createElement('p');
+      starNote.className = 'note';
+      starNote.id = 'star-note';
+      starNote.textContent = STAR_NOTE;
+      notes.append(starNote);
+    }
+
+    root.append(scroller, notes, cards);
+  }
+
+  function courseCard(course, slug, cycles, overall, assignments) {
+    var article = document.createElement('article');
+    article.className = 'grade-card';
+    article.id = slug;
+    var titleId = slug + '-title';
+    article.setAttribute('aria-labelledby', titleId);
+
+    var head = document.createElement('div');
+    head.className = 'section-head';
+    var title = document.createElement('h3');
+    title.id = titleId;
+    title.textContent = course.name || 'Course';
+    var teacher = document.createElement('p');
+    teacher.className = 'teacher';
+    teacher.textContent = course.teacher || '';
+    head.append(title, teacher);
+
+    var body = document.createElement('div');
+    body.className = 'card-body';
+    var strip = document.createElement('ul');
+    strip.className = 'avg-strip';
+    ['Cycle 1', 'Cycle 2', 'Cycle 3'].forEach(function (label, index) {
+      strip.append(averageItem(label, cycles[index], false));
+    });
+    strip.append(averageItem('Overall', overall, true));
+
+    var listTitle = document.createElement('h4');
+    listTitle.textContent = 'Cycle 3 assignments';
+    body.append(strip, listTitle);
+
+    if (!assignments.length) {
+      var empty = document.createElement('p');
+      empty.className = 'note empty-assignments';
+      empty.textContent = EMPTY_NOTE;
+      body.append(empty);
+    } else {
+      var list = document.createElement('ul');
+      list.className = 'assign-list';
+      assignments.forEach(function (item) { list.append(assignmentItem(item)); });
+      body.append(list);
+    }
+
+    article.append(head, body);
+    return article;
+  }
+
+  function averageItem(label, value, isOverall) {
+    var li = document.createElement('li');
+    var name = document.createElement('span');
+    name.className = 'label';
+    name.textContent = label;
+    li.append(name, averagePill(value, isOverall));
+    return li;
+  }
+
+  function averageCell(value, isOverall) {
+    var td = document.createElement('td');
+    td.append(averagePill(value, isOverall));
+    return td;
+  }
+
+  function averagePill(value, isOverall) {
+    var pill = document.createElement('span');
+    var band = value == null ? 'none' : bandName(value);
+    pill.className = 'avg avg-' + band + (isOverall && value != null ? ' avg-overall' : '');
+    pill.textContent = value == null ? '\u2014' : formatNumber(value);
+    return pill;
+  }
+
+  function assignmentItem(item) {
+    var li = document.createElement('li');
+    var date = String(item.date || '').trim();
+    var category = categoryLabel(item.category);
+    var excused = isExcused(item.score);
+    var numeric = numericScore(item.score);
+    var low = !excused && numeric != null && numeric < 70;
+    if (low) li.classList.add('is-under-70');
+
+    li.append(document.createTextNode((item.name || 'Assignment') + ': '));
+    var score = document.createElement('span');
+    if (excused) {
+      score.className = 'score score-excused';
+      score.textContent = 'X (not counted)';
+    } else {
+      score.className = low ? 'score score-under-70' : 'score';
+      score.textContent = numeric != null ? formatNumber(numeric) : String(item.score);
+    }
+    li.append(score);
+    li.append(document.createTextNode(' (' + category + ' - ' + date + ')'));
+    return li;
+  }
+
+  function bandName(value) {
+    if (value >= 90) return 'high';
+    if (value >= 80) return 'steady';
+    if (value >= 70) return 'growing';
+    return 'focus';
+  }
+
+  function cycleNumber(value) {
+    if (value == null || value === '') return null;
+    var number = typeof value === 'number' ? value : Number(value);
+    return Number.isFinite(number) ? number : null;
+  }
+
+  function overallOf(cycles) {
+    var graded = cycles.filter(function (value) { return value != null; });
+    if (!graded.length) return null;
+    var sum = graded.reduce(function (total, value) { return total + value; }, 0);
+    return Math.round(sum / graded.length);
+  }
+
+  function formatNumber(value) {
+    return Number.isInteger(value) ? String(value) : String(Math.round(value * 100) / 100);
+  }
+
+  function categoryLabel(category) {
+    var code = String(category || '').trim().toUpperCase();
+    if (code === 'DG' || code === 'DAILY' || code === 'DAILY GRADE' || code === 'DAILY GRADES') return 'DG';
+    if (code === 'A' || code === 'ASSESSMENT' || code === 'ASSESSMENTS') return 'A';
+    return String(category || '').trim();
+  }
+
+  function isExcused(score) {
+    return typeof score === 'string' && /^(x|excused)$/i.test(score.trim());
+  }
+
+  function numericScore(score) {
+    if (typeof score === 'number' && Number.isFinite(score)) return score;
+    if (typeof score === 'string' && score.trim() !== '' && Number.isFinite(Number(score))) return Number(score);
+    return null;
+  }
+
+  function dateSortKey(date) {
+    var clean = String(date || '').trim().replace(/\*$/, '');
+    var match = /^(\d{1,2})\/(\d{1,2})$/.exec(clean);
+    if (!match) return -1;
+    var month = Number(match[1]);
+    var day = Number(match[2]);
+    var schoolMonth = month >= 8 ? month : month + 12;
+    return schoolMonth * 100 + day;
+  }
+
+  function sortedAssignments(assignments) {
+    return assignments.map(function (item, index) {
+      return { item: item, index: index };
+    }).sort(function (a, b) {
+      var byDate = dateSortKey(b.item.date) - dateSortKey(a.item.date);
+      return byDate || a.index - b.index;
+    }).map(function (entry) { return entry.item; });
+  }
+
+  function courseSlug(name) {
+    var slug = String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    return 'course-' + (slug || 'item');
+  }
+})();
+</script>
+</body>
+</html>
