@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Now Playing</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --ink: #f6f1e8;
+    --muted: #b7adbf;
+    --accent: #ffe08a;
+    --line: #3a3148;
+    --paper: #0e0c12;
+    --card: #17141d;
+    --card-2: #221c2c;
+    --gold: #f0c14a;
+    --magenta: #ff4fa3;
+    --violet: #8b6cff;
+    --teal: #3ee0c5;
+    font: 100%/1.55 system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; }
+  .wrap { width: min(100% - 2rem, 53rem); margin-inline: auto; }
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background-color: #0c0a10;
+    background-image:
+      radial-gradient(1.2px 1.2px at 7% 28%, rgba(255, 255, 255, .75) 50%, transparent 52%),
+      radial-gradient(1px 1px at 16% 72%, rgba(255, 255, 255, .45) 50%, transparent 52%),
+      radial-gradient(1.4px 1.4px at 84% 18%, rgba(255, 244, 210, .85) 50%, transparent 52%),
+      radial-gradient(1px 1px at 93% 58%, rgba(62, 224, 197, .8) 50%, transparent 52%),
+      radial-gradient(1px 1px at 72% 78%, rgba(255, 79, 163, .7) 50%, transparent 52%),
+      radial-gradient(1px 1px at 38% 16%, rgba(139, 108, 255, .75) 50%, transparent 52%),
+      radial-gradient(ellipse 60% 90% at 50% -18%, rgba(255, 236, 180, .38), transparent 58%),
+      radial-gradient(circle at 6% 110%, rgba(139, 108, 255, .28), transparent 38%),
+      radial-gradient(circle at 98% 86%, rgba(62, 224, 197, .16), transparent 34%),
+      linear-gradient(180deg, #1b1524 0%, #0c0a10 100%);
+    color: white;
+    padding: 2.1rem 0 1.7rem;
+    box-shadow: inset 0 3px 0 var(--gold);
+  }
+  .hero p { color: #e7dfd4; margin: .6rem 0 0; max-width: 38rem; }
+  .hero-mark { position: absolute; pointer-events: none; }
+  .hero-spot { width: 9rem; height: 7rem; right: 4%; top: 0; opacity: .8; }
+  .hero-stars { width: 6.5rem; height: 4.5rem; left: .6rem; bottom: .7rem; opacity: .85; }
+  .kicker { font-size: .78rem; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
+  .hero .kicker { color: var(--gold); }
+  h1, h2, h3 { font-family: Georgia, "Palatino Linotype", Palatino, serif; line-height: 1.15; }
+  h1 {
+    margin: .35rem 0 0;
+    font-size: clamp(2.35rem, 7vw, 4rem);
+    letter-spacing: -.035em;
+    display: inline-block;
+    border-bottom: 3px double var(--gold);
+    padding-bottom: .15rem;
+  }
+  h2 { margin: .15rem 0 0; font-size: clamp(1.45rem, 4.4vw, 1.85rem); }
+  .spark { color: var(--magenta); }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  main { padding-block: 1.4rem 2.4rem; }
+  .note { font-size: .9rem; color: var(--muted); margin: .3rem 0; }
+  .as-of {
+    margin: .15rem 0 1rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: .85rem;
+    padding: .95rem 1.05rem;
+  }
+  .table-scroll { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .grade-table-wrap {
+    border: 1px solid var(--line);
+    border-radius: .85rem;
+    background: var(--card);
+  }
+  .grade-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 36rem; }
+  .grade-table caption {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  .grade-table th, .grade-table td {
+    padding: .65rem .7rem;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+    background: var(--card);
+  }
+  .grade-table thead th {
+    background: #241c2e;
+    font-size: .78rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #ddd4ea;
+  }
+  .grade-table th[scope="row"],
+  .grade-table thead th:first-child { text-align: left; }
+  .grade-table tbody:last-child .course-row:not(.is-open) > * { border-bottom: 0; }
+  .grade-table th[scope="row"] {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .grade-table thead th:first-child { position: sticky; left: 0; z-index: 2; }
+  .grade-table td { white-space: nowrap; }
+  .course-row:hover > * { background: #201a28; }
+  .course-toggle {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    width: 100%;
+    min-height: 2.4rem;
+    border: 0;
+    background: transparent;
+    color: var(--accent);
+    font-family: Georgia, "Palatino Linotype", Palatino, serif;
+    font-size: 1.02rem;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+    padding: 0;
+  }
+  .course-toggle:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .chevron { flex: none; width: .72rem; height: .72rem; transition: transform .15s ease; }
+  .course-toggle[aria-expanded="true"] .chevron { transform: rotate(90deg); }
+  .course-label { overflow-wrap: break-word; }
+  .withdrawn-tag {
+    display: inline-block;
+    margin-left: .45rem;
+    padding: .05rem .42rem;
+    border: 1px solid #4c4458;
+    border-radius: 999px;
+    color: #b7adbf;
+    font-family: system-ui, sans-serif;
+    font-size: .68rem;
+    font-weight: 750;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    vertical-align: .15em;
+  }
+  tbody.is-withdrawn .course-toggle { color: #b3a9bf; }
+  tbody.is-withdrawn .course-row > * { background: #141218; }
+  tbody.is-withdrawn .avg-none { color: #8d8698; }
+  .course-panel td {
+    white-space: normal;
+    text-align: left;
+    padding: .85rem 1rem 1.05rem;
+    background: var(--card-2);
+    border-bottom: 1px solid var(--line);
+    box-shadow: inset 3px 0 0 var(--gold);
+  }
+  .grade-table tbody:last-child .course-panel td { border-bottom: 0; }
+  tbody.is-withdrawn .course-panel td {
+    background: #141218;
+    box-shadow: inset 3px 0 0 #4c4458;
+  }
+  .teacher { margin: 0 0 .45rem; color: var(--muted); font-weight: 650; }
+  .panel-title {
+    font-family: Georgia, "Palatino Linotype", Palatino, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: .1rem 0 .15rem;
+  }
+  .panel-star, .panel-score { margin: .7rem 0 0; }
+  .avg {
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.7rem;
+    padding: .08rem .42rem;
+    border-radius: .4rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 750;
+    line-height: 1.45;
+  }
+  .avg-high { background: #123f38; color: #c8fff3; }
+  .avg-steady { background: #1c2748; color: #d4e0ff; }
+  .avg-growing { background: #3d3214; color: #ffe3ad; }
+  .avg-focus { background: #4a242c; color: #ffd0d4; }
+  .avg-none { color: var(--muted); font-weight: 650; min-width: 1.2rem; background: transparent; }
+  .avg-overall { box-shadow: inset 0 0 0 1.5px currentColor; }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: .45rem .55rem;
+    list-style: none; margin: .85rem 0 .35rem; padding: 0;
+  }
+  .notes { margin: .15rem 0 1.45rem; }
+  .assign-list { list-style: none; margin: 0; padding: 0; }
+  .assign-list li {
+    padding: .72rem 0;
+    border-top: 1px solid var(--line);
+    overflow-wrap: anywhere;
+  }
+  .assign-list li:first-child { border-top: 0; }
+  .assign-list li.is-under-70 {
+    background: #2a1c22;
+    box-shadow: inset 3px 0 0 #e7a0a8;
+    margin-inline: -.4rem;
+    padding-inline: .7rem .4rem;
+    border-radius: .4rem;
+  }
+  .score-under-70 {
+    background: #4a242c;
+    color: #ffd0d4;
+    border-radius: .3rem;
+    padding: .02rem .32rem;
+    font-weight: 750;
+  }
+  .score-excused { color: var(--muted); font-weight: 650; }
+  .score-bonus { color: var(--gold); font-weight: 750; }
+  .empty-assignments { margin: .7rem 0 .15rem; }
+  @media (prefers-reduced-motion: reduce) {
+    .chevron { transition: none; }
+  }
+  @media (max-width: 68rem) {
+    .hero-mark { display: none; }
+  }
+  @media (max-width: 42rem) {
+    .wrap { width: min(100% - 1rem, 53rem); }
+    .grade-table { min-width: 0; }
+    .grade-table th, .grade-table td { padding: .48rem .16rem; }
+    .grade-table thead th { font-size: .64rem; letter-spacing: .01em; }
+    .course-toggle { min-height: 2.75rem; align-items: flex-start; gap: .28rem; padding-top: .2rem; font-size: .92rem; }
+    .chevron { margin-top: .28rem; }
+    .course-panel td { padding: .7rem .65rem .9rem; }
+    .avg { min-width: 1.9rem; padding: .04rem .16rem; }
+    .withdrawn-tag { margin-left: .3rem; }
+  }
+  @media (max-width: 23rem) {
+    .grade-table thead th { font-size: .58rem; letter-spacing: 0; }
+    .grade-table th, .grade-table td { padding: .4rem .1rem; }
+    .course-toggle { font-size: .84rem; gap: .2rem; }
+    .avg { min-width: 1.65rem; padding: .02rem .08rem; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <svg class="hero-mark hero-spot" viewBox="0 0 200 140" aria-hidden="true">
+    <defs>
+      <linearGradient id="spot" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff4d2" stop-opacity=".7"/>
+        <stop offset="1" stop-color="#fff4d2" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <polygon points="100,0 28,140 172,140" fill="url(#spot)"/>
+  </svg>
+  <svg class="hero-mark hero-stars" viewBox="0 0 120 80" aria-hidden="true">
+    <g fill="#ffe08a">
+      <path d="M18 8l1.4 4.2H24l-3.6 2.6 1.4 4.2L18 16.4 14.2 19l1.4-4.2L12 12.2h4.6z"/>
+      <path d="M78 22l1.1 3.2h3.4l-2.7 2 1 3.2-2.8-2-2.8 2 1-3.2-2.7-2h3.4z"/>
+      <path d="M46 48l1.6 4.6h4.8l-3.9 2.8 1.5 4.6L46 57.2 41.9 60l1.5-4.6-3.9-2.8h4.8z"/>
+    </g>
+    <g fill="#3ee0c5">
+      <circle cx="96" cy="58" r="2.2"/>
+      <circle cx="62" cy="14" r="1.6"/>
+    </g>
+    <g fill="#8b6cff">
+      <circle cx="30" cy="62" r="1.8"/>
+      <circle cx="100" cy="18" r="1.5"/>
+    </g>
+    <circle cx="8" cy="40" r="1.4" fill="#ff4fa3"/>
+  </svg>
+  <div class="wrap">
+    <div class="kicker"><span class="spark" aria-hidden="true">✦ </span>Tonight<span class="spark" aria-hidden="true"> ✦</span></div>
+    <h1>Now Playing</h1>
+    <p>Averages for each class, plus the latest Act III assignments.</p>
+  </div>
+</header>
+<main class="wrap">
+  <p class="note" id="grades-status" role="status">Loading grades…</p>
+  <div id="grades-root"></div>
+</main>
+<noscript><p class="wrap note">Turn on JavaScript to see the grades.</p></noscript>
+<script>
+(function () {
+  var OVERALL_NOTE = "Overall = average of the cycle grades so far (the portal doesn't show a year average yet).";
+  var STAR_NOTE = '* no due date in the portal; date is when it first showed up.';
+  var SCORE_NOTE = '\u2014 (not counted) had no points possible. +2 bonus is extra credit (points earned with nothing possible).';
+  var EMPTY_NOTE = 'No Cycle 3 assignments yet';
+  var OPEN_HINT = "Choose a course name to open its Cycle 3 assignments.";
+  var statusNode = document.getElementById('grades-status');
+  var root = document.getElementById('grades-root');
+
+  fetch('ava-grades.json', { cache: 'no-cache' })
+    .then(function (response) {
+      if (!response.ok) throw new Error('grades file returned ' + response.status);
+      return response.json();
+    })
+    .then(renderGrades)
+    .catch(function (error) {
+      console.error(error);
+      statusNode.hidden = false;
+      statusNode.textContent = 'Grades could not be loaded. Try refreshing the page.';
+    });
+
+  function renderGrades(data) {
+    var courses = data && Array.isArray(data.courses) ? data.courses : null;
+    if (!courses) throw new Error('grades file needs a courses list');
+
+    statusNode.hidden = true;
+    root.replaceChildren();
+
+    var header = document.createElement('h2');
+    header.className = 'as-of';
+    header.id = 'as-of';
+    header.textContent = data.header || 'Grades as of 11/23/2026';
+    root.append(header);
+
+    var scroller = document.createElement('div');
+    scroller.className = 'table-scroll grade-table-wrap';
+    var table = document.createElement('table');
+    table.className = 'grade-table';
+    var caption = document.createElement('caption');
+    caption.textContent = "Cycle averages by course. Each course name opens that course's Cycle 3 assignments.";
+    var thead = document.createElement('thead');
+    var headRow = document.createElement('tr');
+    var overallHeader;
+    ['Course', 'Cycle 1', 'Cycle 2', 'Cycle 3', 'Overall'].forEach(function (label, index) {
+      var th = document.createElement('th');
+      th.scope = 'col';
+      th.textContent = label;
+      if (index === 4) overallHeader = th;
+      headRow.append(th);
+    });
+    thead.append(headRow);
+    table.append(caption, thead);
+
+    var anyStar = false;
+    var anySpecial = false;
+
+    courses.forEach(function (course) {
+      var name = course.name || 'Course';
+      var cycles = [cycleNumber(course.cycle1), cycleNumber(course.cycle2), cycleNumber(course.cycle3)];
+      var overall = overallOf(cycles);
+      var slug = courseSlug(name);
+      var assignments = sortedAssignments(course.assignments || []);
+      var courseHasStar = assignments.some(function (item) {
+        return String(item.date || '').trim().endsWith('*');
+      });
+      var courseHasSpecial = assignments.some(function (item) { return isZeroPossible(item.score); });
+      if (courseHasStar) anyStar = true;
+      if (courseHasSpecial) anySpecial = true;
+
+      var group = document.createElement('tbody');
+      if (course.withdrawn) group.className = 'is-withdrawn';
+
+      var row = document.createElement('tr');
+      row.className = 'course-row';
+      var rowHead = document.createElement('th');
+      rowHead.scope = 'row';
+      var toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'course-toggle';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', slug);
+      toggle.setAttribute('aria-label', (course.withdrawn ? name + ', withdrawn ' + course.withdrawn + ', ' : name + ', ') + 'Cycle 3 assignments');
+
+      var chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      chevron.setAttribute('class', 'chevron');
+      chevron.setAttribute('viewBox', '0 0 12 12');
+      chevron.setAttribute('aria-hidden', 'true');
+      var chevronPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      chevronPath.setAttribute('d', 'M4 2.2 8 6 4 9.8');
+      chevronPath.setAttribute('fill', 'none');
+      chevronPath.setAttribute('stroke', 'currentColor');
+      chevronPath.setAttribute('stroke-width', '1.8');
+      chevronPath.setAttribute('stroke-linecap', 'round');
+      chevronPath.setAttribute('stroke-linejoin', 'round');
+      chevron.append(chevronPath);
+
+      var label = document.createElement('span');
+      label.className = 'course-label';
+      label.textContent = name;
+      if (course.withdrawn) {
+        var tag = document.createElement('span');
+        tag.className = 'withdrawn-tag';
+        tag.textContent = 'Withdrawn';
+        label.append(tag);
+      }
+      toggle.append(chevron, label);
+      rowHead.append(toggle);
+      row.append(rowHead);
+      cycles.forEach(function (value) { row.append(averageCell(value, false)); });
+      row.append(averageCell(overall, true));
+
+      var panelRow = document.createElement('tr');
+      panelRow.className = 'course-panel';
+      panelRow.hidden = true;
+      var panelCell = document.createElement('td');
+      panelCell.colSpan = 5;
+      panelCell.id = slug;
+      panelCell.append(assignmentPanel(course, assignments, courseHasStar, courseHasSpecial));
+      panelRow.append(panelCell);
+
+      toggle.addEventListener('click', function () {
+        var open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+        panelRow.hidden = open;
+        row.classList.toggle('is-open', !open);
+      });
+
+      group.append(row, panelRow);
+      table.append(group);
+    });
+
+    scroller.append(table);
+
+    var notes = document.createElement('div');
+    notes.className = 'notes';
+    var legend = document.createElement('ul');
+    legend.className = 'legend';
+    legend.setAttribute('aria-label', 'Average colors');
+    [
+      ['high', '90+'],
+      ['steady', '80\u201389'],
+      ['growing', '70\u201379'],
+      ['focus', 'Under 70']
+    ].forEach(function (item) {
+      var li = document.createElement('li');
+      var pill = document.createElement('span');
+      pill.className = 'avg avg-' + item[0];
+      pill.textContent = item[1];
+      li.append(pill);
+      legend.append(li);
+    });
+    var overallNote = document.createElement('p');
+    overallNote.className = 'note';
+    overallNote.id = 'overall-note';
+    overallNote.textContent = OVERALL_NOTE;
+    overallHeader.id = 'overall-col';
+    overallHeader.setAttribute('aria-describedby', 'overall-note');
+    var hint = document.createElement('p');
+    hint.className = 'note';
+    hint.id = 'open-hint';
+    hint.textContent = OPEN_HINT;
+    var keyNote = document.createElement('p');
+    keyNote.className = 'note';
+    keyNote.textContent = 'DG is a daily grade. A is an assessment.';
+    var encourage = document.createElement('p');
+    encourage.className = 'note';
+    encourage.textContent = 'The colors are a quick look at the averages. A lower number is a spot the next assignments can lift.';
+    notes.append(overallNote, hint, legend, encourage, keyNote);
+    if (anyStar) {
+      var starNote = document.createElement('p');
+      starNote.className = 'note';
+      starNote.id = 'star-note';
+      starNote.textContent = STAR_NOTE;
+      notes.append(starNote);
+    }
+    if (anySpecial) {
+      var scoreNote = document.createElement('p');
+      scoreNote.className = 'note';
+      scoreNote.id = 'score-note';
+      scoreNote.textContent = SCORE_NOTE;
+      notes.append(scoreNote);
+    }
+
+    root.append(scroller, notes);
+  }
+
+  function assignmentPanel(course, assignments, courseHasStar, courseHasSpecial) {
+    var panel = document.createDocumentFragment();
+    if (course.teacher) {
+      var teacher = document.createElement('p');
+      teacher.className = 'teacher';
+      teacher.textContent = course.teacher;
+      panel.append(teacher);
+    }
+    if (course.withdrawn) {
+      var withdrawn = document.createElement('p');
+      withdrawn.className = 'note';
+      withdrawn.textContent = 'Withdrawn ' + course.withdrawn + '.';
+      panel.append(withdrawn);
+    }
+    var listTitle = document.createElement('h3');
+    listTitle.className = 'panel-title';
+    listTitle.textContent = 'Act III';
+    panel.append(listTitle);
+
+    if (!assignments.length) {
+      var empty = document.createElement('p');
+      empty.className = 'note empty-assignments';
+      empty.textContent = EMPTY_NOTE;
+      panel.append(empty);
+    } else {
+      var list = document.createElement('ul');
+      list.className = 'assign-list';
+      assignments.forEach(function (item) { list.append(assignmentItem(item)); });
+      panel.append(list);
+    }
+    if (courseHasStar) {
+      var starNote = document.createElement('p');
+      starNote.className = 'note panel-star';
+      starNote.textContent = STAR_NOTE;
+      panel.append(starNote);
+    }
+    if (courseHasSpecial) {
+      var scoreNote = document.createElement('p');
+      scoreNote.className = 'note panel-score';
+      scoreNote.textContent = SCORE_NOTE;
+      panel.append(scoreNote);
+    }
+    return panel;
+  }
+
+  function averageCell(value, isOverall) {
+    var td = document.createElement('td');
+    td.append(averagePill(value, isOverall));
+    return td;
+  }
+
+  function averagePill(value, isOverall) {
+    var pill = document.createElement('span');
+    var band = value == null ? 'none' : bandName(value);
+    pill.className = 'avg avg-' + band + (isOverall && value != null ? ' avg-overall' : '');
+    pill.textContent = value == null ? '\u2014' : formatNumber(value);
+    return pill;
+  }
+
+  function assignmentItem(item) {
+    var li = document.createElement('li');
+    var date = String(item.date || '').trim();
+    var category = categoryLabel(item.category);
+    var ratio = ratioScore(item.score);
+    var zeroPossible = ratio && ratio.possible === 0;
+    var excused = isExcused(item.score);
+    var numeric = numericScore(item.score);
+    var low = !excused && !zeroPossible && numeric != null && numeric < 70;
+    if (low) li.classList.add('is-under-70');
+
+    li.append(document.createTextNode((item.name || 'Assignment') + ': '));
+    var score = document.createElement('span');
+    if (excused) {
+      score.className = 'score score-excused';
+      score.textContent = 'X (not counted)';
+    } else if (zeroPossible && ratio.earned === 0) {
+      score.className = 'score score-excused';
+      score.textContent = '\u2014 (not counted)';
+    } else if (zeroPossible) {
+      score.className = 'score score-bonus';
+      score.textContent = '+' + formatNumber(ratio.earned) + ' bonus';
+    } else {
+      score.className = low ? 'score score-under-70' : 'score';
+      score.textContent = numeric != null ? formatNumber(numeric) : String(item.score);
+    }
+    li.append(score);
+    li.append(document.createTextNode(' (' + category + ' - ' + date + ')'));
+    return li;
+  }
+
+  function bandName(value) {
+    if (value >= 90) return 'high';
+    if (value >= 80) return 'steady';
+    if (value >= 70) return 'growing';
+    return 'focus';
+  }
+
+  function cycleNumber(value) {
+    if (value == null || value === '') return null;
+    var number = typeof value === 'number' ? value : Number(value);
+    return Number.isFinite(number) ? number : null;
+  }
+
+  function overallOf(cycles) {
+    var graded = cycles.filter(function (value) { return value != null; });
+    if (!graded.length) return null;
+    var sum = graded.reduce(function (total, value) { return total + value; }, 0);
+    return Math.round(sum / graded.length);
+  }
+
+  function formatNumber(value) {
+    return Number.isInteger(value) ? String(value) : String(Math.round(value * 100) / 100);
+  }
+
+  function categoryLabel(category) {
+    var code = String(category || '').trim().toUpperCase();
+    if (code === 'DG' || code === 'DAILY' || code === 'DAILY GRADE' || code === 'DAILY GRADES') return 'DG';
+    if (code === 'A' || code === 'ASSESSMENT' || code === 'ASSESSMENTS') return 'A';
+    return String(category || '').trim();
+  }
+
+  function isExcused(score) {
+    return typeof score === 'string' && /^(x|excused)$/i.test(score.trim());
+  }
+
+  function ratioScore(score) {
+    if (typeof score !== 'string') return null;
+    var match = /^\s*(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)\s*$/.exec(score.trim());
+    if (!match) return null;
+    return { earned: Number(match[1]), possible: Number(match[2]) };
+  }
+
+  function isZeroPossible(score) {
+    var ratio = ratioScore(score);
+    return !!(ratio && ratio.possible === 0);
+  }
+
+  function numericScore(score) {
+    if (typeof score === 'number' && Number.isFinite(score)) return score;
+    if (typeof score === 'string' && score.trim() !== '' && Number.isFinite(Number(score))) return Number(score);
+    return null;
+  }
+
+  function dateSortKey(date) {
+    var clean = String(date || '').trim().replace(/\*$/, '');
+    var match = /^(\d{1,2})\/(\d{1,2})$/.exec(clean);
+    if (!match) return -1;
+    var month = Number(match[1]);
+    var day = Number(match[2]);
+    var schoolMonth = month >= 8 ? month : month + 12;
+    return schoolMonth * 100 + day;
+  }
+
+  function sortedAssignments(assignments) {
+    return assignments.map(function (item, index) {
+      return { item: item, index: index };
+    }).sort(function (a, b) {
+      var byDate = dateSortKey(b.item.date) - dateSortKey(a.item.date);
+      return byDate || a.index - b.index;
+    }).map(function (entry) { return entry.item; });
+  }
+
+  function courseSlug(name) {
+    var slug = String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    return 'course-' + (slug || 'item');
+  }
+})();
+</script>
+</body>
+</html>
