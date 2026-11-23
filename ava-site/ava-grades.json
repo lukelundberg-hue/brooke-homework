@@ -1,5 +1,5 @@
 {
-  "_readme": "Update this file when new grades are posted. The page reads this file and builds the table. Each course name opens that course's Cycle 3 assignments. Table order follows this list. cycle1, cycle2, and cycle3 are cycle averages; use null when a cycle has no grade yet. The page computes Overall as the average of the cycles that have grades, rounded to a whole number. assignments are Cycle 3 only. The page sorts them most recent first (same date keeps the order here). score X means excused and is not counted. A score string like 0.0/0 is ungraded and shows as — (not counted). A score string like 2.0/0 shows as +2 bonus. End date with * when the portal had no due date. category is DG (daily grade) or A (assessment). Optional withdrawn is a date string; that row is shown muted.",
+  "_readme": "Update this file when new grades are posted. The page reads this file and builds the table. Each course name opens that course's Cycle 3 assignments. Table order follows this list. cycle1, cycle2, and cycle3 are cycle averages; use null when a cycle has no grade yet. The page computes Overall as the average of the cycles that have grades, rounded to a whole number. assignments are Cycle 3 only. The page sorts them most recent first (same date keeps the order here). score X means excused and is not counted. A score string like 0.0/0 is ungraded and shows as — (not counted). A score string like 2.0/0 shows as +2 bonus. End date with * when the portal had no due date. category is DG (daily grade) or A (assessment).",
   "header": "Grades as of 11/23/2026",
   "courses": [
     {
@@ -17,15 +17,6 @@
         { "name": "Week Nov 2 Participation", "score": 90, "category": "DG", "date": "11/06" },
         { "name": "Mistletoe Magic", "score": 100, "category": "A", "date": "11/06" }
       ]
-    },
-    {
-      "name": "P2 DOLSENSE FRESH",
-      "teacher": "LARRIMY B. BROWN",
-      "cycle1": null,
-      "cycle2": null,
-      "cycle3": null,
-      "withdrawn": "08/24/2026",
-      "assignments": []
     },
     {
       "name": "P2 PUBLIC SPEAKING",
