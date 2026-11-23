@@ -1,6 +1,6 @@
 # Brooke's homework hub
 
-A single-file homework site for Brooke, a 6th grader. Open the site, pick Math or Social Studies, and work through the assignment in the browser.
+A homework site for Brooke, a 6th grader. It keeps three things: the South America practice test, Math Unit 4 practice for ratios and rates, and the My Grades page.
 
 Answers and written work stay in that browser. Completed checkmarks are saved in that browser too, and they can sync between devices once a Firebase database URL is pasted in (see below). New assignments get added to `index.html`.
 

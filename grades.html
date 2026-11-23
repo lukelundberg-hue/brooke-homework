@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
 <title>My Grades</title>
 <style>
   :root {
@@ -89,8 +90,7 @@
   }
   .grade-table th[scope="row"],
   .grade-table thead th:first-child { text-align: left; }
-  .grade-table tbody tr:last-child th,
-  .grade-table tbody tr:last-child td { border-bottom: 0; }
+  .grade-table tbody:last-child .course-row:not(.is-open) > * { border-bottom: 0; }
   .grade-table th[scope="row"] {
     position: sticky;
     left: 0;
@@ -104,10 +104,47 @@
   }
   .grade-table thead th:first-child { position: sticky; left: 0; z-index: 2; }
   .grade-table td { white-space: nowrap; }
-  .grade-table tbody tr:hover th,
-  .grade-table tbody tr:hover td { background: #fbf8fd; }
-  .grade-table a { color: var(--accent); font-weight: 750; text-decoration: none; }
-  .grade-table a:hover { text-decoration: underline; }
+  .grade-table tbody tr.course-row:hover th,
+  .grade-table tbody tr.course-row:hover td { background: #fbf8fd; }
+  .course-toggle {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    width: 100%;
+    min-height: 2.4rem;
+    margin: 0;
+    padding: .1rem 0;
+    border: 0;
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    font-family: Georgia, serif;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: left;
+    cursor: pointer;
+  }
+  .course-toggle:hover .course-label { text-decoration: underline; }
+  .course-toggle:focus-visible {
+    outline: 3px solid #714bb4;
+    outline-offset: 2px;
+    border-radius: .35rem;
+  }
+  .chevron {
+    flex: none;
+    width: .72rem;
+    height: .72rem;
+    transition: transform .15s ease;
+  }
+  .course-toggle[aria-expanded="true"] .chevron { transform: rotate(90deg); }
+  .course-panel td {
+    white-space: normal;
+    text-align: left;
+    padding: .85rem 1rem 1.05rem;
+    background: #fbf8fd;
+    border-bottom: 1px solid var(--line);
+  }
+  .grade-table tbody:last-child .course-panel td { border-bottom: 0; }
   .avg {
     display: inline-grid;
     place-items: center;
@@ -129,34 +166,14 @@
     list-style: none; margin: .85rem 0 .35rem; padding: 0;
   }
   .notes { margin: .15rem 0 1.45rem; }
-  .grade-card {
-    border: 1px solid var(--line);
-    background: white;
-    border-radius: .85rem;
-    margin-bottom: 1.15rem;
-    overflow: hidden;
-    scroll-margin-top: .8rem;
-  }
-  .section-head {
-    background: #f8f5fb;
-    padding: 1.05rem clamp(.9rem, 4vw, 1.45rem);
-    border-bottom: 1px solid var(--line);
-  }
-  .grade-card h3 { margin: 0; font-size: clamp(1.35rem, 4vw, 1.7rem); }
-  .teacher { margin: .25rem 0 0; color: var(--muted); font-weight: 650; }
-  .card-body { padding: .95rem clamp(.9rem, 4vw, 1.45rem) 1.15rem; }
-  .avg-strip {
-    display: flex; flex-wrap: wrap; gap: .5rem .95rem;
-    list-style: none; margin: 0; padding: 0;
-  }
-  .avg-strip li { display: flex; align-items: center; gap: .4rem; min-height: 2.2rem; }
-  .avg-strip .label { color: var(--muted); font-size: .85rem; font-weight: 700; }
-  .grade-card h4 {
+  .teacher { margin: 0 0 .45rem; color: var(--muted); font-weight: 650; }
+  .panel-title {
     font-family: Georgia, serif;
     font-size: 1.15rem;
     font-weight: 700;
-    margin: 1.05rem 0 .15rem;
+    margin: .1rem 0 .15rem;
   }
+  .panel-star { margin: .7rem 0 0; }
   .assign-list { list-style: none; margin: 0; padding: 0; }
   .assign-list li {
     padding: .72rem 0;
@@ -188,6 +205,9 @@
     .grade-table th, .grade-table td { padding: .5rem .28rem; }
     .grade-table thead th { font-size: .68rem; letter-spacing: .03em; }
     .grade-table th[scope="row"] { white-space: normal; font-size: .95rem; }
+    .course-toggle { min-height: 2.75rem; align-items: flex-start; padding-top: .2rem; }
+    .chevron { margin-top: .2rem; }
+    .course-panel td { padding: .7rem .65rem .9rem; }
     .avg { min-width: 2.15rem; padding: .04rem .22rem; }
   }
 </style>
@@ -215,7 +235,6 @@
     <h1>My Grades</h1>
     <p>Averages for each class, plus the latest Cycle 3 assignments.</p>
     <nav class="nav-links" aria-label="Hub pages">
-      <a class="nav-sober" href="index.html#suspension">Suspension Work</a>
       <a href="index.html#home">Home</a>
       <a href="index.html#math">Math</a>
       <a href="index.html#social-studies">Social Studies</a>
@@ -266,7 +285,7 @@
     var table = document.createElement('table');
     table.className = 'grade-table';
     var caption = document.createElement('caption');
-    caption.textContent = 'Cycle averages by course';
+    caption.textContent = 'Cycle averages by course. Each course name opens that course\'s Cycle 3 assignments.';
     var thead = document.createElement('thead');
     var headRow = document.createElement('tr');
     var overallHeader;
@@ -279,12 +298,8 @@
     });
     thead.append(headRow);
     table.append(caption, thead);
-    var tbody = document.createElement('tbody');
-    table.append(tbody);
     scroller.append(table);
 
-    var cards = document.createElement('div');
-    cards.className = 'grade-cards';
     var anyStar = false;
 
     courses.forEach(function (course) {
@@ -293,23 +308,60 @@
       var overall = overallOf(cycles);
       var slug = courseSlug(name);
       var assignments = sortedAssignments(course.assignments || []);
-      assignments.forEach(function (item) {
-        if (String(item.date || '').trim().endsWith('*')) anyStar = true;
+      var courseHasStar = assignments.some(function (item) {
+        return String(item.date || '').trim().endsWith('*');
       });
+      if (courseHasStar) anyStar = true;
 
+      var group = document.createElement('tbody');
       var row = document.createElement('tr');
+      row.className = 'course-row';
       var rowHead = document.createElement('th');
       rowHead.scope = 'row';
-      var jump = document.createElement('a');
-      jump.href = '#' + slug;
-      jump.textContent = name;
-      rowHead.append(jump);
+      var toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'course-toggle';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', slug);
+      toggle.setAttribute('aria-label', name + ', Cycle 3 assignments');
+      var chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      chevron.setAttribute('class', 'chevron');
+      chevron.setAttribute('viewBox', '0 0 12 12');
+      chevron.setAttribute('aria-hidden', 'true');
+      var chevronPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      chevronPath.setAttribute('d', 'M4 2.2 8 6 4 9.8');
+      chevronPath.setAttribute('fill', 'none');
+      chevronPath.setAttribute('stroke', 'currentColor');
+      chevronPath.setAttribute('stroke-width', '1.8');
+      chevronPath.setAttribute('stroke-linecap', 'round');
+      chevronPath.setAttribute('stroke-linejoin', 'round');
+      chevron.append(chevronPath);
+      var label = document.createElement('span');
+      label.className = 'course-label';
+      label.textContent = name;
+      toggle.append(chevron, label);
+      rowHead.append(toggle);
       row.append(rowHead);
       cycles.forEach(function (value) { row.append(averageCell(value, false)); });
       row.append(averageCell(overall, true));
-      tbody.append(row);
 
-      cards.append(courseCard(course, slug, cycles, overall, assignments));
+      var panelRow = document.createElement('tr');
+      panelRow.className = 'course-panel';
+      panelRow.hidden = true;
+      var panelCell = document.createElement('td');
+      panelCell.colSpan = 5;
+      panelCell.id = slug;
+      panelCell.append(assignmentPanel(course, assignments, courseHasStar));
+      panelRow.append(panelCell);
+      toggle.addEventListener('click', function () {
+        var open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+        panelRow.hidden = open;
+        row.classList.toggle('is-open', !open);
+      });
+
+      group.append(row, panelRow);
+      table.append(group);
     });
 
     var notes = document.createElement('div');
@@ -342,7 +394,10 @@
     var encourage = document.createElement('p');
     encourage.className = 'note';
     encourage.textContent = 'The colors are a quick look at the averages. A lower number is a spot the next assignments can lift.';
-    notes.append(overallNote, legend, encourage, keyNote);
+    var openHint = document.createElement('p');
+    openHint.className = 'note';
+    openHint.textContent = 'Choose a course name to open its Cycle 3 assignments.';
+    notes.append(openHint, overallNote, legend, encourage, keyNote);
     if (anyStar) {
       var starNote = document.createElement('p');
       starNote.className = 'note';
@@ -351,62 +406,39 @@
       notes.append(starNote);
     }
 
-    root.append(scroller, notes, cards);
+    root.append(scroller, notes);
   }
 
-  function courseCard(course, slug, cycles, overall, assignments) {
-    var article = document.createElement('article');
-    article.className = 'grade-card';
-    article.id = slug;
-    var titleId = slug + '-title';
-    article.setAttribute('aria-labelledby', titleId);
-
-    var head = document.createElement('div');
-    head.className = 'section-head';
-    var title = document.createElement('h3');
-    title.id = titleId;
-    title.textContent = course.name || 'Course';
-    var teacher = document.createElement('p');
-    teacher.className = 'teacher';
-    teacher.textContent = course.teacher || '';
-    head.append(title, teacher);
-
-    var body = document.createElement('div');
-    body.className = 'card-body';
-    var strip = document.createElement('ul');
-    strip.className = 'avg-strip';
-    ['Cycle 1', 'Cycle 2', 'Cycle 3'].forEach(function (label, index) {
-      strip.append(averageItem(label, cycles[index], false));
-    });
-    strip.append(averageItem('Overall', overall, true));
-
-    var listTitle = document.createElement('h4');
+  function assignmentPanel(course, assignments, courseHasStar) {
+    var panel = document.createElement('div');
+    if (course.teacher) {
+      var teacher = document.createElement('p');
+      teacher.className = 'teacher';
+      teacher.textContent = course.teacher;
+      panel.append(teacher);
+    }
+    var listTitle = document.createElement('h3');
+    listTitle.className = 'panel-title';
     listTitle.textContent = 'Cycle 3 assignments';
-    body.append(strip, listTitle);
-
+    panel.append(listTitle);
     if (!assignments.length) {
       var empty = document.createElement('p');
       empty.className = 'note empty-assignments';
       empty.textContent = EMPTY_NOTE;
-      body.append(empty);
+      panel.append(empty);
     } else {
       var list = document.createElement('ul');
       list.className = 'assign-list';
       assignments.forEach(function (item) { list.append(assignmentItem(item)); });
-      body.append(list);
+      panel.append(list);
     }
-
-    article.append(head, body);
-    return article;
-  }
-
-  function averageItem(label, value, isOverall) {
-    var li = document.createElement('li');
-    var name = document.createElement('span');
-    name.className = 'label';
-    name.textContent = label;
-    li.append(name, averagePill(value, isOverall));
-    return li;
+    if (courseHasStar) {
+      var starNote = document.createElement('p');
+      starNote.className = 'note panel-star';
+      starNote.textContent = STAR_NOTE;
+      panel.append(starNote);
+    }
+    return panel;
   }
 
   function averageCell(value, isOverall) {
