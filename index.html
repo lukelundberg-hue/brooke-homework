@@ -147,7 +147,19 @@
   .index-card h3 { font-family: Georgia, serif; font-size: 1.55rem; margin: .25rem 0 .4rem; }
   .index-card p { margin: 0; color: var(--muted); }
   .bottom { margin-top: 1.2rem; }
-  .utilities { display: flex; justify-content: flex-end; margin-bottom: .75rem; }
+  .utilities {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+    gap: .75rem; margin-bottom: .75rem;
+  }
+  .sync-status {
+    margin: 0; min-height: 2.75rem; display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .75rem; font-weight: 650; color: var(--muted);
+  }
+  .sync-status::before {
+    content: ""; width: .45rem; height: .45rem; border-radius: 50%; background: currentColor; flex-shrink: 0;
+  }
+  .sync-status.is-ok { color: var(--correct); }
+  .sync-status.is-wait { color: #8a6412; }
   .math-intro { padding-top: 1rem; margin: 0; }
   .numeric-form { display: flex; flex-wrap: wrap; align-items: end; gap: .65rem; }
   .numeric-field { display: grid; gap: .2rem; font-size: .9rem; }
@@ -260,6 +272,45 @@
   }
   .assignment-card > a:hover h3 { text-decoration: underline; }
   .card-actions { margin-top: .85rem; }
+  .index-card p.card-score {
+    display: flex; flex-direction: column; gap: .12rem; margin-top: .65rem;
+    font-size: .88rem; font-weight: 650; color: var(--ink);
+  }
+  .pass-note { margin: .55rem 0 0; font-size: .92rem; font-weight: 750; }
+  .index-card p.pass-note { margin-top: .4rem; }
+  .pass-note.is-retry { color: #7a4b12; }
+  .pass-note.is-pass { color: var(--correct); }
+  .question.is-locked .choice { cursor: default; }
+  .question.is-locked .choice input,
+  .question.is-locked .answer-row input,
+  .question.is-locked .numeric-field input,
+  .question.is-locked .ratio-table input,
+  .question.is-locked textarea { pointer-events: none; }
+  .worked-hint, #ratios-rates .rr-hint {
+    background: #fff8e8;
+    border: 1px solid #ead7a4;
+    border-radius: .5rem;
+    padding: .7rem .8rem;
+    margin: .75rem 0 0;
+    font-weight: 650;
+  }
+  .worked-hint:not([hidden])::before, #ratios-rates .rr-hint:not([hidden])::before {
+    content: "How to work it";
+    display: block;
+    font-weight: 750;
+    margin-bottom: .15rem;
+  }
+  .lockout-count {
+    margin: .45rem 0 0;
+    font-size: 1.65rem;
+    line-height: 1.2;
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+    color: #7a4b12;
+  }
+  .lockout-count:empty { display: none; }
+  .coach-solution { margin-top: .75rem; }
+  [data-rr-reveal] { display: none !important; }
   .empty-note { margin: 0 0 1rem; }
   .complete-bar {
     display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem;
@@ -738,7 +789,10 @@
   </div>
 </header>
 <main class="wrap">
-  <div class="utilities"><button type="button" class="plain" id="reset">Reset all progress</button></div>
+  <div class="utilities">
+    <p class="sync-status" id="sync-status" role="status"></p>
+    <button type="button" class="plain" id="reset">Reset all progress</button>
+  </div>
   <section id="home" class="screen" aria-labelledby="home-title">
     <div class="index-heading">
       <h2 id="home-title" tabindex="-1">Choose a subject</h2>
@@ -789,10 +843,9 @@
           <div class="kicker">Ms. Jackson · Classroom · Posted Nov 23 · Practice</div>
           <h3>Math Unit 4 Practice: Ratios &amp; Rates</h3>
           <p>12-question review. Choose or type an answer, then check it.</p>
+          <p class="card-score" data-score-for="ratios-rates" hidden></p>
+          <p class="pass-note" data-pass-for="ratios-rates" data-pass-kind="card" hidden></p>
         </a>
-        <div class="card-actions" hidden>
-          <button type="button" class="plain" data-mark="ratios-rates">Undo / mark not completed</button>
-        </div>
       </article>
     </div>
     <details class="completed-fold" id="math-completed-fold" hidden>
@@ -810,10 +863,9 @@
           <div class="kicker">Mr. Connolly · 6th period · Practice · Based on the South America Notes slides</div>
           <h3>South America Practice Test</h3>
           <p>25 questions from Mr. Connolly's South America slides and the Panama Canal slides.</p>
+          <p class="card-score" data-score-for="sa-practice-test" hidden></p>
+          <p class="pass-note" data-pass-for="sa-practice-test" data-pass-kind="card" hidden></p>
         </a>
-        <div class="card-actions" hidden>
-          <button type="button" class="plain" data-mark="sa-practice-test">Undo / mark not completed</button>
-        </div>
       </article>
     </div>
     <details class="completed-fold" id="social-completed-fold" hidden>
@@ -826,7 +878,7 @@
     <div class="index-heading">
       <div class="kicker">Mr. Connolly · 6th period · Practice · Based on the South America Notes slides</div>
       <h2 id="sa-title" tabindex="-1">South America Practice Test</h2>
-      <p>Answer each question, then press Check. You will see Correct, or Not quite — try again. Short answers can be written more than one way.</p>
+      <p>Each question has two tries, and a correct answer counts on either try. A miss shows how to work it, then waits 2 minutes before the second try. Choices are mixed up, and they lock after Check.</p>
     </div>
     <div class="progress-box">
       <div class="progress-meta" aria-live="polite">
@@ -837,9 +889,10 @@
     </div>
     <div class="sa-tools">
       <button type="button" class="plain sa-show" disabled aria-controls="sa-key" aria-expanded="false">Show answers</button>
+      <button type="button" class="plain sa-retry">Retry missed questions</button>
       <button type="button" class="plain sa-restart">Start over</button>
     </div>
-    <p class="note sa-lock" id="sa-lock">Check each question once. Then Show answers unlocks.</p>
+    <p class="note sa-lock" id="sa-lock">A miss shows a hint and a 2 minute wait, then one more try that still counts. Show answers unlocks when every question is finished.</p>
     <div id="sa-key" class="model-answer" hidden>
       <h3>Answers</h3>
       <p>Compare these with your work. Then fix any question you missed and press Check again.</p>
@@ -1520,19 +1573,17 @@
     </div>
     <div class="sa-tools">
       <button type="button" class="plain sa-show" disabled aria-controls="sa-key" aria-expanded="false">Show answers</button>
+      <button type="button" class="plain sa-retry">Retry missed questions</button>
       <button type="button" class="plain sa-restart">Start over</button>
     </div>
-    <p class="note sa-lock">Check each question once. Then Show answers unlocks.</p>
-    <div class="complete-bar">
-      <button type="button" class="primary" data-mark="sa-practice-test">Mark as completed</button>
-      <p class="note" aria-live="polite"></p>
-    </div>
+    <p class="note sa-lock">A miss shows a hint and a 2 minute wait, then one more try that still counts. Show answers unlocks when every question is finished.</p>
+    <p class="pass-note" data-pass-for="sa-practice-test" data-pass-kind="practice" hidden></p>
   </section>
   <section id="ratios-rates" class="screen" hidden aria-labelledby="ratios-title">
     <div class="index-heading">
       <div class="kicker">Ms. Jackson · Classroom · Posted Nov 23 · Practice</div>
       <h2 id="ratios-title" tabindex="-1">Math Unit 4 Practice: Ratios &amp; Rates</h2>
-      <p>12-question review. Choose or type your answer, then press Check. A wrong answer shows a hint first. The worked solution appears after a second wrong try, or when you tap Show solution.</p>
+      <p>Each question has two tries, and a correct answer counts on either try. A miss shows how to work it, then waits 2 minutes before the second try. Choices are mixed up, and they lock after Check.</p>
     </div>
     <div class="progress-box">
       <div class="progress-meta" aria-live="polite">
@@ -1664,7 +1715,7 @@
             <button type="button" class="plain" data-rr-reveal="q4" aria-expanded="false">Show solution</button>
           </div>
           <p class="feedback" id="rr-q4-feedback" role="status"></p>
-          <p class="rr-hint" hidden>The correct table multiplies both numbers by 2, then 3, then 4. The other table just adds.</p>
+          <p class="rr-hint" hidden>Step 1: Start from 2 seventh-graders for every 3 eighth-graders. Step 2: Multiply both numbers by 2, then by 3, then by 4. Step 3: Pick the table that shows those pairs. Adding a different amount each time does not keep the ratio.</p>
           <div class="model-answer rr-solution" hidden>
             <h3>Worked solution</h3>
             <p>A. (2, 3), (4, 6), (6, 9), (8, 12). Both numbers are multiplied by 2, then 3, then 4.</p>
@@ -1757,7 +1808,7 @@
             <button type="button" class="plain" data-rr-reveal="q7" aria-expanded="false">Show solution</button>
           </div>
           <p class="feedback" id="rr-q7-feedback" role="status"></p>
-          <p class="rr-hint" hidden>How many groups of 16 muffins are in 80? Each group uses 2 cups of flour.</p>
+          <p class="rr-hint" hidden>Step 1: See how many equal groups of muffins fit into the total. Step 2: Each group uses the same cups of flour as the first pair. Step 3: Multiply the number of groups by the flour in one group. The answer is the flour, not the number of groups.</p>
           <div class="model-answer rr-solution" hidden>
             <h3>Worked solution</h3>
             <p>10 cups. 80 ÷ 16 = 5 groups of muffins. 5 × 2 = 10 cups of flour.</p>
@@ -1941,10 +1992,7 @@
       <button type="button" class="plain" id="rr-restart">Start over</button>
     </div>
     <p class="note" id="rr-end-note" role="status"></p>
-    <div class="complete-bar">
-      <button type="button" class="primary" data-mark="ratios-rates">Mark as completed</button>
-      <p class="note" aria-live="polite"></p>
-    </div>
+    <p class="pass-note" data-pass-for="ratios-rates" data-pass-kind="practice" hidden></p>
   </section>
   <noscript>Enable JavaScript in your browser to use the quiz.</noscript>
   <div class="bottom">
@@ -1953,7 +2001,7 @@
 </main>
 <dialog id="reset-dialog" aria-labelledby="reset-title">
   <div class="dialog-top"><h2 class="dialog-title" id="reset-title">Reset all assignments?</h2></div>
-  <div class="dialog-body"><p>This clears answers, written responses, and diagrams. Completed checkmarks stay put.</p></div>
+  <div class="dialog-body"><p>This clears answers and written work. Scores and completed practices stay put.</p></div>
   <form method="dialog" class="dialog-actions">
     <button class="plain" value="cancel" autofocus>Keep my work</button>
     <button class="primary" value="reset">Reset all assignments</button>
@@ -2007,12 +2055,12 @@
       ? 'Answers and written work stay on this device.'
       : 'Answers and written work last while this page is open.';
     let checks;
-    if (sync.rejected) checks = ' The sync address is not a Firebase database URL, so completed checkmarks stay on this device.';
+    if (sync.rejected) checks = ' The sync address is not a Firebase database URL, so scores stay on this device.';
     else if (!sync.configured) checks = sync.localOk
-      ? ' Completed checkmarks stay on this device until sync is set up.'
-      : ' Completed checkmarks last while this page is open.';
-    else if (sync.remoteOk) checks = ' Completed checkmarks sync between devices.';
-    else checks = ' Completed checkmarks are saved on this device and will sync when the connection works.';
+      ? ' Scores stay on this device until sync is set up.'
+      : ' Scores last while this page is open.';
+    else if (sync.phase === 'ok') checks = ' Scores and completed practices sync between devices.';
+    else checks = ' Scores are saved on this device and will sync when the connection works.';
     storageNote.textContent = answers + checks;
   }
 
@@ -2042,24 +2090,36 @@
   }
 
 
-  // Cross-device completion. Paste a Firebase Realtime Database URL below
-  // after the one-time setup in README.md. Leave it empty to use this browser.
-  // Never put a secret token, service-account key, or GitHub password here.
+  // Scores and completed practices sync through Firebase Realtime Database.
+  // The URL is public on purpose. Never put a token or secret here.
+  // A practice is completed when every question has been checked and either
+  // the first or second try reaches PASS_PERCENT. A miss waits LOCKOUT_MS.
+  const PASS_PERCENT = 70;
+  const LOCKOUT_MS = 2 * 60 * 1000;
   const SYNC_CONFIG = {
-    firebaseDatabaseUrl: ''
+    firebaseDatabaseUrl: 'https://homework-hub-ab-default-rtdb.firebaseio.com'
   };
+  const HUB_KEY = 'brooke-homework-hub-v1';
+  const LEGACY_KEY = 'brooke-homework-completed-v1';
+  const ITEM_ID = /^[a-z0-9-]{1,40}$/;
 
-  const DEFAULT_COMPLETED = {};
-  const COMPLETION_KEY = 'brooke-homework-completed-v1';
-  const SEED_TIME = 1;
+  function scorePercent(correct, total) {
+    if (!total) return 0;
+    return Math.round((correct / total) * 100);
+  }
 
   function createCompletion() {
     let data = {};
     let localOk = true;
     let remoteOk = null;
+    let phase = 'off';
     let pulling = false;
     let pullAgain = false;
-    const failedPush = new Map();
+    let revision = 0;
+    let retryTimer = 0;
+    let retryDelay = 4000;
+    const dirty = new Set();
+    const justPassed = new Set();
     const listeners = new Set();
 
     function firebaseOrigin() {
@@ -2076,29 +2136,230 @@
       }
     }
 
-    function sanitize(raw) {
+    function cloneScore(score) {
+      if (!score) return null;
+      return { correct: score.correct, total: score.total, percent: score.percent, at: score.at };
+    }
+
+    function cloneQuestions(questions) {
+      if (!questions || typeof questions !== 'object') return null;
+      const next = {};
+      Object.keys(questions).sort().forEach(id => {
+        const q = questions[id];
+        if (!q || !q.result) return;
+        next[id] = {
+          result: q.result,
+          lockoutUntil: q.result === 'wait' ? (q.lockoutUntil || 0) : 0
+        };
+      });
+      return Object.keys(next).length ? next : null;
+    }
+
+    function cloneItem(item) {
+      if (!item) return null;
+      const next = {
+        completed: !!item.completed,
+        completedAt: item.completedAt || 0,
+        attempts: item.attempts || 0
+      };
+      if (item.updatedAt) next.updatedAt = item.updatedAt;
+      if (item.lastScore) next.lastScore = cloneScore(item.lastScore);
+      if (item.bestScore) next.bestScore = cloneScore(item.bestScore);
+      const questions = cloneQuestions(item.questions);
+      if (questions) next.questions = questions;
+      return next;
+    }
+
+    function sanitizeScore(raw) {
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+      const correct = raw.correct;
+      const total = raw.total;
+      const percent = raw.percent;
+      const at = raw.at;
+      if (![correct, total, percent, at].every(n => typeof n === 'number' && Number.isFinite(n))) return null;
+      const rounded = {
+        correct: Math.round(correct),
+        total: Math.round(total),
+        percent: Math.round(percent),
+        at
+      };
+      if (rounded.correct < 0 || rounded.total < 1 || rounded.total > 200) return null;
+      if (rounded.correct > rounded.total || rounded.percent < 0 || rounded.percent > 100 || at <= 0) return null;
+      return rounded;
+    }
+
+    function sanitizeItem(id, entry) {
+      if (!ITEM_ID.test(id)) return null;
+      if (!entry || typeof entry !== 'object' || Array.isArray(entry)) return null;
+      if (typeof entry.completed !== 'boolean') return null;
+      let completedAt = 0;
+      if (typeof entry.completedAt === 'number' && Number.isFinite(entry.completedAt) && entry.completedAt >= 0) {
+        completedAt = entry.completedAt;
+      }
+      let attempts = 0;
+      if (typeof entry.attempts === 'number' && Number.isFinite(entry.attempts) && entry.attempts >= 0) {
+        attempts = Math.min(10000, Math.round(entry.attempts));
+      }
+      const item = { completed: entry.completed, completedAt, attempts };
+      if (typeof entry.updatedAt === 'number' && Number.isFinite(entry.updatedAt) && entry.updatedAt > 0) {
+        item.updatedAt = entry.updatedAt;
+      }
+      const last = sanitizeScore(entry.lastScore);
+      const best = sanitizeScore(entry.bestScore);
+      if (last) item.lastScore = last;
+      if (best) item.bestScore = best;
+      const questions = sanitizeQuestions(entry.questions);
+      if (questions) item.questions = questions;
+      return item;
+    }
+
+    function sanitizeQuestion(raw) {
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+      const result = raw.result;
+      if (result !== 'first' && result !== 'second' && result !== 'wrong' && result !== 'wait') return null;
+      let lockoutUntil = 0;
+      if (typeof raw.lockoutUntil === 'number' && Number.isFinite(raw.lockoutUntil) && raw.lockoutUntil > 0) {
+        lockoutUntil = raw.lockoutUntil;
+      }
+      if (result !== 'wait') lockoutUntil = 0;
+      return { result, lockoutUntil };
+    }
+
+    function sanitizeQuestions(raw) {
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+      const next = {};
+      Object.keys(raw).sort().forEach(id => {
+        if (!/^q[0-9]{1,2}$/.test(id)) return;
+        const question = sanitizeQuestion(raw[id]);
+        if (question) next[id] = question;
+      });
+      return Object.keys(next).length ? next : null;
+    }
+
+    function sanitizeMap(raw) {
       const next = {};
       if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return next;
       for (const [id, entry] of Object.entries(raw)) {
-        if (!/^[a-z0-9-]{1,40}$/.test(id)) continue;
-        if (!entry || typeof entry.value !== 'boolean' || typeof entry.updatedAt !== 'number') continue;
-        if (!Number.isFinite(entry.updatedAt) || entry.updatedAt <= 0) continue;
-        next[id] = { value: entry.value, updatedAt: entry.updatedAt };
+        const item = sanitizeItem(id, entry);
+        if (item) next[id] = item;
       }
       return next;
     }
 
-    function withDefaults(saved) {
-      const next = saved || {};
-      for (const [id, value] of Object.entries(DEFAULT_COMPLETED)) {
-        if (!next[id]) next[id] = { value, updatedAt: SEED_TIME };
+    function legacyMap(raw) {
+      const next = {};
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return next;
+      for (const [id, entry] of Object.entries(raw)) {
+        if (!entry || entry.value !== true) continue;
+        const at = typeof entry.updatedAt === 'number' && Number.isFinite(entry.updatedAt) && entry.updatedAt > 0
+          ? entry.updatedAt
+          : 0;
+        const item = sanitizeItem(id, { completed: true, completedAt: at, attempts: 0 });
+        if (item) next[id] = item;
       }
       return next;
+    }
+
+    function loadStored() {
+      const current = localStorage.getItem(HUB_KEY);
+      if (current) return sanitizeMap(JSON.parse(current));
+      const legacy = localStorage.getItem(LEGACY_KEY);
+      if (!legacy) return {};
+      return legacyMap(JSON.parse(legacy));
+    }
+
+    function toPayload(item) {
+      const payload = {
+        completed: !!item.completed,
+        completedAt: item.completedAt > 0 ? item.completedAt : 0,
+        attempts: item.attempts || 0
+      };
+      if (item.lastScore) payload.lastScore = cloneScore(item.lastScore);
+      if (item.bestScore) payload.bestScore = cloneScore(item.bestScore);
+      if (item.updatedAt) payload.updatedAt = item.updatedAt;
+      const questions = cloneQuestions(item.questions);
+      if (questions) payload.questions = questions;
+      return payload;
+    }
+
+    function sameScore(a, b) {
+      if (!a && !b) return true;
+      if (!a || !b) return false;
+      return a.correct === b.correct && a.total === b.total && a.percent === b.percent && a.at === b.at;
+    }
+
+    function samePayload(item, remoteItem) {
+      if (!item && !remoteItem) return true;
+      if (!item || !remoteItem) return false;
+      const local = toPayload(item);
+      const remote = toPayload(remoteItem);
+      return local.completed === remote.completed
+        && local.completedAt === remote.completedAt
+        && local.attempts === remote.attempts
+        && local.updatedAt === remote.updatedAt
+        && sameScore(local.lastScore, remote.lastScore)
+        && sameScore(local.bestScore, remote.bestScore)
+        && JSON.stringify(local.questions || null) === JSON.stringify(remote.questions || null);
+    }
+
+    function hasSignal(item) {
+      return !!(item && (item.completed || item.attempts > 0 || item.lastScore || item.bestScore || (item.questions && Object.keys(item.questions).length)));
+    }
+
+    function betterScore(a, b) {
+      if (!a) return b || null;
+      if (!b) return a;
+      if (a.percent !== b.percent) return a.percent > b.percent ? a : b;
+      if (a.correct !== b.correct) return a.correct > b.correct ? a : b;
+      return a.at >= b.at ? a : b;
+    }
+
+    function attemptPasses(score) {
+      return !!(score && score.percent >= PASS_PERCENT);
+    }
+
+    function itemPasses(item) {
+      if (!item) return false;
+      return attemptPasses(item.bestScore) || attemptPasses(item.lastScore);
+    }
+
+    function mergeItem(local, remote) {
+      if (!remote) return cloneItem(local);
+      if (!local) return cloneItem(remote);
+      const remoteNewer = (remote.updatedAt || 0) >= (local.updatedAt || 0);
+      const newer = remoteNewer ? remote : local;
+      const older = remoteNewer ? local : remote;
+      const best = betterScore(local.bestScore, remote.bestScore);
+      const last = newer.lastScore || older.lastScore;
+      const attempts = Math.min(10000, Math.max(local.attempts || 0, remote.attempts || 0));
+      let completed = !!remote.completed;
+      let completedAt = remote.completedAt || 0;
+      if (itemPasses({ bestScore: best, lastScore: last })) {
+        completed = true;
+        if (!remote.completed) completedAt = local.completed && local.completedAt ? local.completedAt : ((best && best.at) || Date.now());
+      }
+      const item = { completed, completedAt, attempts };
+      const updatedAt = Math.max(local.updatedAt || 0, remote.updatedAt || 0);
+      if (updatedAt) item.updatedAt = updatedAt;
+      if (last) item.lastScore = cloneScore(last);
+      if (best) item.bestScore = cloneScore(best);
+      const questions = cloneQuestions(newer.questions);
+      if (questions && older.questions) {
+        Object.keys(older.questions).forEach(id => {
+          const kept = questions[id];
+          const previous = older.questions[id];
+          if (kept && previous && kept.result === 'wait' && previous.result === 'wait') {
+            kept.lockoutUntil = Math.max(kept.lockoutUntil || 0, previous.lockoutUntil || 0);
+          }
+        });
+      }
+      if (questions) item.questions = questions;
+      return item;
     }
 
     function saveLocal() {
       try {
-        localStorage.setItem(COMPLETION_KEY, JSON.stringify(data));
+        localStorage.setItem(HUB_KEY, JSON.stringify(data));
         localOk = true;
       } catch {
         localOk = false;
@@ -2115,116 +2376,269 @@
         configured: !!firebaseOrigin(),
         rejected: !!raw && !firebaseOrigin(),
         remoteOk,
-        localOk
+        localOk,
+        phase: firebaseOrigin() ? phase : 'off'
       };
     }
 
-    async function pushOne(id) {
-      const origin = firebaseOrigin();
-      const entry = data[id];
-      if (!origin || !entry) return;
-      if (failedPush.get(id) === entry.updatedAt) return;
-      try {
-        const response = await fetch(origin + '/completed/' + encodeURIComponent(id) + '.json', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(entry)
-        });
-        if (response.ok) {
-          failedPush.delete(id);
-          remoteOk = true;
-          return;
-        }
-        remoteOk = false;
-        if (response.status === 401 || response.status === 403) {
-          failedPush.set(id, entry.updatedAt);
-          pull();
-        }
-      } catch {
-        remoteOk = false;
-      }
-      emit();
+    function knownIds() {
+      const ids = new Set(Object.keys(data));
+      document.querySelectorAll('[data-assignment]').forEach(card => {
+        if (card.dataset.assignment) ids.add(card.dataset.assignment);
+      });
+      return [...ids].filter(id => ITEM_ID.test(id));
     }
 
-    async function pullOnce() {
+    function clearRetry() {
+      retryDelay = 4000;
+      if (retryTimer) {
+        clearTimeout(retryTimer);
+        retryTimer = 0;
+      }
+    }
+
+    function scheduleRetry() {
+      if (retryTimer || !firebaseOrigin()) return;
+      const wait = retryDelay;
+      retryDelay = Math.min(retryDelay * 2, 60000);
+      retryTimer = setTimeout(() => {
+        retryTimer = 0;
+        pull();
+      }, wait);
+    }
+
+    async function syncItem(id) {
       const origin = firebaseOrigin();
-      if (!origin) return;
-      const response = await fetch(origin + '/completed.json', { cache: 'no-store' });
+      const url = origin + '/hub/v1/items/' + encodeURIComponent(id) + '.json';
+      const response = await fetch(url, { cache: 'no-store' });
       if (!response.ok) throw new Error('sync ' + response.status);
-      const remote = sanitize(await response.json());
-      remoteOk = true;
-      for (const [id, entry] of Object.entries(remote)) {
-        const local = data[id];
-        if (!local || entry.updatedAt > local.updatedAt) {
-          data[id] = entry;
-          failedPush.delete(id);
-        }
-      }
-      const pending = [];
-      for (const [id, entry] of Object.entries(data)) {
-        const remoteEntry = remote[id];
-        if (!remoteEntry || entry.updatedAt > remoteEntry.updatedAt) pending.push(id);
-      }
+      const remote = sanitizeItem(id, await response.json());
+      const started = revision;
+      const merged = mergeItem(data[id] || null, remote);
+      if (merged) data[id] = merged;
       saveLocal();
-      emit();
-      for (const id of pending) await pushOne(id);
+      if (!merged || !hasSignal(merged)) {
+        if (revision === started) dirty.delete(id);
+        return;
+      }
+      if (samePayload(merged, remote)) {
+        if (revision === started) dirty.delete(id);
+        return;
+      }
+      const put = await fetch(url, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(toPayload(data[id] || merged))
+      });
+      if (!put.ok) throw new Error('sync ' + put.status);
+      if (revision === started) dirty.delete(id);
+      else dirty.add(id);
     }
 
     async function pull() {
-      if (!firebaseOrigin()) return;
+      if (!firebaseOrigin()) {
+        phase = 'off';
+        emit();
+        return;
+      }
       if (pulling) {
         pullAgain = true;
         return;
       }
       pulling = true;
+      phase = 'syncing';
+      emit();
+      let failed = false;
       try {
         do {
           pullAgain = false;
           try {
-            await pullOnce();
+            for (const id of knownIds()) await syncItem(id);
           } catch {
+            failed = true;
             remoteOk = false;
-            emit();
           }
-        } while (pullAgain);
+        } while (pullAgain && !failed);
       } finally {
         pulling = false;
+        if (failed || dirty.size) {
+          phase = 'local';
+          scheduleRetry();
+        } else {
+          remoteOk = true;
+          phase = 'ok';
+          clearRetry();
+        }
+        saveLocal();
+        emit();
       }
     }
 
     function init() {
       try {
-        data = withDefaults(sanitize(JSON.parse(localStorage.getItem(COMPLETION_KEY))));
+        data = loadStored();
       } catch {
-        data = withDefaults(null);
+        data = {};
         localOk = false;
       }
       if (localOk) saveLocal();
-      pull();
+      phase = firebaseOrigin() ? 'syncing' : 'off';
+      if (firebaseOrigin()) pull();
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') pull();
       });
       window.addEventListener('focus', () => pull());
+      window.addEventListener('online', () => pull());
     }
 
     function isCompleted(id) {
-      if (data[id]) return data[id].value;
-      return !!DEFAULT_COMPLETED[id];
+      return !!(data[id] && data[id].completed);
     }
 
-    function setCompleted(id, value) {
-      data[id] = { value: !!value, updatedAt: Date.now() };
-      failedPush.delete(id);
+    function scoreFor(id) {
+      const item = data[id];
+      if (!item) return { lastScore: null, bestScore: null, attempts: 0 };
+      return {
+        lastScore: item.lastScore || null,
+        bestScore: item.bestScore || null,
+        attempts: item.attempts || 0
+      };
+    }
+
+    function recordScore(id, correct, total, freshAttempt) {
+      if (!ITEM_ID.test(id) || !total) return;
+      const safeTotal = Math.max(1, Math.min(200, Math.round(total)));
+      const safeCorrect = Math.max(0, Math.min(safeTotal, Math.round(correct)));
+      const score = {
+        correct: safeCorrect,
+        total: safeTotal,
+        percent: scorePercent(safeCorrect, safeTotal),
+        at: Date.now()
+      };
+      const wasCompleted = !!(data[id] && data[id].completed);
+      const item = cloneItem(data[id]) || { completed: false, completedAt: 0, attempts: 0 };
+      const same = item.lastScore
+        && item.lastScore.correct === score.correct
+        && item.lastScore.total === score.total
+        && item.lastScore.percent === score.percent;
+      if (same && !freshAttempt) return;
+      revision += 1;
+      if (freshAttempt || !item.lastScore) item.attempts = Math.min(10000, (item.attempts || 0) + 1);
+      item.lastScore = score;
+      item.bestScore = cloneScore(betterScore(item.bestScore, score));
+      if (itemPasses(item)) {
+        if (!item.completed) item.completedAt = score.at;
+        item.completed = true;
+        if (!wasCompleted) justPassed.add(id);
+      }
+      data[id] = item;
+      dirty.add(id);
       saveLocal();
       emit();
-      pushOne(id);
+      pull();
+    }
+
+    function questionsOf(itemId) {
+      const item = data[itemId];
+      return item && item.questions ? item.questions : {};
+    }
+
+    function question(itemId, qid) {
+      return questionsOf(itemId)[qid] || null;
+    }
+
+    function tally(itemId, total) {
+      return tallyFrom(questionsOf(itemId), total);
+    }
+
+    function tallyFrom(questions, total) {
+      let correct = 0;
+      let resolved = 0;
+      let answered = 0;
+      for (let index = 1; index <= total; index += 1) {
+        const entry = questions['q' + index];
+        if (!entry) continue;
+        if (entry.result === 'first' || entry.result === 'second') {
+          correct += 1;
+          resolved += 1;
+          answered += 1;
+        } else if (entry.result === 'wrong') {
+          resolved += 1;
+          answered += 1;
+        } else if (entry.result === 'wait') answered += 1;
+      }
+      return {
+        correct,
+        resolved,
+        answered,
+        total,
+        finished: total > 0 && resolved === total
+      };
+    }
+
+    function setQuestion(itemId, qid, next, total) {
+      if (!ITEM_ID.test(itemId) || !/^q[0-9]{1,2}$/.test(qid) || !total) return;
+      const result = next && next.result;
+      if (result !== 'first' && result !== 'second' && result !== 'wrong' && result !== 'wait') return;
+      const wasCompleted = !!(data[itemId] && data[itemId].completed);
+      const item = cloneItem(data[itemId]) || { completed: false, completedAt: 0, attempts: 0 };
+      const questions = item.questions ? { ...item.questions } : {};
+      const before = tallyFrom(questions, total);
+      questions[qid] = {
+        result,
+        lockoutUntil: result === 'wait' ? (next.lockoutUntil || 0) : 0
+      };
+      item.questions = questions;
+      item.updatedAt = Date.now();
+      const after = tallyFrom(questions, total);
+      if (after.finished) {
+        const score = {
+          correct: after.correct,
+          total,
+          percent: scorePercent(after.correct, total),
+          at: Date.now()
+        };
+        if (!before.finished) item.attempts = Math.min(10000, (item.attempts || 0) + 1);
+        item.lastScore = score;
+        item.bestScore = cloneScore(betterScore(item.bestScore, score));
+        if (itemPasses(item)) {
+          if (!item.completed) item.completedAt = score.at;
+          item.completed = true;
+          if (!wasCompleted) justPassed.add(itemId);
+        }
+      }
+      revision += 1;
+      data[itemId] = item;
+      dirty.add(itemId);
+      saveLocal();
+      emit();
+      pull();
+    }
+
+    function clearQuestions(itemId) {
+      if (!ITEM_ID.test(itemId) || !data[itemId]) return;
+      const item = cloneItem(data[itemId]);
+      delete item.questions;
+      item.updatedAt = Date.now();
+      revision += 1;
+      data[itemId] = item;
+      dirty.add(itemId);
+      saveLocal();
+      emit();
+      pull();
     }
 
     function onChange(listener) {
       listeners.add(listener);
     }
 
-    return { init, isCompleted, setCompleted, onChange, pull, status };
+    function passedJustNow(id) {
+      if (!justPassed.has(id)) return false;
+      justPassed.delete(id);
+      return true;
+    }
+
+    return { init, isCompleted, scoreFor, question, questions: questionsOf, tally, setQuestion, clearQuestions, recordScore, passedJustNow, onChange, pull, status };
   }
 
   const completion = createCompletion();
@@ -2235,6 +2649,92 @@
     return count + ' to do';
   }
 
+  function formatWhen(at) {
+    try {
+      return new Intl.DateTimeFormat('en-US', {
+        month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+      }).format(at);
+    } catch {
+      return '';
+    }
+  }
+
+  function formatScore(score) {
+    if (!score) return '';
+    return score.correct + ' of ' + score.total + ' · ' + score.percent + '%';
+  }
+
+  function paintScores() {
+    document.querySelectorAll('[data-score-for]').forEach(node => {
+      const info = completion.scoreFor(node.dataset.scoreFor);
+      const last = info && info.lastScore;
+      const best = info && info.bestScore;
+      if (!last && !best) {
+        node.hidden = true;
+        node.replaceChildren();
+        return;
+      }
+      const when = last && last.at ? formatWhen(last.at) : '';
+      const lastLine = document.createElement('span');
+      lastLine.textContent = 'Last ' + formatScore(last || best) + (when ? ' · ' + when : '');
+      const bestLine = document.createElement('span');
+      bestLine.textContent = 'Best ' + formatScore(best || last);
+      node.hidden = false;
+      node.replaceChildren(lastLine, bestLine);
+    });
+  }
+
+  function paintPassNotes() {
+    document.querySelectorAll('[data-pass-for]').forEach(node => {
+      const info = completion.scoreFor(node.dataset.passFor);
+      const finished = info && info.lastScore;
+      const passed = completion.isCompleted(node.dataset.passFor);
+      node.classList.remove('is-retry', 'is-pass');
+      if (!finished) {
+        node.hidden = true;
+        node.textContent = '';
+        return;
+      }
+      if (passed) {
+        if (node.dataset.passKind === 'practice') {
+          node.hidden = false;
+          node.classList.add('is-pass');
+          node.textContent = 'You passed. This practice is in Completed.';
+        } else {
+          node.hidden = true;
+          node.textContent = '';
+        }
+        return;
+      }
+      node.hidden = false;
+      node.classList.add('is-retry');
+      node.textContent = 'This score is saved. Practicing missed questions will not change it.';
+    });
+  }
+
+  function paintSync() {
+    const node = document.getElementById('sync-status');
+    if (!node) return;
+    const sync = completion.status();
+    node.classList.remove('is-ok', 'is-wait');
+    if (!sync.configured) {
+      node.textContent = 'On this device';
+      return;
+    }
+    if (sync.phase === 'syncing') {
+      node.textContent = 'Syncing';
+      node.classList.add('is-wait');
+      return;
+    }
+    if (sync.phase === 'ok') {
+      node.textContent = 'Synced';
+      node.classList.add('is-ok');
+      return;
+    }
+    node.textContent = 'Saved on this device';
+    node.classList.add('is-wait');
+  }
+
   function refreshCompletionUI() {
     ['math', 'social'].forEach(subject => {
       const cards = [...document.querySelectorAll('[data-subject="' + subject + '"]')];
@@ -2242,33 +2742,28 @@
       const active = document.getElementById(subject + '-active');
       const doneBox = document.getElementById(subject + '-completed');
       cards.forEach(card => {
-        const done = completion.isCompleted(card.dataset.assignment);
+        const id = card.dataset.assignment;
+        const done = completion.isCompleted(id);
         (done ? doneBox : active).append(card);
-        const actions = card.querySelector('.card-actions');
-        const mark = card.querySelector('[data-mark]');
-        if (!actions || !mark) return;
-        actions.hidden = !(done || card.dataset.external === 'true');
-        mark.textContent = done ? 'Undo / mark not completed' : 'Mark as completed';
+        if (done && completion.passedJustNow(id)) {
+          const fold = document.getElementById(subject + '-completed-fold');
+          if (fold) fold.open = true;
+        }
       });
       const activeCount = active.querySelectorAll('[data-assignment]').length;
       const doneCount = doneBox.querySelectorAll('[data-assignment]').length;
       document.getElementById(subject + '-empty').hidden = activeCount !== 0;
       const fold = document.getElementById(subject + '-completed-fold');
       fold.hidden = doneCount === 0;
+      if (doneCount === 0) fold.open = false;
       document.getElementById(subject + '-completed-count').textContent = '(' + doneCount + ')';
     });
     document.getElementById('math-count').textContent = countPhrase(document.getElementById('math-active').querySelectorAll('[data-assignment]').length);
     document.getElementById('social-count').textContent = countPhrase(document.getElementById('social-active').querySelectorAll('[data-assignment]').length);
-    document.querySelectorAll('.complete-bar').forEach(bar => {
-      const mark = bar.querySelector('[data-mark]');
-      const done = completion.isCompleted(mark.dataset.mark);
-      const sober = !!bar.closest('.suspension');
-      mark.textContent = done ? 'Undo / mark not completed' : 'Mark as completed';
-      mark.className = done ? 'plain' : 'primary';
-      bar.querySelector('.note').textContent = done
-        ? 'This assignment is in Completed. ' + (sober ? 'Open it again if you still need it.' : 'Bring it back if you still need it.')
-        : (sober ? 'When you are done, this moves the assignment to the Completed list.' : 'Finished? This moves it to the Completed list.');
-    });
+    paintScores();
+    paintPassNotes();
+    paintSync();
+    paintAllQuestions();
     showStorageNote();
   }
 
@@ -2336,18 +2831,216 @@
     return false;
   }
 
+  const SA_HINTS = [
+    'The notes pair two facts: the continent\'s size rank, and about what share of Earth\'s land it covers. Choose the answer that has both.',
+    'Step 1: Open the Land and Size notes. Step 2: Find the area measured in square miles. Step 3: Type that whole number. It is in the millions.',
+    'Step 1: Find the Amazon River in the notes. Step 2: Name the part of the continent it runs through. Step 3: Name the region that feeds it.',
+    'The river notes give a length in miles. It is a four-digit number. Type the length, not the name of the river.',
+    'Count the countries the notes say this river flows through. Type that count.',
+    'The notes say whether any permanent bridge crosses this river. Decide if the sentence matches that fact.',
+    'Match each river to its region. One river is in the north. The other is in the southeast.',
+    'Step 1: Find the driest desert in the notes. Step 2: Check its name and how little rain it gets. Step 3: Pick the choice that matches both.',
+    'Find the waterfall notes. Match the country, what the falls are known for, and the height.',
+    'Look for the desert the notes rank by size against other deserts in the world. The answer is that desert\'s name.',
+    'Find the grasslands near a capital city. Check the country, the average temperature, and which month is the dry season.',
+    'The notes describe this plant with a short phrase. Type what kind of plant it is, not the place where it grows.',
+    'Find the forest the notes place in the south of one country and along a coast in another. The answer also says how the seasons work there.',
+    'The notes list four rainforest layers and their heights. Pick the layer that has the most species, not the tallest one.',
+    'Match three facts: what share of the world\'s rainforests are in this region, what threatens them, and the name of one indigenous people.',
+    'The mountain notes give a length and a width, both in miles. Pick the choice that has both numbers.',
+    'The notes give the height of the tallest peak in feet. It is a five-digit number. Type the height.',
+    'Find the empire and the city in the clouds. Check when the city was built and whether the Spanish found it.',
+    'The notes list skills and inventions of one people, and a separate set of lines drawn in Peru. Pick the choice that has both.',
+    'Match the two main languages, who brought them, the main religion, and the century of independence.',
+    'Find the largest country. The notes give its population and its area. Pick the choice that matches both.',
+    'Group the biggest kinds of work, who first brought cattle, and which country supplies most of the world\'s emeralds.',
+    'The notes list the largest ancestry groups, including people of mixed ancestry. Pick the list that matches.',
+    'The canal notes name the two oceans it joins. See if the sentence names those same oceans.',
+    'Match the share of world trade, the travel time saved, the safety, and how long a ship is in the canal.'
+  ];
+
+  function formatClock(ms) {
+    const total = Math.max(0, Math.ceil(ms / 1000));
+    const minutes = Math.floor(total / 60);
+    const seconds = total % 60;
+    return minutes + ':' + String(seconds).padStart(2, '0');
+  }
+
+  function questionFinal(entry) {
+    return !!(entry && (entry.result === 'first' || entry.result === 'second' || entry.result === 'wrong'));
+  }
+
+  function questionWaiting(entry) {
+    return !!(entry && entry.result === 'wait' && (entry.lockoutUntil || 0) > Date.now());
+  }
+
+  function relabelChoices(group) {
+    const letters = [...group.querySelectorAll(':scope > .choice .letter')].map(node => node.textContent);
+    if (letters.some(text => text === 'T' || text === 'F')) return;
+    [...group.querySelectorAll(':scope > .choice')].forEach((choice, index) => {
+      const letter = choice.querySelector('.letter');
+      if (letter) letter.textContent = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[index] || '';
+    });
+  }
+
+  function writeOrders(block, orders) {
+    const groups = [...block.querySelectorAll('.options')];
+    if (!orders || orders.length !== groups.length) return false;
+    let valid = true;
+    groups.forEach((group, index) => {
+      const values = orders[index];
+      const choices = [...group.querySelectorAll(':scope > .choice')];
+      const byValue = new Map();
+      choices.forEach(choice => {
+        const input = choice.querySelector('input');
+        if (input) byValue.set(input.value, choice);
+      });
+      if (!values || values.length !== choices.length || values.some(value => !byValue.has(value))) {
+        valid = false;
+        return;
+      }
+      values.forEach(value => group.append(byValue.get(value)));
+      relabelChoices(group);
+    });
+    return valid;
+  }
+
+  function shuffleChoices(block) {
+    const orders = [];
+    block.querySelectorAll('.options').forEach(group => {
+      const choices = [...group.querySelectorAll(':scope > .choice')];
+      for (let index = choices.length - 1; index > 0; index -= 1) {
+        const swap = Math.floor(Math.random() * (index + 1));
+        const choice = choices[index];
+        choices[index] = choices[swap];
+        choices[swap] = choice;
+      }
+      choices.forEach(choice => group.append(choice));
+      relabelChoices(group);
+      orders.push(choices.map(choice => {
+        const input = choice.querySelector('input');
+        return input ? input.value : '';
+      }));
+    });
+    return orders;
+  }
+
+  function prepareChoices(block, orders) {
+    if (orders && writeOrders(block, orders)) return orders;
+    return shuffleChoices(block);
+  }
+
+  function setAnswerLocked(block, locked) {
+    block.classList.toggle('is-locked', locked);
+    block.querySelectorAll('input, textarea').forEach(field => {
+      field.disabled = locked;
+    });
+    const button = block.querySelector('[data-sa-check], [data-rr-check]');
+    if (button) button.disabled = locked;
+  }
+
+  function ensureLockout(block, after) {
+    let count = block.querySelector('.lockout-count');
+    if (!count) {
+      count = document.createElement('p');
+      count.className = 'lockout-count';
+      count.setAttribute('role', 'timer');
+      if (after && after.parentNode) after.after(count);
+      else block.append(count);
+    }
+    return count;
+  }
+
+  function paintLockout(count, entry) {
+    if (!count) return;
+    count.textContent = questionWaiting(entry) ? 'Try again in ' + formatClock(entry.lockoutUntil - Date.now()) : '';
+  }
+
+  function labelCheck(block, entry) {
+    const button = block.querySelector('[data-sa-check], [data-rr-check]');
+    if (!button) return;
+    if (block.dataset.practice === 'open') button.textContent = 'Practice check';
+    else if (questionWaiting(entry)) button.textContent = 'Locked';
+    else if (entry && entry.result === 'wait') button.textContent = 'Check again';
+    else if (questionFinal(entry)) button.textContent = 'Checked';
+    else button.textContent = 'Check';
+  }
+
+  function answerLocked(block, entry) {
+    if (block.dataset.practice === 'open') return false;
+    if (questionWaiting(entry)) return true;
+    return questionFinal(entry);
+  }
+
+  function saHintNode(block) {
+    let hint = block.querySelector('.worked-hint');
+    if (!hint) {
+      hint = document.createElement('p');
+      hint.className = 'worked-hint';
+      hint.hidden = true;
+      block.append(hint);
+    }
+    const index = Number(String(block.dataset.saQ || '').slice(1)) - 1;
+    hint.textContent = SA_HINTS[index] || '';
+    return hint;
+  }
+
+  function saSolutionNode(block) {
+    let solution = block.querySelector('.coach-solution');
+    if (!solution) {
+      solution = document.createElement('div');
+      solution.className = 'model-answer coach-solution';
+      solution.hidden = true;
+      const title = document.createElement('h3');
+      title.textContent = 'Solution';
+      const body = document.createElement('p');
+      body.className = 'coach-solution-text';
+      solution.append(title, body);
+      block.append(solution);
+    }
+    const index = Number(String(block.dataset.saQ || '').slice(1)) - 1;
+    const source = document.querySelectorAll('#sa-key .sa-key-list li')[index];
+    const body = solution.querySelector('.coach-solution-text');
+    if (body && source) body.textContent = source.textContent;
+    return solution;
+  }
+
+  function paintAllQuestions() {
+    document.querySelectorAll('[data-sa-q]').forEach(paintSa);
+    document.querySelectorAll('[data-rr]').forEach(paintRatio);
+    updateSaChrome();
+    updateRatioChrome();
+  }
+
+  function refreshLockouts() {
+    let repaint = false;
+    document.querySelectorAll('.question').forEach(block => {
+      const qid = block.dataset.saQ || block.dataset.rr;
+      if (!qid) return;
+      const itemId = block.dataset.saQ ? 'sa-practice-test' : 'ratios-rates';
+      const entry = completion.question(itemId, qid);
+      const count = block.querySelector('.lockout-count');
+      const waiting = questionWaiting(entry);
+      if (waiting && !block.classList.contains('is-locked')) repaint = true;
+      if (!waiting && entry && entry.result === 'wait' && block.classList.contains('is-locked')) repaint = true;
+      paintLockout(count, entry);
+    });
+    if (repaint) paintAllQuestions();
+  }
+
   function saRoot() {
     return document.querySelector('#sa-practice-test');
   }
 
   function saEntry(id) {
     const raw = state.sa && state.sa[id];
-    if (!raw || typeof raw !== 'object') return { value: '', checkedValue: '', status: '', checked: false };
+    if (!raw || typeof raw !== 'object') return { value: '', checkedValue: '', status: '', checked: false, orders: null };
     return {
       value: typeof raw.value === 'string' ? raw.value : '',
       checkedValue: typeof raw.checkedValue === 'string' ? raw.checkedValue : '',
       status: raw.status === 'correct' || raw.status === 'retry' ? raw.status : '',
-      checked: raw.checked === true
+      checked: raw.checked === true,
+      orders: Array.isArray(raw.orders) ? raw.orders : null
     };
   }
 
@@ -2376,6 +3069,7 @@
 
   function paintSa(block) {
     const saved = saEntry(block.dataset.saQ);
+    const entry = completion.question('sa-practice-test', block.dataset.saQ);
     const value = saValue(block);
     const show = saved.checkedValue !== '' && value === saved.checkedValue ? saved.status : '';
     const feedback = block.querySelector('.feedback');
@@ -2389,10 +3083,29 @@
       field.removeAttribute('aria-invalid');
     }
     if (group) group.removeAttribute('aria-invalid');
+    const hint = saHintNode(block);
+    const solution = saSolutionNode(block);
+    const count = ensureLockout(block, hint);
+    hint.hidden = !(entry && (entry.result === 'wait' || entry.result === 'wrong'));
+    solution.hidden = !(entry && entry.result === 'wrong');
+    paintLockout(count, entry);
+    setAnswerLocked(block, answerLocked(block, entry));
+    labelCheck(block, entry);
+    if (block.dataset.practice === 'done' && questionFinal(entry)) {
+      const practiceOk = block.dataset.practiceOk === 'yes';
+      feedback.classList.add(practiceOk ? 'correct' : 'incorrect');
+      feedback.textContent = practiceOk
+        ? 'Correct. Practice only. This does not change your score.'
+        : 'Not quite. Practice only. This does not change your score.';
+      return;
+    }
     if (show === 'correct' || show === 'retry') {
-      const correct = show === 'correct';
+      const correct = entry ? entry.result === 'first' || entry.result === 'second' : show === 'correct';
       feedback.classList.add(correct ? 'correct' : 'incorrect');
-      feedback.textContent = correct ? 'Correct' : 'Not quite \u2014 try again';
+      if (entry && entry.result === 'second') feedback.textContent = 'Correct. This try counts.';
+      else if (entry && entry.result === 'wrong') feedback.textContent = 'Saved as not correct.';
+      else if (entry && entry.result === 'wait') feedback.textContent = 'Not yet. Use the hint. The second try counts after the wait.';
+      else feedback.textContent = correct ? 'Correct' : 'Not yet.';
       const picked = block.querySelector('input[type="radio"]:checked');
       if (picked) picked.closest('.choice').classList.add(correct ? 'is-correct' : 'is-wrong');
       if (field) {
@@ -2404,15 +3117,9 @@
   }
 
   function saCounts(root) {
-    const blocks = [...root.querySelectorAll('[data-sa-q]')];
-    let correct = 0;
-    let checked = 0;
-    blocks.forEach(block => {
-      const saved = saEntry(block.dataset.saQ);
-      if (saved.checked) checked += 1;
-      if (saved.status === 'correct' && saved.checkedValue !== '' && saved.value === saved.checkedValue) correct += 1;
-    });
-    return { correct, checked, total: blocks.length };
+    const total = root ? root.querySelectorAll('[data-sa-q]').length : 25;
+    const counts = completion.tally('sa-practice-test', total);
+    return { correct: counts.correct, checked: counts.answered, total, finished: counts.finished };
   }
 
   function updateSaChrome() {
@@ -2420,17 +3127,17 @@
     if (!root) return;
     const counts = saCounts(root);
     root.querySelectorAll('.sa-score').forEach(node => {
-      node.textContent = counts.correct + ' of ' + counts.total + ' correct';
+      node.textContent = counts.correct + ' of ' + counts.total + ' correct · ' + scorePercent(counts.correct, counts.total) + '%';
     });
     root.querySelectorAll('.sa-checked').forEach(node => {
-      node.textContent = counts.checked + ' of ' + counts.total + ' checked';
+      node.textContent = counts.checked + ' of ' + counts.total + ' answered';
     });
     const progress = root.querySelector('#sa-progress');
     if (progress) {
       progress.max = counts.total;
       progress.value = counts.correct;
     }
-    const ready = counts.total > 0 && counts.checked === counts.total;
+    const ready = counts.finished;
     root.querySelectorAll('.sa-lock').forEach(note => { note.hidden = ready; });
     const key = root.querySelector('#sa-key');
     if (!ready && key) key.hidden = true;
@@ -2452,7 +3159,8 @@
       value: saValue(block),
       checkedValue: saved.checkedValue,
       status: saved.status,
-      checked: saved.checked
+      checked: saved.checked,
+      orders: saved.orders
     };
     save();
     paintSa(block);
@@ -2462,6 +3170,16 @@
   function checkSa(id) {
     const root = saRoot();
     const block = root.querySelector('[data-sa-q="' + id + '"]');
+    const existing = completion.question('sa-practice-test', id);
+    if (questionFinal(existing)) {
+      if (block.dataset.practice !== 'open') return;
+      const ok = gradeSa(block, saValue(block));
+      block.dataset.practiceOk = ok ? 'yes' : 'no';
+      block.dataset.practice = 'done';
+      paintSa(block);
+      return;
+    }
+    if (questionWaiting(existing)) return;
     const value = saValue(block);
     const feedback = block.querySelector('.feedback');
     if (!String(value).trim()) {
@@ -2473,14 +3191,27 @@
       if (field) field.focus();
       return;
     }
-    if (!state.sa || typeof state.sa !== 'object') state.sa = {};
+    const saved = saEntry(id);
     const ok = gradeSa(block, value);
+    if (!state.sa || typeof state.sa !== 'object') state.sa = {};
     state.sa[id] = {
       value,
       checkedValue: value,
       status: ok ? 'correct' : 'retry',
-      checked: true
+      checked: true,
+      orders: saved.orders
     };
+    const total = root.querySelectorAll('[data-sa-q]').length;
+    if (!existing) {
+      completion.setQuestion('sa-practice-test', id, ok
+        ? { result: 'first', lockoutUntil: 0 }
+        : { result: 'wait', lockoutUntil: Date.now() + LOCKOUT_MS }, total);
+    } else {
+      completion.setQuestion('sa-practice-test', id, {
+        result: ok ? 'second' : 'wrong',
+        lockoutUntil: 0
+      }, total);
+    }
     save();
     paintSa(block);
     updateSaChrome();
@@ -2489,16 +3220,22 @@
   function clearSaPractice() {
     const root = saRoot();
     state.sa = {};
+    completion.clearQuestions('sa-practice-test');
     save();
     if (!root) return;
     root.querySelectorAll('[data-sa-q]').forEach(block => {
+      delete block.dataset.practice;
+      delete block.dataset.practiceOk;
       block.querySelectorAll('input[type="radio"]').forEach(radio => { radio.checked = false; });
       const field = block.querySelector('input[type="text"]');
       if (field) field.value = '';
+      const orders = shuffleChoices(block);
+      state.sa[block.dataset.saQ] = { value: '', checkedValue: '', status: '', checked: false, orders };
       paintSa(block);
     });
     const key = root.querySelector('#sa-key');
     if (key) key.hidden = true;
+    save();
     updateSaChrome();
   }
 
@@ -2629,7 +3366,7 @@
   function ratioEntry(id) {
     const raw = state.ratios && state.ratios[id];
     if (!raw || typeof raw !== 'object') {
-      return { draft: null, graded: null, status: '', misses: 0, revealed: false, checked: false };
+      return { draft: null, graded: null, status: '', misses: 0, revealed: false, checked: false, orders: null };
     }
     return {
       draft: raw.draft && typeof raw.draft === 'object' ? raw.draft : null,
@@ -2637,7 +3374,8 @@
       status: raw.status === 'correct' || raw.status === 'retry' ? raw.status : '',
       misses: Number.isInteger(raw.misses) && raw.misses > 0 ? raw.misses : 0,
       revealed: raw.revealed === true,
-      checked: raw.checked === true
+      checked: raw.checked === true,
+      orders: Array.isArray(raw.orders) ? raw.orders : null
     };
   }
 
@@ -2750,23 +3488,31 @@
     });
     const hint = block.querySelector('.rr-hint');
     const solution = block.querySelector('.rr-solution');
-    if (hint) hint.hidden = !(entry.misses >= 1 && show !== 'correct' && !entry.revealed);
-    if (solution) solution.hidden = !entry.revealed;
+    const entryHub = completion.question('ratios-rates', id);
+    const count = ensureLockout(block, hint || feedback);
+    if (hint) hint.hidden = !(entryHub && (entryHub.result === 'wait' || entryHub.result === 'wrong'));
+    if (solution) solution.hidden = !(entryHub && entryHub.result === 'wrong');
+    paintLockout(count, entryHub);
+    setAnswerLocked(block, answerLocked(block, entryHub));
+    labelCheck(block, entryHub);
     const reveal = block.querySelector('[data-rr-reveal]');
-    if (reveal) {
-      const worked = reveal.dataset.rrLabel === 'worked';
-      reveal.textContent = entry.revealed
-        ? (worked ? 'Hide worked solution' : 'Hide solution')
-        : (worked ? 'Show worked solution' : 'Show solution');
-      reveal.setAttribute('aria-expanded', String(entry.revealed));
+    if (reveal) reveal.hidden = true;
+    if (block.dataset.practice === 'done' && questionFinal(entryHub)) {
+      const practiceOk = block.dataset.practiceOk === 'yes';
+      feedback.classList.add(practiceOk ? 'correct' : 'incorrect');
+      feedback.textContent = practiceOk
+        ? 'Correct. Practice only. This does not change your score.'
+        : 'Not quite. Practice only. This does not change your score.';
+      return;
     }
     if (show !== 'correct' && show !== 'retry') return;
     const result = gradeRatio(id, draft);
-    const correct = show === 'correct';
+    const correct = entryHub && (entryHub.result === 'first' || entryHub.result === 'second');
     feedback.classList.add(correct ? 'correct' : 'incorrect');
-    if (correct) feedback.textContent = 'Correct';
-    else if (entry.revealed) feedback.textContent = 'Not quite. Here is one way to solve it.';
-    else feedback.textContent = 'Try again.';
+    if (entryHub && entryHub.result === 'second') feedback.textContent = 'Correct. This try counts.';
+    else if (entryHub && entryHub.result === 'wrong') feedback.textContent = 'Saved as not correct.';
+    else if (entryHub && entryHub.result === 'wait') feedback.textContent = 'Not yet. Use the hint. The second try counts after the wait.';
+    else feedback.textContent = correct ? 'Correct' : 'Not yet.';
     if (RATIO_SPEC[id].type === 'choice' || RATIO_SPEC[id].type === 'multi') {
       block.querySelectorAll('input[data-rr-single]:checked, input[type="checkbox"]:checked').forEach(input => {
         input.closest('.choice').classList.add(correct ? 'is-correct' : 'is-wrong');
@@ -2788,16 +3534,9 @@
 
   function ratioCounts() {
     const root = ratiosRoot();
-    const blocks = root ? [...root.querySelectorAll('[data-rr]')] : [];
-    let correct = 0;
-    let checked = 0;
-    blocks.forEach(block => {
-      const entry = ratioEntry(block.dataset.rr);
-      if (entry.checked) checked += 1;
-      const draft = readRatioDraft(block);
-      if (entry.status === 'correct' && entry.graded && sameSnapshot(gradedSnapshot(block.dataset.rr, draft), entry.graded)) correct += 1;
-    });
-    return { correct, checked, total: blocks.length || 12 };
+    const total = root ? root.querySelectorAll('[data-rr]').length : 12;
+    const counts = completion.tally('ratios-rates', total || 12);
+    return { correct: counts.correct, checked: counts.answered, total: total || 12, finished: counts.finished };
   }
 
   function updateRatioChrome() {
@@ -2805,10 +3544,10 @@
     if (!root) return;
     const counts = ratioCounts();
     root.querySelectorAll('.rr-score').forEach(node => {
-      node.textContent = counts.correct + ' of ' + counts.total + ' correct';
+      node.textContent = counts.correct + ' of ' + counts.total + ' correct · ' + scorePercent(counts.correct, counts.total) + '%';
     });
     root.querySelectorAll('.rr-checked').forEach(node => {
-      node.textContent = counts.checked + ' of ' + counts.total + ' checked';
+      node.textContent = counts.checked + ' of ' + counts.total + ' answered';
     });
     const progress = root.querySelector('#rr-progress');
     if (progress) {
@@ -2817,8 +3556,9 @@
     }
     const note = root.querySelector('#rr-end-note');
     if (note) {
-      if (counts.correct === counts.total) note.textContent = counts.total + ' of ' + counts.total + ' correct. Nice work.';
-      else if (counts.checked > 0) note.textContent = 'Change a missed answer and press Check again.';
+      if (counts.finished && counts.correct === counts.total) note.textContent = counts.total + ' of ' + counts.total + ' correct. Nice work.';
+      else if (counts.finished) note.textContent = 'This score is saved. Retry missed questions is practice only.';
+      else if (counts.checked > 0) note.textContent = 'A miss shows a hint and a 2 minute wait, then one more try that still counts.';
       else note.textContent = '';
     }
   }
@@ -2828,7 +3568,7 @@
     const block = root.querySelector('[data-rr="' + id + '"]');
     const entry = ratioEntry(id);
     if (!state.ratios || typeof state.ratios !== 'object') state.ratios = {};
-    state.ratios[id] = { ...entry, draft: readRatioDraft(block) };
+    state.ratios[id] = { ...entry, draft: readRatioDraft(block), orders: entry.orders };
     save();
     paintRatio(block);
     updateRatioChrome();
@@ -2867,6 +3607,23 @@
   function checkRatio(id) {
     const root = ratiosRoot();
     const block = root.querySelector('[data-rr="' + id + '"]');
+    const existing = completion.question('ratios-rates', id);
+    if (questionFinal(existing)) {
+      if (block.dataset.practice !== 'open') return;
+      const practice = gradeRatio(id, readRatioDraft(block));
+      const feedback = block.querySelector('.feedback');
+      if (!practice.ready) {
+        feedback.className = 'feedback';
+        feedback.textContent = practice.message;
+        focusRatioGap(block);
+        return;
+      }
+      block.dataset.practiceOk = practice.ok ? 'yes' : 'no';
+      block.dataset.practice = 'done';
+      paintRatio(block);
+      return;
+    }
+    if (questionWaiting(existing)) return;
     const draft = readRatioDraft(block);
     const result = gradeRatio(id, draft);
     const feedback = block.querySelector('.feedback');
@@ -2881,37 +3638,42 @@
       draft,
       graded: gradedSnapshot(id, draft),
       status: result.ok ? 'correct' : 'retry',
-      misses: result.ok ? 0 : entry.misses + 1,
-      revealed: entry.revealed || (!result.ok && entry.misses + 1 >= 2),
-      checked: true
+      misses: existing ? 2 : 1,
+      revealed: false,
+      checked: true,
+      orders: entry.orders
     };
     if (!state.ratios || typeof state.ratios !== 'object') state.ratios = {};
     state.ratios[id] = next;
+    const total = root.querySelectorAll('[data-rr]').length;
+    if (!existing) {
+      completion.setQuestion('ratios-rates', id, result.ok
+        ? { result: 'first', lockoutUntil: 0 }
+        : { result: 'wait', lockoutUntil: Date.now() + LOCKOUT_MS }, total);
+    } else {
+      completion.setQuestion('ratios-rates', id, {
+        result: result.ok ? 'second' : 'wrong',
+        lockoutUntil: 0
+      }, total);
+    }
     save();
     paintRatio(block);
     updateRatioChrome();
   }
 
-  function revealRatio(id) {
-    const root = ratiosRoot();
-    const block = root.querySelector('[data-rr="' + id + '"]');
-    const entry = ratioEntry(id);
-    if (!state.ratios || typeof state.ratios !== 'object') state.ratios = {};
-    state.ratios[id] = { ...entry, draft: readRatioDraft(block), revealed: !entry.revealed };
-    save();
-    paintRatio(block);
-    if (!entry.revealed) {
-      const solution = block.querySelector('.rr-solution');
-      if (solution) solution.scrollIntoView({ block: 'nearest' });
-    }
+  function revealRatio() {
+    return;
   }
 
   function clearRatios() {
     state.ratios = {};
+    completion.clearQuestions('ratios-rates');
     save();
     const root = ratiosRoot();
     if (!root) return;
     root.querySelectorAll('[data-rr]').forEach(block => {
+      delete block.dataset.practice;
+      delete block.dataset.practiceOk;
       block.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => { input.checked = false; });
       block.querySelectorAll('input[type="text"], textarea').forEach(field => { field.value = ''; });
       const feedback = block.querySelector('.feedback');
@@ -2919,10 +3681,13 @@
         feedback.className = 'feedback';
         feedback.textContent = '';
       }
+      const orders = shuffleChoices(block);
+      state.ratios[block.dataset.rr] = { draft: null, graded: null, status: '', misses: 0, revealed: false, checked: false, orders };
       paintRatio(block);
     });
     const note = root.querySelector('#rr-end-note');
     if (note) note.textContent = '';
+    save();
     updateRatioChrome();
   }
 
@@ -2931,19 +3696,46 @@
   function retryMissedRatios() {
     const root = ratiosRoot();
     const note = root.querySelector('#rr-end-note');
-    const missed = [...root.querySelectorAll('[data-rr]')].filter(block => {
-      const entry = ratioEntry(block.dataset.rr);
-      const draft = readRatioDraft(block);
-      return !(entry.status === 'correct' && entry.graded && sameSnapshot(gradedSnapshot(block.dataset.rr, draft), entry.graded));
-    });
-    if (!missed.length) {
-      if (note) note.textContent = 'Every question is correct.';
+    const counts = ratioCounts();
+    if (!counts.finished) {
+      if (note) note.textContent = 'Finish every question first. Missed questions can be practiced after the score is saved.';
       return;
     }
+    const missed = [...root.querySelectorAll('[data-rr]')].filter(block => {
+      const hub = completion.question('ratios-rates', block.dataset.rr);
+      return hub && hub.result === 'wrong';
+    });
+    if (!missed.length) {
+      if (note) note.textContent = 'Every scored answer is correct.';
+      return;
+    }
+    missed.forEach(block => {
+      block.dataset.practice = 'open';
+      delete block.dataset.practiceOk;
+      paintRatio(block);
+    });
     const block = missed[ratioRetryCursor % missed.length];
     ratioRetryCursor += 1;
     block.scrollIntoView({ block: 'start' });
-    const focusable = block.querySelector('input, textarea');
+    const focusable = block.querySelector('input:not(:disabled), textarea:not(:disabled)');
+    if (focusable) focusable.focus();
+  }
+
+  function retryMissedSa() {
+    const root = saRoot();
+    if (!saCounts(root).finished) return;
+    const missed = [...root.querySelectorAll('[data-sa-q]')].filter(block => {
+      const hub = completion.question('sa-practice-test', block.dataset.saQ);
+      return hub && hub.result === 'wrong';
+    });
+    if (!missed.length) return;
+    missed.forEach(block => {
+      block.dataset.practice = 'open';
+      delete block.dataset.practiceOk;
+      paintSa(block);
+    });
+    missed[0].scrollIntoView({ block: 'start' });
+    const focusable = missed[0].querySelector('input:not(:disabled), textarea:not(:disabled)');
     if (focusable) focusable.focus();
   }
 
@@ -2955,6 +3747,11 @@
     root.querySelectorAll('[data-rr]').forEach(block => {
       const id = block.dataset.rr;
       const entry = ratioEntry(id);
+      const orders = prepareChoices(block, entry.orders);
+      if (JSON.stringify(orders) !== JSON.stringify(entry.orders)) {
+        state.ratios[id] = { ...entry, orders };
+        save();
+      }
       if (entry.draft) applyRatioDraft(block, entry.draft);
       block.querySelectorAll('input, textarea').forEach(field => {
         field.addEventListener('input', () => rememberRatio(id));
@@ -3004,6 +3801,17 @@
     root.querySelectorAll('[data-sa-q]').forEach(block => {
       const id = block.dataset.saQ;
       const saved = saEntry(id);
+      const orders = prepareChoices(block, saved.orders);
+      if (JSON.stringify(orders) !== JSON.stringify(saved.orders)) {
+        state.sa[id] = {
+          value: saved.value,
+          checkedValue: saved.checkedValue,
+          status: saved.status,
+          checked: saved.checked,
+          orders
+        };
+        save();
+      }
       if (block.dataset.saType === 'text') {
         const field = block.querySelector('input[type="text"]');
         if (saved.value) field.value = saved.value;
@@ -3029,7 +3837,7 @@
       }
       if (event.target.closest('.sa-show')) {
         const counts = saCounts(root);
-        if (counts.checked !== counts.total) return;
+        if (!counts.finished) return;
         const key = root.querySelector('#sa-key');
         const willOpen = key.hidden;
         key.hidden = !willOpen;
@@ -3038,6 +3846,10 @@
           button.setAttribute('aria-expanded', String(willOpen));
         });
         if (willOpen) key.scrollIntoView({ block: 'nearest' });
+        return;
+      }
+      if (event.target.closest('.sa-retry')) {
+        retryMissedSa();
         return;
       }
       if (event.target.closest('.sa-restart')) {
@@ -3052,16 +3864,6 @@
     });
     updateSaChrome();
   }
-
-  function toggleComplete(id) {
-    const next = !completion.isCompleted(id);
-    completion.setCompleted(id, next);
-    if (!next) return;
-    const card = document.querySelector('[data-assignment="' + id + '"]');
-    const fold = card && document.getElementById(card.dataset.subject + '-completed-fold');
-    if (fold) fold.open = true;
-  }
-
 
   const screens = [...document.querySelectorAll('.screen')];
   const navLinks = [...document.querySelectorAll('.nav-links a')];
@@ -3092,13 +3894,8 @@
   bindRatios();
   refreshCompletionUI();
   showRoute();
+  setInterval(refreshLockouts, 250);
   window.addEventListener('hashchange', () => showRoute(true));
-
-  document.addEventListener('click', event => {
-    const mark = event.target.closest('[data-mark]');
-    if (!mark) return;
-    toggleComplete(mark.dataset.mark);
-  });
 
   document.querySelector('#reset').addEventListener('click', () => {
     resetDialog.showModal();

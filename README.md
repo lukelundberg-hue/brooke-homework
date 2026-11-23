@@ -2,36 +2,20 @@
 
 A homework site for Brooke, a 6th grader. It keeps three things: the South America practice test, Math Unit 4 practice for ratios and rates, and the My Grades page.
 
-Answers and written work stay in that browser. Completed checkmarks are saved in that browser too, and they can sync between devices once a Firebase database URL is pasted in (see below). New assignments get added to `index.html`.
+Answers and written work stay in that browser. Finished scores, and whether a practice is completed, sync between devices through Firebase. New assignments get added to `index.html`.
 
 Pushes to `main` publish this folder with GitHub Pages.
 
-## Sync completed checkmarks
+## Scores and completed practices
 
-The page never stores a password or a private token. Completion is a true/false flag for each assignment id, plus a timestamp. Brooke's name and her answers are not sent anywhere.
+A practice moves into the Completed section when every question is finished and the score is at least 70%. That cutoff is `PASS_PERCENT` in `index.html`. Each question has two scored tries. A correct answer on the first or the second try counts the same. The choices are shuffled, and they lock after Check.
 
-Until the URL below is filled in, completed checkmarks stay on the device she is using.
+A wrong first try shows a hint that explains the method and does not give the final answer. She then waits 2 minutes, with the end time saved in this browser and in Firebase, before the second try unlocks. A second miss is saved as wrong and the solution appears. After the practice is finished, Retry missed questions is practice only and does not change the saved score.
 
-1. Go to [Firebase console](https://console.firebase.google.com) and create a free project.
-2. Build the project, then create a **Realtime Database**. You can start it in locked mode. Any region is fine.
-3. Open the **Rules** tab and replace the rules with:
+There is no Mark as completed button.
 
-```json
-{
-  "rules": {
-    "completed": {
-      ".read": true,
-      "$id": {
-        ".write": "$id.matches(/^[a-z0-9-]{1,40}$/) && (!data.exists() || newData.child('updatedAt').val() >= data.child('updatedAt').val())",
-        ".validate": "newData.hasChildren(['value', 'updatedAt']) && newData.child('value').isBoolean() && newData.child('updatedAt').isNumber() && newData.child('updatedAt').val() > 0 && newData.child('updatedAt').val() <= now + 86400000"
-      }
-    }
-  }
-}
-```
+The page never stores a password or a private token. Each practice is one record at `/hub/v1/items/<itemId>` with `completed`, `completedAt`, `attempts`, `lastScore`, `bestScore`, and `questions`. A question result is `first`, `second`, `wrong`, or `wait` while the 2 minute lockout is running (`lockoutUntil`). A score is the number correct, the total, a percent, and a timestamp. Her name and her written answers are not sent.
 
-4. Copy the database URL. It looks like `https://your-project-default-rtdb.firebaseio.com` or `https://your-project-default-rtdb.region.firebasedatabase.app`.
-5. In `index.html`, search for `firebaseDatabaseUrl` and paste that URL between the quotes.
-6. Commit and push to `main` so GitHub Pages publishes it.
+The database URL is already filled in at `firebaseDatabaseUrl` in `index.html`. Paste `database.rules.json` into the Realtime Database rules tab in the Firebase console and publish it. Until those rules are published, the database stays in test mode. Anything outside `/hub/v1/items/$itemId` is denied, and each record has to match the fields above.
 
-Anyone who can view the website can see that URL and could flip a completed flag. They cannot see Brooke's name or her written answers. Those stay on each device.
+Anyone who can view the website can see that URL and could change a score. They cannot see her name or her written answers. Those stay on each device. If the network fails, the page keeps working from this browser and tries again on its own.

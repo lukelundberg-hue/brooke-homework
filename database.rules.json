@@ -1,0 +1,45 @@
+{
+  "rules": {
+    "hub": {
+      "v1": {
+        "items": {
+          "$itemId": {
+            ".read": true,
+            ".write": "$itemId.matches(/^[a-z0-9-]{1,40}$/) && newData.exists()",
+            ".validate": "newData.hasChildren(['completed', 'completedAt', 'attempts'])",
+            "completed": { ".validate": "newData.isBoolean()" },
+            "completedAt": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= now + 86400000" },
+            "attempts": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10000 && newData.val() % 1 == 0" },
+            "updatedAt": { ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= now + 86400000" },
+            "lastScore": {
+              ".validate": "newData.hasChildren(['correct', 'total', 'percent', 'at']) && newData.child('correct').val() <= newData.child('total').val()",
+              "correct": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200 && newData.val() % 1 == 0" },
+              "total": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 200 && newData.val() % 1 == 0" },
+              "percent": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" },
+              "at": { ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= now + 86400000" },
+              "$other": { ".validate": false }
+            },
+            "bestScore": {
+              ".validate": "newData.hasChildren(['correct', 'total', 'percent', 'at']) && newData.child('correct').val() <= newData.child('total').val()",
+              "correct": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200 && newData.val() % 1 == 0" },
+              "total": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 200 && newData.val() % 1 == 0" },
+              "percent": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" },
+              "at": { ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= now + 86400000" },
+              "$other": { ".validate": false }
+            },
+            "questions": {
+              "$qid": {
+                ".validate": "$qid.matches(/^q[0-9]{1,2}$/) && newData.hasChildren(['result', 'lockoutUntil'])",
+                "result": { ".validate": "newData.isString() && (newData.val() == 'first' || newData.val() == 'second' || newData.val() == 'wrong' || newData.val() == 'wait')" },
+                "lockoutUntil": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= now + 1800000" },
+                "$other": { ".validate": false }
+              }
+            },
+            "$other": { ".validate": false }
+          }
+        }
+      }
+    },
+    "$other": { ".read": false, ".write": false }
+  }
+}
