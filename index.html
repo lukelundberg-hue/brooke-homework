@@ -286,7 +286,7 @@
   .question.is-locked .numeric-field input,
   .question.is-locked .ratio-table input,
   .question.is-locked textarea { pointer-events: none; }
-  .worked-hint, #ratios-rates .rr-hint {
+  .worked-hint, #ratios-rates .rr-hint, #fractions-decimals-percents .rr-hint {
     background: #fff8e8;
     border: 1px solid #ead7a4;
     border-radius: .5rem;
@@ -294,7 +294,7 @@
     margin: .75rem 0 0;
     font-weight: 650;
   }
-  .worked-hint:not([hidden])::before, #ratios-rates .rr-hint:not([hidden])::before {
+  .worked-hint:not([hidden])::before, #ratios-rates .rr-hint:not([hidden])::before, #fractions-decimals-percents .rr-hint:not([hidden])::before {
     content: "How to work it";
     display: block;
     font-weight: 750;
@@ -310,7 +310,25 @@
   }
   .lockout-count:empty { display: none; }
   .coach-solution { margin-top: .75rem; }
-  [data-rr-reveal] { display: none !important; }
+  [data-rr-reveal], [data-fdp-reveal] { display: none !important; }
+  .repeat-digit {
+    text-decoration: overline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: #6d2a86;
+    font-weight: 750;
+    padding-top: .12em;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
   .empty-note { margin: 0 0 1rem; }
   .complete-bar {
     display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem;
@@ -675,45 +693,56 @@
     #sa-practice-test .sa-tools button,
     #sa-practice-test .question > .primary { width: 100%; }
   }
-  #ratios-rates .rr-tools {
+  #ratios-rates .rr-tools,
+  #fractions-decimals-percents .rr-tools {
     display: flex;
     flex-wrap: wrap;
     gap: .5rem;
     margin: .35rem 0 .75rem;
   }
-  #ratios-rates .choice { align-items: flex-start; cursor: pointer; }
-  #ratios-rates .choice input {
+  #ratios-rates .choice,
+  #fractions-decimals-percents .choice { align-items: flex-start; cursor: pointer; position: relative; }
+  #ratios-rates .choice input,
+  #fractions-decimals-percents .choice input {
     width: 1.2rem;
     height: 1.2rem;
     margin-top: .22rem;
     accent-color: var(--accent);
     flex-shrink: 0;
   }
-  #ratios-rates .choice-text { flex: 1; min-width: 0; }
-  #ratios-rates .choice:has(input:checked) {
+  #ratios-rates .choice-text,
+  #fractions-decimals-percents .choice-text { flex: 1; min-width: 0; }
+  #ratios-rates .choice:has(input:checked),
+  #fractions-decimals-percents .choice:has(input:checked) {
     border-color: var(--accent);
     background: #f6f0fd;
     box-shadow: inset 3px 0 0 var(--accent);
   }
   #ratios-rates .choice.is-correct,
-  #ratios-rates .choice.is-correct:has(input:checked) {
+  #ratios-rates .choice.is-correct:has(input:checked),
+  #fractions-decimals-percents .choice.is-correct,
+  #fractions-decimals-percents .choice.is-correct:has(input:checked) {
     background: #eaf6ef;
     border-color: #6eaa88;
     box-shadow: none;
   }
   #ratios-rates .choice.is-wrong,
-  #ratios-rates .choice.is-wrong:has(input:checked) {
+  #ratios-rates .choice.is-wrong:has(input:checked),
+  #fractions-decimals-percents .choice.is-wrong,
+  #fractions-decimals-percents .choice.is-wrong:has(input:checked) {
     background: #fff0eb;
     border-color: #cf9589;
     box-shadow: none;
   }
-  #ratios-rates .rr-actions {
+  #ratios-rates .rr-actions,
+  #fractions-decimals-percents .rr-actions {
     display: flex;
     flex-wrap: wrap;
     gap: .5rem;
     margin-top: .75rem;
   }
-  #ratios-rates .rr-hint {
+  #ratios-rates .rr-hint,
+  #fractions-decimals-percents .rr-hint {
     background: #fff8e8;
     border: 1px solid #ead7a4;
     border-radius: .5rem;
@@ -721,9 +750,12 @@
     margin: .65rem 0 0;
     font-weight: 650;
   }
-  #ratios-rates .rr-solution { margin-top: .75rem; }
-  #ratios-rates .rr-bottom-score { margin-top: 1.1rem; }
-  #ratios-rates .prompt-text { margin: .85rem 0 .35rem; }
+  #ratios-rates .rr-solution,
+  #fractions-decimals-percents .rr-solution { margin-top: .75rem; }
+  #ratios-rates .rr-bottom-score,
+  #fractions-decimals-percents .rr-bottom-score { margin-top: 1.1rem; }
+  #ratios-rates .prompt-text,
+  #fractions-decimals-percents .prompt-text { margin: .85rem 0 .35rem; }
   #ratios-rates .shade-grid {
     display: grid;
     grid-template-columns: repeat(10, 1.05rem);
@@ -751,7 +783,9 @@
   #ratios-rates .math-work textarea { min-height: 5.5rem; }
   @media (max-width: 31rem) {
     #ratios-rates .rr-tools button,
-    #ratios-rates .rr-actions button { width: 100%; }
+    #ratios-rates .rr-actions button,
+    #fractions-decimals-percents .rr-tools button,
+    #fractions-decimals-percents .rr-actions button { width: 100%; }
     #ratios-rates .numeric-field { flex-basis: 100%; }
     #ratios-rates .shade-grid { grid-template-columns: repeat(10, minmax(0, 1fr)); width: 100%; }
     #ratios-rates .shade-grid i { width: 100%; height: auto; aspect-ratio: 1; }
@@ -812,7 +846,7 @@
         <div class="tile-copy">
           <div class="kicker"><span id="math-count">4 to do</span> · Free-Throw Era</div>
           <h3>Math</h3>
-          <p>Practice ratios and rates.</p>
+          <p>Practice ratios, rates, fractions, decimals, and percents.</p>
           <p class="tagline">Line them up and take the shot.</p>
         </div>
       </a>
@@ -845,6 +879,15 @@
           <p>12-question review. Choose or type an answer, then check it.</p>
           <p class="card-score" data-score-for="ratios-rates" hidden></p>
           <p class="pass-note" data-pass-for="ratios-rates" data-pass-kind="card" hidden></p>
+        </a>
+      </article>
+      <article class="index-card assignment-card" data-assignment="fractions-decimals-percents" data-subject="math" data-order="0">
+        <a href="#fractions-decimals-percents">
+          <div class="kicker">Ms. Jackson · Classroom · Posted Nov 18–20 · Practice</div>
+          <h3>Math Practice: Fractions, Decimals &amp; Percents</h3>
+          <p>12-question review. Choose an answer, then check it.</p>
+          <p class="card-score" data-score-for="fractions-decimals-percents" hidden></p>
+          <p class="pass-note" data-pass-for="fractions-decimals-percents" data-pass-kind="card" hidden></p>
         </a>
       </article>
     </div>
@@ -1994,6 +2037,301 @@
     <p class="note" id="rr-end-note" role="status"></p>
     <p class="pass-note" data-pass-for="ratios-rates" data-pass-kind="practice" hidden></p>
   </section>
+  <section id="fractions-decimals-percents" class="screen" hidden aria-labelledby="fdp-title">
+    <div class="index-heading">
+      <div class="kicker">Ms. Jackson · Classroom · Posted Nov 18–20 · Practice</div>
+      <h2 id="fdp-title" tabindex="-1">Math Practice: Fractions, Decimals &amp; Percents</h2>
+      <p>Each question has two tries, and a correct answer counts on either try. A miss shows how to work it, then waits 2 minutes before the second try. Choices are mixed up, and they lock after Check.</p>
+    </div>
+    <div class="progress-box">
+      <div class="progress-meta" aria-live="polite">
+        <strong class="rr-score">0 of 12 correct</strong>
+        <span class="rr-checked">0 of 12 checked</span>
+      </div>
+      <progress id="fdp-progress" max="12" value="0" aria-label="Fractions, decimals, and percents score"></progress>
+    </div>
+    <section class="lesson">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Questions 1–4</div>
+          <h2>Fractions, decimals, and percents</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <div class="question" data-fdp="q1">
+          <h3 id="fdp-q1-title"><span class="number">1</span><span>Write the fraction 3/8 as a decimal.</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q1-title">
+            <label class="choice"><input type="radio" name="fdp-q1" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">0.38</span></label>
+            <label class="choice"><input type="radio" name="fdp-q1" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">0.3</span></label>
+            <label class="choice"><input type="radio" name="fdp-q1" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">0.375</span></label>
+            <label class="choice"><input type="radio" name="fdp-q1" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">3.8</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q1">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q1" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q1-feedback" role="status"></p>
+          <p class="rr-hint" hidden>Divide the numerator by the denominator. Keep dividing until the remainder is 0. Placing a decimal point between the two digits of the fraction is not dividing.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>0.375. Divide 3 by 8. 8 goes into 30 three times (24), with remainder 6. 8 goes into 60 seven times (56), with remainder 4. 8 goes into 40 five times exactly. So 3/8 = 0.375.</p>
+            <p>0.38 writes the digits of the fraction with a decimal point. 0.3 stops after the tenths place. 3.8 puts the decimal point in the wrong place.</p>
+          </div>
+        </div>
+        <div class="question" data-fdp="q2">
+          <h3 id="fdp-q2-title"><span class="number">2</span><span>Write the decimal 0.45 as a percent.</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q2-title">
+            <label class="choice"><input type="radio" name="fdp-q2" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">4.5%</span></label>
+            <label class="choice"><input type="radio" name="fdp-q2" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">45%</span></label>
+            <label class="choice"><input type="radio" name="fdp-q2" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">0.45%</span></label>
+            <label class="choice"><input type="radio" name="fdp-q2" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">450%</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q2">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q2" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q2-feedback" role="status"></p>
+          <p class="rr-hint" hidden>To change a decimal to a percent, move the decimal point two places to the right. Then write the percent sign.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>45%. Move the decimal point in 0.45 two places to the right: 45. Then write the percent sign. 0.45 = 45%.</p>
+            <p>4.5% moves the point only one place. 0.45% does not move it. 450% moves it three places.</p>
+          </div>
+        </div>
+        <div class="question" data-fdp="q3">
+          <h3 id="fdp-q3-title"><span class="number">3</span><span>Write 40% as a fraction in simplest form.</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q3-title">
+            <label class="choice"><input type="radio" name="fdp-q3" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">2/5</span></label>
+            <label class="choice"><input type="radio" name="fdp-q3" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">4/10</span></label>
+            <label class="choice"><input type="radio" name="fdp-q3" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">40/100</span></label>
+            <label class="choice"><input type="radio" name="fdp-q3" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">4/5</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q3">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q3" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q3-feedback" role="status"></p>
+          <p class="rr-hint" hidden>Write the percent as a fraction with a denominator of 100. Divide the numerator and the denominator by the same number until they have no common factor left. An equal fraction that is not fully simplified does not count.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>2/5. 40% means 40/100. Divide the numerator and the denominator by 20: 40 ÷ 20 = 2 and 100 ÷ 20 = 5. 2 and 5 have no common factor other than 1, so 2/5 is in simplest form.</p>
+            <p>4/10 and 40/100 are equal to 40%, but both can still be simplified. 4/5 = 80%, not 40%.</p>
+          </div>
+        </div>
+        <div class="question" data-fdp="q4">
+          <h3 id="fdp-q4-title"><span class="number">4</span><span>Write the fraction 7/10 as a percent.</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q4-title">
+            <label class="choice"><input type="radio" name="fdp-q4" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">7%</span></label>
+            <label class="choice"><input type="radio" name="fdp-q4" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">17%</span></label>
+            <label class="choice"><input type="radio" name="fdp-q4" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">0.7%</span></label>
+            <label class="choice"><input type="radio" name="fdp-q4" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">70%</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q4">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q4" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q4-feedback" role="status"></p>
+          <p class="rr-hint" hidden>Divide the numerator by the denominator to make a decimal. Move that decimal point two places to the right and add a percent sign.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>70%. 7 ÷ 10 = 0.7. Move the decimal point two places to the right: 70. So 7/10 = 70%.</p>
+            <p>7% forgets to move the decimal point. 0.7% puts a percent sign on the decimal without moving the point. 17% adds the digits of the fraction.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="lesson">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Questions 5–8</div>
+          <h2>Small percents, large percents, and repeating decimals</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <div class="question" data-fdp="q5">
+          <h3 id="fdp-q5-title"><span class="number">5</span><span>Write 4% as a decimal.</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q5-title">
+            <label class="choice"><input type="radio" name="fdp-q5" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">0.4</span></label>
+            <label class="choice"><input type="radio" name="fdp-q5" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">4</span></label>
+            <label class="choice"><input type="radio" name="fdp-q5" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">0.004</span></label>
+            <label class="choice"><input type="radio" name="fdp-q5" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">0.04</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q5">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q5" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q5-feedback" role="status"></p>
+          <p class="rr-hint" hidden>To change a percent to a decimal, move the decimal point two places to the left. A one-digit percent needs a zero in the tenths place.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>0.04. 4% means 4 hundredths. Start at 4.0 and move the decimal point two places to the left: 0.04.</p>
+            <p>0.4 is 40%, because the point moved only one place. 4 is 400%. 0.004 is 0.4%, because the point moved three places.</p>
+          </div>
+        </div>
+        <div class="question" data-fdp="q6">
+          <h3 id="fdp-q6-title"><span class="number">6</span><span>Write 125% as a decimal.</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q6-title">
+            <label class="choice"><input type="radio" name="fdp-q6" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">0.125</span></label>
+            <label class="choice"><input type="radio" name="fdp-q6" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">12.5</span></label>
+            <label class="choice"><input type="radio" name="fdp-q6" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">1.25</span></label>
+            <label class="choice"><input type="radio" name="fdp-q6" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">125</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q6">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q6" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q6-feedback" role="status"></p>
+          <p class="rr-hint" hidden>A percent greater than 100 is greater than 1 whole. Move the decimal point two places to the left.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>1.25. 125% is more than 100%, so the decimal is more than 1. Move the decimal point two places to the left: 125.0 becomes 1.25. 125% = 125/100 = 1.25.</p>
+            <p>0.125 is 12.5%. 12.5 is 1,250%. 125 leaves the percent as a whole number.</p>
+          </div>
+        </div>
+        <div class="question" data-fdp="q7">
+          <h3 id="fdp-q7-title"><span class="number">7</span><span>Write 1/3 as a decimal.</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q7-title">
+            <label class="choice"><input type="radio" name="fdp-q7" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">0.3</span></label>
+            <label class="choice"><input type="radio" name="fdp-q7" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">0.<span class="repeat-digit">3</span><span class="sr-only"> repeating</span></span></label>
+            <label class="choice"><input type="radio" name="fdp-q7" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">0.13</span></label>
+            <label class="choice"><input type="radio" name="fdp-q7" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">3.0</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q7">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q7" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q7-feedback" role="status"></p>
+          <p class="rr-hint" hidden>Divide the numerator by the denominator. If the same remainder comes back every step, that digit repeats. Draw a bar over the repeating digit.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>0.3 with a bar over the 3. Divide 1 by 3. 3 goes into 10 three times, remainder 1. The remainder is 1 again, so the digit 3 repeats forever: 0.333... A bar over the 3 shows that it repeats.</p>
+            <p>A plain 0.3 stops after one digit. 0.13 writes the digits of the fraction. 3.0 divides 3 by 1.</p>
+          </div>
+        </div>
+        <div class="question" data-fdp="q8">
+          <h3 id="fdp-q8-title"><span class="number">8</span><span>Write 2/3 as a decimal.</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q8-title">
+            <label class="choice"><input type="radio" name="fdp-q8" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">0.<span class="repeat-digit">6</span><span class="sr-only"> repeating</span></span></label>
+            <label class="choice"><input type="radio" name="fdp-q8" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">0.6</span></label>
+            <label class="choice"><input type="radio" name="fdp-q8" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">0.67</span></label>
+            <label class="choice"><input type="radio" name="fdp-q8" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">0.23</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q8">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q8" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q8-feedback" role="status"></p>
+          <p class="rr-hint" hidden>Divide the numerator by the denominator and watch the remainder. If it never becomes 0, the decimal repeats. Draw a bar over the digit that keeps returning. Rounding is a different number.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>0.6 with a bar over the 6. Divide 2 by 3. 3 goes into 20 six times, remainder 2. The remainder is 2 again, so the digit 6 repeats forever: 0.666...</p>
+            <p>A plain 0.6 is not marked as repeating. 0.67 rounds the repeating decimal and is a little too big. 0.23 writes the digits of the fraction.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="lesson">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Questions 9–12</div>
+          <h2>Compare and word problems</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <div class="question" data-fdp="q9">
+          <h3 id="fdp-q9-title"><span class="number">9</span><span>Which list orders 1/4, 0.3, 28%, and 2/5 from least to greatest?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q9-title">
+            <label class="choice"><input type="radio" name="fdp-q9" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">0.3, 1/4, 28%, 2/5</span></label>
+            <label class="choice"><input type="radio" name="fdp-q9" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">1/4, 0.3, 28%, 2/5</span></label>
+            <label class="choice"><input type="radio" name="fdp-q9" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">28%, 1/4, 0.3, 2/5</span></label>
+            <label class="choice"><input type="radio" name="fdp-q9" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">1/4, 28%, 0.3, 2/5</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q9">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q9" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q9-feedback" role="status"></p>
+          <p class="rr-hint" hidden>Change every value into a decimal before you compare. For a percent, move the decimal point two places to the left. Then put the original labels in the same order as those decimals, from least to greatest.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>1/4, 28%, 0.3, 2/5. Write each value as a decimal. 1/4 = 0.25. 28% = 0.28. 0.3 = 0.30. 2/5 = 0.40. From least to greatest those decimals are 0.25, 0.28, 0.30, 0.40.</p>
+          </div>
+        </div>
+        <div class="question" data-fdp="q10">
+          <h3 id="fdp-q10-title"><span class="number">10</span><span>A team won 18 of 24 games. What percent of its games did the team win?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q10-title">
+            <label class="choice"><input type="radio" name="fdp-q10" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">18%</span></label>
+            <label class="choice"><input type="radio" name="fdp-q10" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">67%</span></label>
+            <label class="choice"><input type="radio" name="fdp-q10" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">75%</span></label>
+            <label class="choice"><input type="radio" name="fdp-q10" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">80%</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q10">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q10" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q10-feedback" role="status"></p>
+          <p class="rr-hint" hidden>Write wins over games played as a fraction. Simplify by dividing the top and the bottom by the same number. Then convert that fraction to a percent. The number of wins alone is not the percent.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>75%. 18 wins out of 24 games is 18/24. Divide the numerator and the denominator by 6: 3/4. 3 ÷ 4 = 0.75, and 0.75 = 75%.</p>
+            <p>18% uses only the number of wins. 67% is about 2/3, and 18/24 is not 2/3. 80% is 4/5.</p>
+          </div>
+        </div>
+        <div class="question" data-fdp="q11">
+          <h3 id="fdp-q11-title"><span class="number">11</span><span>A $40 shirt is 25% off. What fraction of the original price is taken off, in simplest form?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q11-title">
+            <label class="choice"><input type="radio" name="fdp-q11" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">1/25</span></label>
+            <label class="choice"><input type="radio" name="fdp-q11" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">1/4</span></label>
+            <label class="choice"><input type="radio" name="fdp-q11" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">25/40</span></label>
+            <label class="choice"><input type="radio" name="fdp-q11" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">2/5</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q11">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q11" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q11-feedback" role="status"></p>
+          <p class="rr-hint" hidden>A percent is that many parts out of 100. Write it as a fraction over 100 and simplify. The dollar price is not the denominator.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>1/4. 25% = 25/100. Divide the numerator and the denominator by 25: 1/4. One fourth of the price is taken off.</p>
+            <p>1/25 puts 25 in the denominator only. 25/40 uses the dollar price as the denominator. 2/5 = 40%, not 25%.</p>
+          </div>
+        </div>
+        <div class="question" data-fdp="q12">
+          <h3 id="fdp-q12-title"><span class="number">12</span><span>A $40 shirt is 25% off. What is the sale price?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="fdp-q12-title">
+            <label class="choice"><input type="radio" name="fdp-q12" value="a" data-fdp-single><span class="letter">A</span><span class="choice-text">$10</span></label>
+            <label class="choice"><input type="radio" name="fdp-q12" value="b" data-fdp-single><span class="letter">B</span><span class="choice-text">$15</span></label>
+            <label class="choice"><input type="radio" name="fdp-q12" value="c" data-fdp-single><span class="letter">C</span><span class="choice-text">$30</span></label>
+            <label class="choice"><input type="radio" name="fdp-q12" value="d" data-fdp-single><span class="letter">D</span><span class="choice-text">$35</span></label>
+          </div>
+          <div class="rr-actions">
+            <button type="button" class="primary" data-fdp-check="q12">Check</button>
+            <button type="button" class="plain" data-fdp-reveal="q12" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="fdp-q12-feedback" role="status"></p>
+          <p class="rr-hint" hidden>Turn the percent into a decimal and multiply by the original price. That product is the discount. Subtract the discount from the original price to get the sale price.</p>
+          <div class="model-answer rr-solution" hidden>
+            <h3>Worked solution</h3>
+            <p>$30. 25% = 0.25. The discount is 0.25 × 40 = 10 dollars. The sale price is 40 − 10 = 30 dollars.</p>
+            <p>$10 is only the discount. $15 subtracts 25 dollars instead of 25 percent (40 − 25 = 15). $35 takes off only 5 dollars.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="progress-box rr-bottom-score">
+      <div class="progress-meta">
+        <strong class="rr-score">0 of 12 correct</strong>
+        <span class="rr-checked">0 of 12 checked</span>
+      </div>
+    </div>
+    <div class="rr-tools">
+      <button type="button" class="plain" id="fdp-retry">Retry missed questions</button>
+      <button type="button" class="plain" id="fdp-restart">Start over</button>
+    </div>
+    <p class="note" id="fdp-end-note" role="status"></p>
+    <p class="pass-note" data-pass-for="fractions-decimals-percents" data-pass-kind="practice" hidden></p>
+  </section>
   <noscript>Enable JavaScript in your browser to use the quiz.</noscript>
   <div class="bottom">
     <footer id="storage-note"></footer>
@@ -2023,6 +2361,14 @@
     <button class="primary" value="reset">Start over</button>
   </form>
 </dialog>
+<dialog id="fdp-reset-dialog" aria-labelledby="fdp-reset-title">
+  <div class="dialog-top"><h2 class="dialog-title" id="fdp-reset-title">Start this practice over?</h2></div>
+  <div class="dialog-body"><p>This clears answers for Fractions, Decimals &amp; Percents only. Your other assignments stay as they are.</p></div>
+  <form method="dialog" class="dialog-actions">
+    <button class="plain" value="cancel" autofocus>Keep my answers</button>
+    <button class="primary" value="reset">Start over</button>
+  </form>
+</dialog>
 <script>
 (() => {
   'use strict';
@@ -2034,7 +2380,7 @@
   let storageWorks = true;
 
   function freshState() {
-    return { answers: {}, drafts: {}, numbers: {}, sketches: {}, multi: {}, checks: {}, sa: {}, ratios: {} };
+    return { answers: {}, drafts: {}, numbers: {}, sketches: {}, multi: {}, checks: {}, sa: {}, ratios: {}, fdp: {} };
   }
 
   try {
@@ -2042,7 +2388,8 @@
     if (saved && saved.answers && saved.drafts) {
       const sa = saved.sa && typeof saved.sa === 'object' && !Array.isArray(saved.sa) ? {...saved.sa} : {};
       const ratios = saved.ratios && typeof saved.ratios === 'object' && !Array.isArray(saved.ratios) ? {...saved.ratios} : {};
-      state = {...freshState(), ...saved, checks: {...freshState().checks, ...(saved.checks || {})}, sa, ratios};
+      const fdp = saved.fdp && typeof saved.fdp === 'object' && !Array.isArray(saved.fdp) ? {...saved.fdp} : {};
+      state = {...freshState(), ...saved, checks: {...freshState().checks, ...(saved.checks || {})}, sa, ratios, fdp};
     }
     localStorage.setItem(key, JSON.stringify(state));
   } catch {
@@ -2935,7 +3282,7 @@
     block.querySelectorAll('input, textarea').forEach(field => {
       field.disabled = locked;
     });
-    const button = block.querySelector('[data-sa-check], [data-rr-check]');
+    const button = block.querySelector('[data-sa-check], [data-rr-check], [data-fdp-check]');
     if (button) button.disabled = locked;
   }
 
@@ -2957,7 +3304,7 @@
   }
 
   function labelCheck(block, entry) {
-    const button = block.querySelector('[data-sa-check], [data-rr-check]');
+    const button = block.querySelector('[data-sa-check], [data-rr-check], [data-fdp-check]');
     if (!button) return;
     if (block.dataset.practice === 'open') button.textContent = 'Practice check';
     else if (questionWaiting(entry)) button.textContent = 'Locked';
@@ -3005,19 +3352,30 @@
     return solution;
   }
 
+  let gradedQuizzes = [];
+
   function paintAllQuestions() {
     document.querySelectorAll('[data-sa-q]').forEach(paintSa);
-    document.querySelectorAll('[data-rr]').forEach(paintRatio);
+    gradedQuizzes.forEach(quiz => quiz.paintAll());
     updateSaChrome();
-    updateRatioChrome();
+    gradedQuizzes.forEach(quiz => quiz.updateChrome());
   }
 
   function refreshLockouts() {
     let repaint = false;
     document.querySelectorAll('.question').forEach(block => {
-      const qid = block.dataset.saQ || block.dataset.rr;
+      let qid = '';
+      let itemId = '';
+      if (block.dataset.saQ) {
+        qid = block.dataset.saQ;
+        itemId = 'sa-practice-test';
+      } else {
+        const quiz = gradedQuizzes.find(item => block.hasAttribute('data-' + item.qAttr));
+        if (!quiz) return;
+        qid = block.getAttribute('data-' + quiz.qAttr);
+        itemId = quiz.itemId;
+      }
       if (!qid) return;
-      const itemId = block.dataset.saQ ? 'sa-practice-test' : 'ratios-rates';
       const entry = completion.question(itemId, qid);
       const count = block.querySelector('.lockout-count');
       const waiting = questionWaiting(entry);
@@ -3287,10 +3645,6 @@
     q12: { type: 'choice', answer: 'b' }
   };
 
-  function ratiosRoot() {
-    return document.querySelector('#ratios-rates');
-  }
-
   function foldEq(raw) {
     return String(raw || '')
       .toLowerCase()
@@ -3363,363 +3717,507 @@
     return value !== null && Math.abs(value - expected) < 1e-9;
   }
 
-  function ratioEntry(id) {
-    const raw = state.ratios && state.ratios[id];
-    if (!raw || typeof raw !== 'object') {
-      return { draft: null, graded: null, status: '', misses: 0, revealed: false, checked: false, orders: null };
-    }
-    return {
-      draft: raw.draft && typeof raw.draft === 'object' ? raw.draft : null,
-      graded: raw.graded && typeof raw.graded === 'object' ? raw.graded : null,
-      status: raw.status === 'correct' || raw.status === 'retry' ? raw.status : '',
-      misses: Number.isInteger(raw.misses) && raw.misses > 0 ? raw.misses : 0,
-      revealed: raw.revealed === true,
-      checked: raw.checked === true,
-      orders: Array.isArray(raw.orders) ? raw.orders : null
-    };
-  }
+  const FDP_SPEC = {
+    q1: { type: 'choice', answer: 'c' },
+    q2: { type: 'choice', answer: 'b' },
+    q3: { type: 'choice', answer: 'a' },
+    q4: { type: 'choice', answer: 'd' },
+    q5: { type: 'choice', answer: 'd' },
+    q6: { type: 'choice', answer: 'c' },
+    q7: { type: 'choice', answer: 'b' },
+    q8: { type: 'choice', answer: 'a' },
+    q9: { type: 'choice', answer: 'd' },
+    q10: { type: 'choice', answer: 'c' },
+    q11: { type: 'choice', answer: 'b' },
+    q12: { type: 'choice', answer: 'c' }
+  };
 
-  function readRatioDraft(block) {
-    const single = block.querySelector('input[data-rr-single]:checked');
-    const choices = [...block.querySelectorAll('input[type="checkbox"]:checked')].map(el => el.value).sort();
-    const fields = {};
-    block.querySelectorAll('[data-rr-field]').forEach(el => {
-      if (el.type === 'radio') {
-        if (el.checked) fields[el.dataset.rrField] = el.value;
-        else if (!(el.dataset.rrField in fields)) fields[el.dataset.rrField] = '';
-      } else {
-        fields[el.dataset.rrField] = el.value;
+  function createGradedQuiz(config) {
+    function root() {
+      return document.querySelector('#' + config.rootId);
+    }
+
+    function bucket() {
+      if (!state[config.stateKey] || typeof state[config.stateKey] !== 'object' || Array.isArray(state[config.stateKey])) {
+        state[config.stateKey] = {};
       }
-    });
-    return { choice: single ? single.value : '', choices, fields };
-  }
-
-  function gradedSnapshot(id, draft) {
-    const spec = RATIO_SPEC[id];
-    if (spec.type === 'choice') return { choice: draft.choice };
-    if (spec.type === 'multi') return { choices: draft.choices.slice() };
-    if (spec.type === 'number') return { fields: { [spec.field]: draft.fields[spec.field] || '' } };
-    const fields = {};
-    Object.keys(spec.fields).forEach(name => { fields[name] = draft.fields[name] || ''; });
-    return { fields };
-  }
-
-  function sameSnapshot(a, b) {
-    return JSON.stringify(a) === JSON.stringify(b);
-  }
-
-  function gradeRatio(id, draft) {
-    const spec = RATIO_SPEC[id];
-    if (spec.type === 'choice') {
-      if (!draft.choice) return { ready: false, message: 'Choose an answer, then check.' };
-      return { ready: true, ok: draft.choice === spec.answer, fields: {} };
+      return state[config.stateKey];
     }
-    if (spec.type === 'multi') {
-      if (draft.choices.length !== 2) return { ready: false, message: 'Select two ratios, then check.' };
-      const ok = spec.answer.every(value => draft.choices.includes(value));
-      return { ready: true, ok, fields: {} };
-    }
-    if (spec.type === 'number') {
-      const raw = draft.fields[spec.field] || '';
-      if (!raw.trim()) return { ready: false, message: 'Enter an answer, then check.' };
-      if (parseLooseNumber(raw) === null) return { ready: false, message: 'Enter a number. A decimal or a fraction is okay.' };
-      const ok = numbersMatch(raw, spec.expect);
-      return { ready: true, ok, fields: { [spec.field]: ok } };
-    }
-    let missing = false;
-    let badNumber = false;
-    Object.entries(spec.fields).forEach(([name, rule]) => {
-      const raw = draft.fields[name] || '';
-      if (!String(raw).trim()) missing = true;
-      else if (rule.kind === 'number' && parseLooseNumber(raw) === null) badNumber = true;
-    });
-    if (missing) return { ready: false, message: 'Fill in every blank, then check.' };
-    if (badNumber) return { ready: false, message: 'Enter a number in each number blank. A decimal or a fraction is okay.' };
-    const fields = {};
-    let ok = true;
-    Object.entries(spec.fields).forEach(([name, rule]) => {
-      const raw = draft.fields[name] || '';
-      let good = false;
-      if (rule.kind === 'number') good = numbersMatch(raw, rule.expect);
-      else if (rule.kind === 'add') good = isAdd(raw, rule.n);
-      else if (rule.kind === 'times') good = isTimes(raw, rule.n);
-      else if (rule.kind === 'choice') good = raw === rule.answer;
-      fields[name] = good;
-      if (!good) ok = false;
-    });
-    return { ready: true, ok, fields };
-  }
 
-  function applyRatioDraft(block, draft) {
-    if (!draft) return;
-    if (draft.choice) {
-      const radio = [...block.querySelectorAll('input[data-rr-single]')].find(el => el.value === draft.choice);
-      if (radio) radio.checked = true;
+    function blockById(id) {
+      return root().querySelector('[data-' + config.qAttr + '="' + id + '"]');
     }
-    (draft.choices || []).forEach(value => {
-      const box = [...block.querySelectorAll('input[type="checkbox"]')].find(el => el.value === value);
-      if (box) box.checked = true;
-    });
-    Object.entries(draft.fields || {}).forEach(([name, value]) => {
-      const radios = [...block.querySelectorAll('input[type="radio"]')].filter(el => el.dataset.rrField === name);
-      if (radios.length) {
-        radios.forEach(radio => { radio.checked = radio.value === value; });
-        return;
+
+    function blocks() {
+      const node = root();
+      return node ? [...node.querySelectorAll('[data-' + config.qAttr + ']')] : [];
+    }
+
+    function readEntry(id) {
+      const raw = bucket()[id];
+      if (!raw || typeof raw !== 'object') {
+        return { draft: null, graded: null, status: '', misses: 0, revealed: false, checked: false, orders: null };
       }
-      const field = [...block.querySelectorAll('[data-rr-field]')].find(el => el.dataset.rrField === name && el.type !== 'radio');
-      if (field) field.value = value;
-    });
-  }
+      return {
+        draft: raw.draft && typeof raw.draft === 'object' ? raw.draft : null,
+        graded: raw.graded && typeof raw.graded === 'object' ? raw.graded : null,
+        status: raw.status === 'correct' || raw.status === 'retry' ? raw.status : '',
+        misses: Number.isInteger(raw.misses) && raw.misses > 0 ? raw.misses : 0,
+        revealed: raw.revealed === true,
+        checked: raw.checked === true,
+        orders: Array.isArray(raw.orders) ? raw.orders : null
+      };
+    }
 
-  function paintRatio(block) {
-    const id = block.dataset.rr;
-    const entry = ratioEntry(id);
-    const draft = readRatioDraft(block);
-    const snapshot = gradedSnapshot(id, draft);
-    const matched = !!entry.graded && sameSnapshot(snapshot, entry.graded);
-    const show = matched ? entry.status : '';
-    const feedback = block.querySelector('.feedback');
-    feedback.className = 'feedback';
-    feedback.textContent = '';
-    block.querySelectorAll('.choice').forEach(choice => choice.classList.remove('is-correct', 'is-wrong'));
-    block.querySelectorAll('input[type="text"]').forEach(field => {
-      field.classList.remove('is-correct', 'is-wrong');
-      field.removeAttribute('aria-invalid');
-    });
-    const hint = block.querySelector('.rr-hint');
-    const solution = block.querySelector('.rr-solution');
-    const entryHub = completion.question('ratios-rates', id);
-    const count = ensureLockout(block, hint || feedback);
-    if (hint) hint.hidden = !(entryHub && (entryHub.result === 'wait' || entryHub.result === 'wrong'));
-    if (solution) solution.hidden = !(entryHub && entryHub.result === 'wrong');
-    paintLockout(count, entryHub);
-    setAnswerLocked(block, answerLocked(block, entryHub));
-    labelCheck(block, entryHub);
-    const reveal = block.querySelector('[data-rr-reveal]');
-    if (reveal) reveal.hidden = true;
-    if (block.dataset.practice === 'done' && questionFinal(entryHub)) {
-      const practiceOk = block.dataset.practiceOk === 'yes';
-      feedback.classList.add(practiceOk ? 'correct' : 'incorrect');
-      feedback.textContent = practiceOk
-        ? 'Correct. Practice only. This does not change your score.'
-        : 'Not quite. Practice only. This does not change your score.';
-      return;
-    }
-    if (show !== 'correct' && show !== 'retry') return;
-    const result = gradeRatio(id, draft);
-    const correct = entryHub && (entryHub.result === 'first' || entryHub.result === 'second');
-    feedback.classList.add(correct ? 'correct' : 'incorrect');
-    if (entryHub && entryHub.result === 'second') feedback.textContent = 'Correct. This try counts.';
-    else if (entryHub && entryHub.result === 'wrong') feedback.textContent = 'Saved as not correct.';
-    else if (entryHub && entryHub.result === 'wait') feedback.textContent = 'Not yet. Use the hint. The second try counts after the wait.';
-    else feedback.textContent = correct ? 'Correct' : 'Not yet.';
-    if (RATIO_SPEC[id].type === 'choice' || RATIO_SPEC[id].type === 'multi') {
-      block.querySelectorAll('input[data-rr-single]:checked, input[type="checkbox"]:checked').forEach(input => {
-        input.closest('.choice').classList.add(correct ? 'is-correct' : 'is-wrong');
-      });
-      return;
-    }
-    Object.entries(result.fields || {}).forEach(([name, good]) => {
-      const mark = correct || good ? 'is-correct' : 'is-wrong';
-      [...block.querySelectorAll('[data-rr-field]')].filter(el => el.dataset.rrField === name).forEach(el => {
+    function readDraft(block) {
+      const single = block.querySelector(config.singleSelector + ':checked');
+      const choices = [...block.querySelectorAll('input[type="checkbox"]:checked')].map(el => el.value).sort();
+      const fields = {};
+      block.querySelectorAll(config.fieldSelector).forEach(el => {
+        const name = el.dataset[config.fieldData];
         if (el.type === 'radio') {
-          if (el.checked) el.closest('.choice').classList.add(good ? 'is-correct' : 'is-wrong');
-        } else if (el.type !== 'textarea') {
-          el.classList.add(mark);
-          el.setAttribute('aria-invalid', good ? 'false' : 'true');
+          if (el.checked) fields[name] = el.value;
+          else if (!(name in fields)) fields[name] = '';
+        } else {
+          fields[name] = el.value;
         }
       });
-    });
-  }
+      return { choice: single ? single.value : '', choices, fields };
+    }
 
-  function ratioCounts() {
-    const root = ratiosRoot();
-    const total = root ? root.querySelectorAll('[data-rr]').length : 12;
-    const counts = completion.tally('ratios-rates', total || 12);
-    return { correct: counts.correct, checked: counts.answered, total: total || 12, finished: counts.finished };
-  }
+    function gradedSnapshot(id, draft) {
+      const spec = config.spec[id];
+      if (spec.type === 'choice') return { choice: draft.choice };
+      if (spec.type === 'multi') return { choices: draft.choices.slice() };
+      if (spec.type === 'number') return { fields: { [spec.field]: draft.fields[spec.field] || '' } };
+      const fields = {};
+      Object.keys(spec.fields).forEach(name => { fields[name] = draft.fields[name] || ''; });
+      return { fields };
+    }
 
-  function updateRatioChrome() {
-    const root = ratiosRoot();
-    if (!root) return;
-    const counts = ratioCounts();
-    root.querySelectorAll('.rr-score').forEach(node => {
-      node.textContent = counts.correct + ' of ' + counts.total + ' correct · ' + scorePercent(counts.correct, counts.total) + '%';
-    });
-    root.querySelectorAll('.rr-checked').forEach(node => {
-      node.textContent = counts.checked + ' of ' + counts.total + ' answered';
-    });
-    const progress = root.querySelector('#rr-progress');
-    if (progress) {
-      progress.max = counts.total;
-      progress.value = counts.correct;
+    function sameSnapshot(a, b) {
+      return JSON.stringify(a) === JSON.stringify(b);
     }
-    const note = root.querySelector('#rr-end-note');
-    if (note) {
-      if (counts.finished && counts.correct === counts.total) note.textContent = counts.total + ' of ' + counts.total + ' correct. Nice work.';
-      else if (counts.finished) note.textContent = 'This score is saved. Retry missed questions is practice only.';
-      else if (counts.checked > 0) note.textContent = 'A miss shows a hint and a 2 minute wait, then one more try that still counts.';
-      else note.textContent = '';
-    }
-  }
 
-  function rememberRatio(id) {
-    const root = ratiosRoot();
-    const block = root.querySelector('[data-rr="' + id + '"]');
-    const entry = ratioEntry(id);
-    if (!state.ratios || typeof state.ratios !== 'object') state.ratios = {};
-    state.ratios[id] = { ...entry, draft: readRatioDraft(block), orders: entry.orders };
-    save();
-    paintRatio(block);
-    updateRatioChrome();
-  }
-
-  function focusRatioGap(block) {
-    const spec = RATIO_SPEC[block.dataset.rr];
-    const draft = readRatioDraft(block);
-    if (spec.type === 'choice' && !draft.choice) {
-      const first = block.querySelector('input[data-rr-single]');
-      if (first) first.focus();
-      return;
-    }
-    if (spec.type === 'multi' && draft.choices.length !== 2) {
-      const first = block.querySelector('input[type="checkbox"]');
-      if (first) first.focus();
-      return;
-    }
-    if (spec.type === 'number') {
-      const field = block.querySelector('[data-rr-field="' + spec.field + '"]');
-      if (field) field.focus();
-      return;
-    }
-    if (spec.type === 'parts') {
-      const name = Object.keys(spec.fields).find(key => {
-        const raw = draft.fields[key] || '';
-        if (!String(raw).trim()) return true;
-        return spec.fields[key].kind === 'number' && parseLooseNumber(raw) === null;
+    function grade(id, draft) {
+      const spec = config.spec[id];
+      if (spec.type === 'choice') {
+        if (!draft.choice) return { ready: false, message: 'Choose an answer, then check.' };
+        return { ready: true, ok: draft.choice === spec.answer, fields: {} };
+      }
+      if (spec.type === 'multi') {
+        if (draft.choices.length !== 2) return { ready: false, message: 'Select two ratios, then check.' };
+        const ok = spec.answer.every(value => draft.choices.includes(value));
+        return { ready: true, ok, fields: {} };
+      }
+      if (spec.type === 'number') {
+        const raw = draft.fields[spec.field] || '';
+        if (!raw.trim()) return { ready: false, message: 'Enter an answer, then check.' };
+        if (parseLooseNumber(raw) === null) return { ready: false, message: 'Enter a number. A decimal or a fraction is okay.' };
+        const ok = numbersMatch(raw, spec.expect);
+        return { ready: true, ok, fields: { [spec.field]: ok } };
+      }
+      let missing = false;
+      let badNumber = false;
+      Object.entries(spec.fields).forEach(([name, rule]) => {
+        const raw = draft.fields[name] || '';
+        if (!String(raw).trim()) missing = true;
+        else if (rule.kind === 'number' && parseLooseNumber(raw) === null) badNumber = true;
       });
-      if (!name) return;
-      const field = [...block.querySelectorAll('[data-rr-field]')].find(el => el.dataset.rrField === name);
-      if (field) field.focus();
+      if (missing) return { ready: false, message: 'Fill in every blank, then check.' };
+      if (badNumber) return { ready: false, message: 'Enter a number in each number blank. A decimal or a fraction is okay.' };
+      const fields = {};
+      let ok = true;
+      Object.entries(spec.fields).forEach(([name, rule]) => {
+        const raw = draft.fields[name] || '';
+        let good = false;
+        if (rule.kind === 'number') good = numbersMatch(raw, rule.expect);
+        else if (rule.kind === 'add') good = isAdd(raw, rule.n);
+        else if (rule.kind === 'times') good = isTimes(raw, rule.n);
+        else if (rule.kind === 'choice') good = raw === rule.answer;
+        fields[name] = good;
+        if (!good) ok = false;
+      });
+      return { ready: true, ok, fields };
     }
-  }
 
-  function checkRatio(id) {
-    const root = ratiosRoot();
-    const block = root.querySelector('[data-rr="' + id + '"]');
-    const existing = completion.question('ratios-rates', id);
-    if (questionFinal(existing)) {
-      if (block.dataset.practice !== 'open') return;
-      const practice = gradeRatio(id, readRatioDraft(block));
+    function applyDraft(block, draft) {
+      if (!draft) return;
+      if (draft.choice) {
+        const radio = [...block.querySelectorAll(config.singleSelector)].find(el => el.value === draft.choice);
+        if (radio) radio.checked = true;
+      }
+      (draft.choices || []).forEach(value => {
+        const box = [...block.querySelectorAll('input[type="checkbox"]')].find(el => el.value === value);
+        if (box) box.checked = true;
+      });
+      Object.entries(draft.fields || {}).forEach(([name, value]) => {
+        const radios = [...block.querySelectorAll('input[type="radio"]')].filter(el => el.dataset[config.fieldData] === name);
+        if (radios.length) {
+          radios.forEach(radio => { radio.checked = radio.value === value; });
+          return;
+        }
+        const field = [...block.querySelectorAll(config.fieldSelector)].find(el => el.dataset[config.fieldData] === name && el.type !== 'radio');
+        if (field) field.value = value;
+      });
+    }
+
+    function paint(block) {
+      const id = block.getAttribute('data-' + config.qAttr);
+      const entry = readEntry(id);
+      const draft = readDraft(block);
+      const snapshot = gradedSnapshot(id, draft);
+      const matched = !!entry.graded && sameSnapshot(snapshot, entry.graded);
+      const show = matched ? entry.status : '';
       const feedback = block.querySelector('.feedback');
-      if (!practice.ready) {
-        feedback.className = 'feedback';
-        feedback.textContent = practice.message;
-        focusRatioGap(block);
+      feedback.className = 'feedback';
+      feedback.textContent = '';
+      block.querySelectorAll('.choice').forEach(choice => choice.classList.remove('is-correct', 'is-wrong'));
+      block.querySelectorAll('input[type="text"]').forEach(field => {
+        field.classList.remove('is-correct', 'is-wrong');
+        field.removeAttribute('aria-invalid');
+      });
+      const hint = block.querySelector('.' + config.hintClass);
+      const solution = block.querySelector('.' + config.solutionClass);
+      const entryHub = completion.question(config.itemId, id);
+      const count = ensureLockout(block, hint || feedback);
+      if (hint) hint.hidden = !(entryHub && (entryHub.result === 'wait' || entryHub.result === 'wrong'));
+      if (solution) solution.hidden = !(entryHub && entryHub.result === 'wrong');
+      paintLockout(count, entryHub);
+      setAnswerLocked(block, answerLocked(block, entryHub));
+      labelCheck(block, entryHub);
+      const reveal = block.querySelector(config.revealSelector);
+      if (reveal) reveal.hidden = true;
+      if (block.dataset.practice === 'done' && questionFinal(entryHub)) {
+        const practiceOk = block.dataset.practiceOk === 'yes';
+        feedback.classList.add(practiceOk ? 'correct' : 'incorrect');
+        feedback.textContent = practiceOk
+          ? 'Correct. Practice only. This does not change your score.'
+          : 'Not quite. Practice only. This does not change your score.';
         return;
       }
-      block.dataset.practiceOk = practice.ok ? 'yes' : 'no';
-      block.dataset.practice = 'done';
-      paintRatio(block);
-      return;
-    }
-    if (questionWaiting(existing)) return;
-    const draft = readRatioDraft(block);
-    const result = gradeRatio(id, draft);
-    const feedback = block.querySelector('.feedback');
-    if (!result.ready) {
-      feedback.className = 'feedback';
-      feedback.textContent = result.message;
-      focusRatioGap(block);
-      return;
-    }
-    const entry = ratioEntry(id);
-    const next = {
-      draft,
-      graded: gradedSnapshot(id, draft),
-      status: result.ok ? 'correct' : 'retry',
-      misses: existing ? 2 : 1,
-      revealed: false,
-      checked: true,
-      orders: entry.orders
-    };
-    if (!state.ratios || typeof state.ratios !== 'object') state.ratios = {};
-    state.ratios[id] = next;
-    const total = root.querySelectorAll('[data-rr]').length;
-    if (!existing) {
-      completion.setQuestion('ratios-rates', id, result.ok
-        ? { result: 'first', lockoutUntil: 0 }
-        : { result: 'wait', lockoutUntil: Date.now() + LOCKOUT_MS }, total);
-    } else {
-      completion.setQuestion('ratios-rates', id, {
-        result: result.ok ? 'second' : 'wrong',
-        lockoutUntil: 0
-      }, total);
-    }
-    save();
-    paintRatio(block);
-    updateRatioChrome();
-  }
-
-  function revealRatio() {
-    return;
-  }
-
-  function clearRatios() {
-    state.ratios = {};
-    completion.clearQuestions('ratios-rates');
-    save();
-    const root = ratiosRoot();
-    if (!root) return;
-    root.querySelectorAll('[data-rr]').forEach(block => {
-      delete block.dataset.practice;
-      delete block.dataset.practiceOk;
-      block.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => { input.checked = false; });
-      block.querySelectorAll('input[type="text"], textarea').forEach(field => { field.value = ''; });
-      const feedback = block.querySelector('.feedback');
-      if (feedback) {
-        feedback.className = 'feedback';
-        feedback.textContent = '';
+      if (show !== 'correct' && show !== 'retry') return;
+      const result = grade(id, draft);
+      const correct = entryHub && (entryHub.result === 'first' || entryHub.result === 'second');
+      feedback.classList.add(correct ? 'correct' : 'incorrect');
+      if (entryHub && entryHub.result === 'second') feedback.textContent = 'Correct. This try counts.';
+      else if (entryHub && entryHub.result === 'wrong') feedback.textContent = 'Saved as not correct.';
+      else if (entryHub && entryHub.result === 'wait') feedback.textContent = 'Not yet. Use the hint. The second try counts after the wait.';
+      else feedback.textContent = correct ? 'Correct' : 'Not yet.';
+      if (config.spec[id].type === 'choice' || config.spec[id].type === 'multi') {
+        block.querySelectorAll(config.singleSelector + ':checked, input[type="checkbox"]:checked').forEach(input => {
+          input.closest('.choice').classList.add(correct ? 'is-correct' : 'is-wrong');
+        });
+        return;
       }
-      const orders = shuffleChoices(block);
-      state.ratios[block.dataset.rr] = { draft: null, graded: null, status: '', misses: 0, revealed: false, checked: false, orders };
-      paintRatio(block);
-    });
-    const note = root.querySelector('#rr-end-note');
-    if (note) note.textContent = '';
-    save();
-    updateRatioChrome();
-  }
+      Object.entries(result.fields || {}).forEach(([name, good]) => {
+        const mark = correct || good ? 'is-correct' : 'is-wrong';
+        [...block.querySelectorAll(config.fieldSelector)].filter(el => el.dataset[config.fieldData] === name).forEach(el => {
+          if (el.type === 'radio') {
+            if (el.checked) el.closest('.choice').classList.add(good ? 'is-correct' : 'is-wrong');
+          } else if (el.type !== 'textarea') {
+            el.classList.add(mark);
+            el.setAttribute('aria-invalid', good ? 'false' : 'true');
+          }
+        });
+      });
+    }
 
-  let ratioRetryCursor = 0;
+    function counts() {
+      const total = blocks().length || 12;
+      const tally = completion.tally(config.itemId, total);
+      return { correct: tally.correct, checked: tally.answered, total, finished: tally.finished };
+    }
 
-  function retryMissedRatios() {
-    const root = ratiosRoot();
-    const note = root.querySelector('#rr-end-note');
-    const counts = ratioCounts();
-    if (!counts.finished) {
-      if (note) note.textContent = 'Finish every question first. Missed questions can be practiced after the score is saved.';
+    function updateChrome() {
+      const node = root();
+      if (!node) return;
+      const score = counts();
+      node.querySelectorAll('.' + config.scoreClass).forEach(el => {
+        el.textContent = score.correct + ' of ' + score.total + ' correct · ' + scorePercent(score.correct, score.total) + '%';
+      });
+      node.querySelectorAll('.' + config.checkedClass).forEach(el => {
+        el.textContent = score.checked + ' of ' + score.total + ' answered';
+      });
+      const progress = node.querySelector('#' + config.progressId);
+      if (progress) {
+        progress.max = score.total;
+        progress.value = score.correct;
+      }
+      const note = node.querySelector('#' + config.noteId);
+      if (note) {
+        if (score.finished && score.correct === score.total) note.textContent = score.total + ' of ' + score.total + ' correct. Nice work.';
+        else if (score.finished) note.textContent = 'This score is saved. Retry missed questions is practice only.';
+        else if (score.checked > 0) note.textContent = 'A miss shows a hint and a 2 minute wait, then one more try that still counts.';
+        else note.textContent = '';
+      }
+    }
+
+    function remember(id) {
+      const block = blockById(id);
+      const entry = readEntry(id);
+      bucket()[id] = { ...entry, draft: readDraft(block), orders: entry.orders };
+      save();
+      paint(block);
+      updateChrome();
+    }
+
+    function focusGap(block) {
+      const spec = config.spec[block.getAttribute('data-' + config.qAttr)];
+      const draft = readDraft(block);
+      if (spec.type === 'choice' && !draft.choice) {
+        const first = block.querySelector(config.singleSelector);
+        if (first) first.focus();
+        return;
+      }
+      if (spec.type === 'multi' && draft.choices.length !== 2) {
+        const first = block.querySelector('input[type="checkbox"]');
+        if (first) first.focus();
+        return;
+      }
+      if (spec.type === 'number') {
+        const field = [...block.querySelectorAll(config.fieldSelector)].find(el => el.dataset[config.fieldData] === spec.field);
+        if (field) field.focus();
+        return;
+      }
+      if (spec.type === 'parts') {
+        const name = Object.keys(spec.fields).find(key => {
+          const raw = draft.fields[key] || '';
+          if (!String(raw).trim()) return true;
+          return spec.fields[key].kind === 'number' && parseLooseNumber(raw) === null;
+        });
+        if (!name) return;
+        const field = [...block.querySelectorAll(config.fieldSelector)].find(el => el.dataset[config.fieldData] === name);
+        if (field) field.focus();
+      }
+    }
+
+    function check(id) {
+      const node = root();
+      const block = blockById(id);
+      const existing = completion.question(config.itemId, id);
+      if (questionFinal(existing)) {
+        if (block.dataset.practice !== 'open') return;
+        const practice = grade(id, readDraft(block));
+        const feedback = block.querySelector('.feedback');
+        if (!practice.ready) {
+          feedback.className = 'feedback';
+          feedback.textContent = practice.message;
+          focusGap(block);
+          return;
+        }
+        block.dataset.practiceOk = practice.ok ? 'yes' : 'no';
+        block.dataset.practice = 'done';
+        paint(block);
+        return;
+      }
+      if (questionWaiting(existing)) return;
+      const draft = readDraft(block);
+      const result = grade(id, draft);
+      const feedback = block.querySelector('.feedback');
+      if (!result.ready) {
+        feedback.className = 'feedback';
+        feedback.textContent = result.message;
+        focusGap(block);
+        return;
+      }
+      const entry = readEntry(id);
+      bucket()[id] = {
+        draft,
+        graded: gradedSnapshot(id, draft),
+        status: result.ok ? 'correct' : 'retry',
+        misses: existing ? 2 : 1,
+        revealed: false,
+        checked: true,
+        orders: entry.orders
+      };
+      const total = blocks().length;
+      if (!existing) {
+        completion.setQuestion(config.itemId, id, result.ok
+          ? { result: 'first', lockoutUntil: 0 }
+          : { result: 'wait', lockoutUntil: Date.now() + LOCKOUT_MS }, total);
+      } else {
+        completion.setQuestion(config.itemId, id, {
+          result: result.ok ? 'second' : 'wrong',
+          lockoutUntil: 0
+        }, total);
+      }
+      save();
+      paint(block);
+      updateChrome();
+    }
+
+    function reveal() {
       return;
     }
-    const missed = [...root.querySelectorAll('[data-rr]')].filter(block => {
-      const hub = completion.question('ratios-rates', block.dataset.rr);
-      return hub && hub.result === 'wrong';
-    });
-    if (!missed.length) {
-      if (note) note.textContent = 'Every scored answer is correct.';
-      return;
+
+    function clear() {
+      state[config.stateKey] = {};
+      completion.clearQuestions(config.itemId);
+      save();
+      const node = root();
+      if (!node) return;
+      blocks().forEach(block => {
+        delete block.dataset.practice;
+        delete block.dataset.practiceOk;
+        block.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => { input.checked = false; });
+        block.querySelectorAll('input[type="text"], textarea').forEach(field => { field.value = ''; });
+        const feedback = block.querySelector('.feedback');
+        if (feedback) {
+          feedback.className = 'feedback';
+          feedback.textContent = '';
+        }
+        const orders = shuffleChoices(block);
+        const id = block.getAttribute('data-' + config.qAttr);
+        state[config.stateKey][id] = { draft: null, graded: null, status: '', misses: 0, revealed: false, checked: false, orders };
+        paint(block);
+      });
+      const note = node.querySelector('#' + config.noteId);
+      if (note) note.textContent = '';
+      save();
+      updateChrome();
     }
-    missed.forEach(block => {
-      block.dataset.practice = 'open';
-      delete block.dataset.practiceOk;
-      paintRatio(block);
-    });
-    const block = missed[ratioRetryCursor % missed.length];
-    ratioRetryCursor += 1;
-    block.scrollIntoView({ block: 'start' });
-    const focusable = block.querySelector('input:not(:disabled), textarea:not(:disabled)');
-    if (focusable) focusable.focus();
+
+    let retryCursor = 0;
+
+    function retryMissed() {
+      const node = root();
+      const note = node.querySelector('#' + config.noteId);
+      const score = counts();
+      if (!score.finished) {
+        if (note) note.textContent = 'Finish every question first. Missed questions can be practiced after the score is saved.';
+        return;
+      }
+      const missed = blocks().filter(block => {
+        const hub = completion.question(config.itemId, block.getAttribute('data-' + config.qAttr));
+        return hub && hub.result === 'wrong';
+      });
+      if (!missed.length) {
+        if (note) note.textContent = 'Every scored answer is correct.';
+        return;
+      }
+      missed.forEach(block => {
+        block.dataset.practice = 'open';
+        delete block.dataset.practiceOk;
+        paint(block);
+      });
+      const block = missed[retryCursor % missed.length];
+      retryCursor += 1;
+      block.scrollIntoView({ block: 'start' });
+      const focusable = block.querySelector('input:not(:disabled), textarea:not(:disabled)');
+      if (focusable) focusable.focus();
+    }
+
+    function bind() {
+      const node = root();
+      if (!node || node.dataset.bound === 'true') return;
+      node.dataset.bound = 'true';
+      bucket();
+      blocks().forEach(block => {
+        const id = block.getAttribute('data-' + config.qAttr);
+        const entry = readEntry(id);
+        const orders = prepareChoices(block, entry.orders);
+        if (JSON.stringify(orders) !== JSON.stringify(entry.orders)) {
+          bucket()[id] = { ...entry, orders };
+          save();
+        }
+        if (entry.draft) applyDraft(block, entry.draft);
+        block.querySelectorAll('input, textarea').forEach(field => {
+          field.addEventListener('input', () => remember(id));
+          field.addEventListener('change', () => remember(id));
+          if (field.tagName === 'INPUT' && field.type === 'text') {
+            field.addEventListener('keydown', event => {
+              if (event.key !== 'Enter') return;
+              event.preventDefault();
+              check(id);
+            });
+          }
+        });
+        paint(block);
+      });
+      node.addEventListener('click', event => {
+        const checkButton = event.target.closest(config.checkSelector);
+        if (checkButton && node.contains(checkButton)) {
+          check(checkButton.dataset[config.checkData]);
+          return;
+        }
+        const revealButton = event.target.closest(config.revealSelector);
+        if (revealButton && node.contains(revealButton)) {
+          reveal();
+          return;
+        }
+        if (event.target.closest(config.retrySelector)) {
+          retryMissed();
+          return;
+        }
+        if (event.target.closest(config.restartSelector)) {
+          document.querySelector('#' + config.resetDialogId).showModal();
+        }
+      });
+      document.querySelector('#' + config.resetDialogId).querySelector('form').addEventListener('submit', event => {
+        if (event.submitter?.value !== 'reset') return;
+        clear();
+        const title = document.getElementById(config.titleId);
+        if (title && !node.hidden) title.focus();
+      });
+      updateChrome();
+    }
+
+    function paintAll() {
+      blocks().forEach(paint);
+    }
+
+    return { bind, clear, paintAll, updateChrome, itemId: config.itemId, qAttr: config.qAttr };
   }
+
+  gradedQuizzes = [
+    createGradedQuiz({
+      itemId: 'ratios-rates',
+      stateKey: 'ratios',
+      rootId: 'ratios-rates',
+      qAttr: 'rr',
+      singleSelector: 'input[data-rr-single]',
+      fieldSelector: '[data-rr-field]',
+      fieldData: 'rrField',
+      checkSelector: '[data-rr-check]',
+      checkData: 'rrCheck',
+      revealSelector: '[data-rr-reveal]',
+      hintClass: 'rr-hint',
+      solutionClass: 'rr-solution',
+      scoreClass: 'rr-score',
+      checkedClass: 'rr-checked',
+      progressId: 'rr-progress',
+      noteId: 'rr-end-note',
+      retrySelector: '#rr-retry',
+      restartSelector: '#rr-restart',
+      resetDialogId: 'rr-reset-dialog',
+      titleId: 'ratios-title',
+      spec: RATIO_SPEC
+    }),
+    createGradedQuiz({
+      itemId: 'fractions-decimals-percents',
+      stateKey: 'fdp',
+      rootId: 'fractions-decimals-percents',
+      qAttr: 'fdp',
+      singleSelector: 'input[data-fdp-single]',
+      fieldSelector: '[data-fdp-field]',
+      fieldData: 'fdpField',
+      checkSelector: '[data-fdp-check]',
+      checkData: 'fdpCheck',
+      revealSelector: '[data-fdp-reveal]',
+      hintClass: 'rr-hint',
+      solutionClass: 'rr-solution',
+      scoreClass: 'rr-score',
+      checkedClass: 'rr-checked',
+      progressId: 'fdp-progress',
+      noteId: 'fdp-end-note',
+      retrySelector: '#fdp-retry',
+      restartSelector: '#fdp-restart',
+      resetDialogId: 'fdp-reset-dialog',
+      titleId: 'fdp-title',
+      spec: FDP_SPEC
+    })
+  ];
 
   function retryMissedSa() {
     const root = saRoot();
@@ -3739,60 +4237,6 @@
     if (focusable) focusable.focus();
   }
 
-  function bindRatios() {
-    const root = ratiosRoot();
-    if (!root || root.dataset.bound === 'true') return;
-    root.dataset.bound = 'true';
-    if (!state.ratios || typeof state.ratios !== 'object' || Array.isArray(state.ratios)) state.ratios = {};
-    root.querySelectorAll('[data-rr]').forEach(block => {
-      const id = block.dataset.rr;
-      const entry = ratioEntry(id);
-      const orders = prepareChoices(block, entry.orders);
-      if (JSON.stringify(orders) !== JSON.stringify(entry.orders)) {
-        state.ratios[id] = { ...entry, orders };
-        save();
-      }
-      if (entry.draft) applyRatioDraft(block, entry.draft);
-      block.querySelectorAll('input, textarea').forEach(field => {
-        field.addEventListener('input', () => rememberRatio(id));
-        field.addEventListener('change', () => rememberRatio(id));
-        if (field.tagName === 'INPUT' && field.type === 'text') {
-          field.addEventListener('keydown', event => {
-            if (event.key !== 'Enter') return;
-            event.preventDefault();
-            checkRatio(id);
-          });
-        }
-      });
-      paintRatio(block);
-    });
-    root.addEventListener('click', event => {
-      const check = event.target.closest('[data-rr-check]');
-      if (check && root.contains(check)) {
-        checkRatio(check.dataset.rrCheck);
-        return;
-      }
-      const reveal = event.target.closest('[data-rr-reveal]');
-      if (reveal && root.contains(reveal)) {
-        revealRatio(reveal.dataset.rrReveal);
-        return;
-      }
-      if (event.target.closest('#rr-retry')) {
-        retryMissedRatios();
-        return;
-      }
-      if (event.target.closest('#rr-restart')) {
-        document.querySelector('#rr-reset-dialog').showModal();
-      }
-    });
-    document.querySelector('#rr-reset-dialog').querySelector('form').addEventListener('submit', event => {
-      if (event.submitter?.value !== 'reset') return;
-      clearRatios();
-      const title = document.getElementById('ratios-title');
-      if (title && !root.hidden) title.focus();
-    });
-    updateRatioChrome();
-  }
   function bindSaPractice() {
     const root = saRoot();
     if (!root || root.dataset.bound === 'true') return;
@@ -3872,7 +4316,7 @@
   function showRoute(moveFocus = false) {
     const route = location.hash.slice(1) || 'home';
     const known = screens.find(item => item.id === route)?.id || 'home';
-    const mathScreen = known === 'ratios-rates';
+    const mathScreen = known === 'ratios-rates' || known === 'fractions-decimals-percents';
     const socialScreen = known === 'sa-practice-test';
     const subject = socialScreen ? 'social-studies' : mathScreen ? 'math' : known;
     screens.forEach(item => { item.hidden = item.id !== known; });
@@ -3891,7 +4335,7 @@
   completion.onChange(refreshCompletionUI);
   completion.init();
   bindSaPractice();
-  bindRatios();
+  gradedQuizzes.forEach(quiz => quiz.bind());
   refreshCompletionUI();
   showRoute();
   setInterval(refreshLockouts, 250);
@@ -3905,7 +4349,7 @@
     state = freshState();
     save();
     clearSaPractice();
-    clearRatios();
+    gradedQuizzes.forEach(quiz => quiz.clear());
   });
 })();
 </script>
