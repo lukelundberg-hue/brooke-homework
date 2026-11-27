@@ -790,6 +790,182 @@
     #ratios-rates .shade-grid { grid-template-columns: repeat(10, minmax(0, 1fr)); width: 100%; }
     #ratios-rates .shade-grid i { width: 100%; height: auto; aspect-ratio: 1; }
   }
+
+  #sa-review-game .sg-round { scroll-margin-top: 5.5rem; }
+  #sa-review-game .sg-hud {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    display: flex;
+    gap: .5rem;
+    margin: 0 0 .35rem;
+    padding: .45rem 0 .55rem;
+    background: #fff7fb;
+  }
+  #sa-review-game .sg-stat {
+    flex: 1 1 0;
+    min-width: 0;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: .7rem;
+    padding: .4rem .55rem .5rem;
+    min-height: 2.75rem;
+  }
+  #sa-review-game .sg-stat span {
+    display: block;
+    font-size: .68rem;
+    font-weight: 750;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  #sa-review-game .sg-stat strong {
+    display: block;
+    font-size: 1.35rem;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+  }
+  #sa-review-game .sg-hud-note { margin: 0 0 .85rem; }
+  #sa-review-game .sg-start,
+  #sa-review-game .sg-results {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: .85rem;
+    padding: 1.15rem 1rem 1.2rem;
+    margin: .2rem 0 1rem;
+  }
+  #sa-review-game .sg-start h3,
+  #sa-review-game .sg-results .kicker { margin: 0; }
+  #sa-review-game .sg-start h3 {
+    font-family: Georgia, serif;
+    font-size: clamp(1.7rem, 5vw, 2.1rem);
+    margin: .2rem 0 .45rem;
+  }
+  #sa-review-game .sg-start p,
+  #sa-review-game .sg-results p { margin: .4rem 0; }
+  #sa-review-game .sg-play,
+  #sa-review-game .sg-next {
+    min-height: 3.1rem;
+    font-size: 1.08rem;
+    margin-top: .7rem;
+  }
+  #sa-review-game .sg-next { width: 100%; }
+  #sa-review-game .sg-results { text-align: center; }
+  #sa-review-game .sg-results-score {
+    font-family: Georgia, serif;
+    font-size: clamp(3.4rem, 14vw, 5rem);
+    line-height: .95;
+    margin: .15rem 0 .25rem;
+    color: var(--accent);
+  }
+  #sa-review-game .sg-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin: .35rem 0 .75rem;
+  }
+  #sa-review-game .choice {
+    align-items: flex-start;
+    cursor: pointer;
+  }
+  #sa-review-game .choice input {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: .22rem;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  #sa-review-game .choice-text { flex: 1; min-width: 0; }
+  #sa-review-game .choice:has(input:checked) {
+    border-color: var(--accent);
+    background: #f6f0fd;
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+  #sa-review-game .choice.is-correct,
+  #sa-review-game .choice.is-correct:has(input:checked) {
+    background: #eaf6ef;
+    border-color: #6eaa88;
+    box-shadow: none;
+  }
+  #sa-review-game .choice.is-wrong,
+  #sa-review-game .choice.is-wrong:has(input:checked) {
+    background: #fff0eb;
+    border-color: #cf9589;
+    box-shadow: none;
+  }
+  #sa-review-game .sg-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: .75rem;
+  }
+  #sa-review-game .sg-hint {
+    background: #fff8e8;
+    border: 1px solid #ead7a4;
+    border-radius: .5rem;
+    padding: .7rem .8rem;
+    margin: .75rem 0 0;
+    font-weight: 650;
+  }
+  #sa-review-game .sg-hint:not([hidden])::before {
+    content: "How to work it";
+    display: block;
+    font-weight: 750;
+    margin-bottom: .15rem;
+  }
+  #sa-review-game .sg-solution { margin-top: .75rem; }
+  #sa-review-game .lockout-count { scroll-margin-bottom: 2rem; }
+  #sa-review-game [data-sg-reveal] { display: none !important; }
+  #sg-pop {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+  #sg-pop[hidden] { display: none !important; }
+  #sg-pop .sg-burst {
+    position: relative;
+    background: white;
+    border: 3px solid var(--gold);
+    border-radius: 1.1rem;
+    padding: .85rem 1.25rem;
+    font-family: Georgia, serif;
+    font-size: clamp(1.8rem, 7vw, 2.7rem);
+    line-height: 1.05;
+    color: var(--accent);
+    box-shadow: 0 1rem 2.5rem #20152b33;
+    animation: sg-pop .95s ease forwards;
+  }
+  #sg-pop .sg-dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: .7rem;
+    height: .7rem;
+    margin: -.35rem;
+    border-radius: 50%;
+    animation: sg-dot .95s ease forwards;
+  }
+  @keyframes sg-pop {
+    0% { transform: scale(.72); opacity: 0; }
+    28% { transform: scale(1.06); opacity: 1; }
+    72% { opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+  }
+  @keyframes sg-dot {
+    to { transform: translate(var(--x), var(--y)); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #sg-pop .sg-burst, #sg-pop .sg-dot { animation: none; opacity: 1; }
+  }
+  @media (max-width: 31rem) {
+    #sa-review-game .sg-tools button,
+    #sa-review-game .sg-actions button,
+    #sa-review-game .sg-play { width: 100%; }
+    #sa-review-game .sg-hud { top: 0; }
+  }
 </style>
 </head>
 <body>
@@ -862,7 +1038,7 @@
         <div class="tile-copy">
           <div class="kicker"><span id="social-count">2 to do</span> · Rally Era</div>
           <h3>Social Studies</h3>
-          <p>Practice the South America test.</p>
+          <p>Practice the South America test, or play the review game.</p>
           <p class="tagline">Read the rally, then send it back.</p>
         </div>
       </a>
@@ -908,6 +1084,15 @@
           <p>25 questions from Mr. Connolly's South America slides and the Panama Canal slides.</p>
           <p class="card-score" data-score-for="sa-practice-test" hidden></p>
           <p class="pass-note" data-pass-for="sa-practice-test" data-pass-kind="card" hidden></p>
+        </a>
+      </article>
+      <article class="index-card assignment-card" data-assignment="sa-review-game" data-subject="social" data-order="1">
+        <a href="#sa-review-game">
+          <div class="kicker">Mr. Connolly · 6th period · Game · South America review</div>
+          <h3>South America Review Game</h3>
+          <p>25 quick questions, one at a time. Countries, capitals, the map, and the review notes.</p>
+          <p class="card-score" data-score-for="sa-review-game" hidden></p>
+          <p class="pass-note" data-pass-for="sa-review-game" data-pass-kind="card" hidden></p>
         </a>
       </article>
     </div>
@@ -1621,6 +1806,566 @@
     </div>
     <p class="note sa-lock">A miss shows a hint and a 2 minute wait, then one more try that still counts. Show answers unlocks when every question is finished.</p>
     <p class="pass-note" data-pass-for="sa-practice-test" data-pass-kind="practice" hidden></p>
+  </section>
+  <section id="sa-review-game" class="screen" hidden aria-labelledby="sg-title">
+    <div class="index-heading">
+      <div class="kicker">Mr. Connolly · 6th period · Game · South America review</div>
+      <h2 id="sg-title" tabindex="-1">South America Review Game</h2>
+      <p>Each question has two tries, and a correct answer counts on either try. A miss shows how to work it, then waits 2 minutes before the second try. Choices are mixed up, and they lock after Check.</p>
+    </div>
+    <div class="progress-box">
+      <div class="progress-meta" aria-live="polite">
+        <strong class="sg-score">0 of 25 correct</strong>
+        <span class="sg-checked">0 of 25 checked</span>
+      </div>
+      <progress id="sg-progress" max="25" value="0" aria-label="South America Review Game score"></progress>
+    </div>
+    <div class="sg-hud" id="sg-hud" hidden>
+      <div class="sg-stat"><span>Streak</span><strong id="sg-streak">0</strong></div>
+      <div class="sg-stat"><span>Game points</span><strong id="sg-points">0</strong></div>
+      <div class="sg-stat"><span>Best streak</span><strong id="sg-best">0</strong></div>
+    </div>
+    <p class="sg-hud-note" id="sg-hud-note" hidden>Game points and the streak are extra. The percent above is the score that counts.</p>
+    <div class="sg-start" id="sg-start">
+      <p class="kicker">Quick rounds</p>
+      <h3>Ready?</h3>
+      <p>25 questions, one at a time. Countries, capitals, the map, and the review notes. A correct answer adds points and builds a streak.</p>
+      <p>A first-try correct answer is 100 points, plus 10 for each step of the streak. A correct second try is 50 points and starts the streak at 1. A miss breaks the streak.</p>
+      <p>At 70% or more, this game moves to Completed on its own.</p>
+      <button type="button" class="primary sg-play" id="sg-start-btn">Start game</button>
+    </div>
+    <div id="sg-live" hidden>
+    <section class="lesson sg-round">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Round 1 of 4</div>
+          <h2>Countries and capitals</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <div class="question" data-sg="q1">
+          <h3 id="sg-q1-title"><span class="number">1</span><span>What is the capital of Brazil?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q1-title">
+            <label class="choice"><input type="radio" name="sg-q1" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Rio de Janeiro</span></label>
+            <label class="choice"><input type="radio" name="sg-q1" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">São Paulo</span></label>
+            <label class="choice"><input type="radio" name="sg-q1" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Brasília</span></label>
+            <label class="choice"><input type="radio" name="sg-q1" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Buenos Aires</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q1">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q1" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q1-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The capital is inland, not on the Atlantic coast. The biggest coastal cities are not the capital, and one choice is the capital of a different country.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Brasília. It is Brazil’s capital, inland on the central plateau, south of the equator. Rio de Janeiro was the capital in the past, and São Paulo is the largest city, but neither is the capital now. Buenos Aires is the capital of Argentina.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q2">
+          <h3 id="sg-q2-title"><span class="number">2</span><span>What is the capital of Argentina?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q2-title">
+            <label class="choice"><input type="radio" name="sg-q2" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Santiago</span></label>
+            <label class="choice"><input type="radio" name="sg-q2" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Lima</span></label>
+            <label class="choice"><input type="radio" name="sg-q2" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Montevideo</span></label>
+            <label class="choice"><input type="radio" name="sg-q2" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Buenos Aires</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q2">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q2" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q2-feedback" role="status"></p>
+          <p class="sg-hint" hidden>This capital is on the Atlantic side, next to the Pampas grasslands. It is not the inland capital of the largest country, and it is not the capital of the long country west of the Andes.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Buenos Aires. It is Argentina’s capital, on the Atlantic coast near the Pampas. Santiago is the capital of Chile. Lima is the capital of Peru. Montevideo is the capital of Uruguay.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q3">
+          <h3 id="sg-q3-title"><span class="number">3</span><span>What is the capital of Peru?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q3-title">
+            <label class="choice"><input type="radio" name="sg-q3" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Lima</span></label>
+            <label class="choice"><input type="radio" name="sg-q3" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Quito</span></label>
+            <label class="choice"><input type="radio" name="sg-q3" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Bogotá</span></label>
+            <label class="choice"><input type="radio" name="sg-q3" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Caracas</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q3">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q3" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q3-feedback" role="status"></p>
+          <p class="sg-hint" hidden>This capital is on the Pacific coast, in the country that was home to the Inca and to the Nazca Lines. It is not the capital of the country named for the equator.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Lima. It is Peru’s capital, on the Pacific coast. Quito is the capital of Ecuador. Bogotá is the capital of Colombia. Caracas is the capital of Venezuela.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q4">
+          <h3 id="sg-q4-title"><span class="number">4</span><span>What is the capital of Chile?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q4-title">
+            <label class="choice"><input type="radio" name="sg-q4" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Buenos Aires</span></label>
+            <label class="choice"><input type="radio" name="sg-q4" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">La Paz</span></label>
+            <label class="choice"><input type="radio" name="sg-q4" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Santiago</span></label>
+            <label class="choice"><input type="radio" name="sg-q4" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Lima</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q4">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q4" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q4-feedback" role="status"></p>
+          <p class="sg-hint" hidden>Chile is the long, narrow country on the Pacific side of the Andes. Pick its capital, not the capital of the country directly east of those mountains.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Santiago. It is Chile’s capital. Buenos Aires is the capital of Argentina, across the Andes. La Paz is a capital of Bolivia. Lima is the capital of Peru.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q5">
+          <h3 id="sg-q5-title"><span class="number">5</span><span>What is the capital of Colombia?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q5-title">
+            <label class="choice"><input type="radio" name="sg-q5" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Caracas</span></label>
+            <label class="choice"><input type="radio" name="sg-q5" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Quito</span></label>
+            <label class="choice"><input type="radio" name="sg-q5" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Lima</span></label>
+            <label class="choice"><input type="radio" name="sg-q5" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Bogotá</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q5">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q5" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q5-feedback" role="status"></p>
+          <p class="sg-hint" hidden>This capital is high in the Andes. The class notes say this country supplies about 90% of the world’s emeralds. Use that country, then name its capital.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Bogotá. It is Colombia’s capital. The notes say Colombia supplies about 90% of the world’s emeralds. Caracas is the capital of Venezuela. Quito is the capital of Ecuador. Lima is the capital of Peru.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q6">
+          <h3 id="sg-q6-title"><span class="number">6</span><span>Which country has Sucre as its constitutional capital and La Paz as the seat of government?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q6-title">
+            <label class="choice"><input type="radio" name="sg-q6" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Peru</span></label>
+            <label class="choice"><input type="radio" name="sg-q6" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Bolivia</span></label>
+            <label class="choice"><input type="radio" name="sg-q6" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Ecuador</span></label>
+            <label class="choice"><input type="radio" name="sg-q6" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Paraguay</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q6">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q6" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q6-feedback" role="status"></p>
+          <p class="sg-hint" hidden>This landlocked country uses two capital cities. One is the constitutional capital. The other is where the government meets. The country whose only capital is Asunción is a different landlocked country.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Bolivia. Sucre is the constitutional capital, and La Paz is the seat of government. Peru’s capital is Lima. Ecuador’s capital is Quito. Paraguay is landlocked too, but its capital is Asunción.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q7">
+          <h3 id="sg-q7-title"><span class="number">7</span><span>Which capital city sits almost on the equator, at about 0° latitude?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q7-title">
+            <label class="choice"><input type="radio" name="sg-q7" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Quito</span></label>
+            <label class="choice"><input type="radio" name="sg-q7" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Brasília</span></label>
+            <label class="choice"><input type="radio" name="sg-q7" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Buenos Aires</span></label>
+            <label class="choice"><input type="radio" name="sg-q7" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Santiago</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q7">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q7" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q7-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The country is named for the equator. Its capital is in the Andes, very close to 0° latitude. The other capitals are much farther south.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Quito, the capital of Ecuador. Ecuador is named for the equator, and Quito is only a short distance south of 0° latitude. Brasília, Buenos Aires, and Santiago are all well south of the equator.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q8">
+          <h3 id="sg-q8-title"><span class="number">8</span><span>What is the capital of Venezuela?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q8-title">
+            <label class="choice"><input type="radio" name="sg-q8" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Georgetown</span></label>
+            <label class="choice"><input type="radio" name="sg-q8" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Bogotá</span></label>
+            <label class="choice"><input type="radio" name="sg-q8" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Caracas</span></label>
+            <label class="choice"><input type="radio" name="sg-q8" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Paramaribo</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q8">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q8" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q8-feedback" role="status"></p>
+          <p class="sg-hint" hidden>This capital is on the north coast, in the country where the notes place Angel Falls. It is not the capital of the emerald country next door.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Caracas. It is Venezuela’s capital, on the Caribbean coast. The notes place Angel Falls in Venezuela. Bogotá is the capital of Colombia. Georgetown is the capital of Guyana. Paramaribo is the capital of Suriname.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="lesson sg-round">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Round 2 of 4</div>
+          <h2>Map and location</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <div class="question" data-sg="q9">
+          <h3 id="sg-q9-title"><span class="number">9</span><span>Which country is the largest in South America and covers most of the eastern half of the continent?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q9-title">
+            <label class="choice"><input type="radio" name="sg-q9" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Argentina, and the notes give it about 214 million people</span></label>
+            <label class="choice"><input type="radio" name="sg-q9" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Brazil, and the notes give it about 214 million people</span></label>
+            <label class="choice"><input type="radio" name="sg-q9" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Colombia, and the notes give it about 214 million people</span></label>
+            <label class="choice"><input type="radio" name="sg-q9" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Brazil, and the notes give it about 3 million people</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q9">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q9" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q9-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The notes name one country as the largest and give its population as about 214 million people. On a map, that country covers most of the east. A much smaller population does not match the notes.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Brazil, with about 214 million people. It is the largest country in both population and area, about 3.2 million square miles, and it covers most of the eastern half of the continent. Argentina is large, but it is not the largest and it does not have 214 million people. Colombia is in the northwest. Three million people is far below the number in the notes.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q10">
+          <h3 id="sg-q10-title"><span class="number">10</span><span>Which two countries in South America are landlocked, with no ocean coast?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q10-title">
+            <label class="choice"><input type="radio" name="sg-q10" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Bolivia and Chile</span></label>
+            <label class="choice"><input type="radio" name="sg-q10" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Peru and Ecuador</span></label>
+            <label class="choice"><input type="radio" name="sg-q10" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Paraguay and Uruguay</span></label>
+            <label class="choice"><input type="radio" name="sg-q10" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Bolivia and Paraguay</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q10">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q10" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q10-feedback" role="status"></p>
+          <p class="sg-hint" hidden>A landlocked country does not touch an ocean. Chile has a long Pacific coast. Peru and Ecuador touch the Pacific. Uruguay touches the Atlantic. Rule those out, then keep the two that have no seacoast.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Bolivia and Paraguay. Bolivia’s capitals are Sucre and La Paz. Paraguay’s capital is Asunción. Chile, Peru, and Ecuador have Pacific coasts. Uruguay’s capital, Montevideo, is on the Atlantic.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q11">
+          <h3 id="sg-q11-title"><span class="number">11</span><span>The Andes Mountains run along which side of South America?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q11-title">
+            <label class="choice"><input type="radio" name="sg-q11" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">The eastern side, beside the Atlantic Ocean</span></label>
+            <label class="choice"><input type="radio" name="sg-q11" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">The western side, beside the Pacific Ocean</span></label>
+            <label class="choice"><input type="radio" name="sg-q11" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Only across the far south, in Patagonia</span></label>
+            <label class="choice"><input type="radio" name="sg-q11" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Only along the Amazon River</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q11">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q11" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q11-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The notes call this the longest mountain range. On a map it sits on the edge opposite the Atlantic coast, where Brazil and Argentina face the sea. It is not a river, and it is not only the far-south desert.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>The western side, beside the Pacific Ocean. The Andes run from the Caribbean coast of the north down the western edge of the continent. Brazil and Argentina face the Atlantic. Patagonia is the far south. The Amazon is a river in the north central part of the continent.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q12">
+          <h3 id="sg-q12-title"><span class="number">12</span><span>Which desert is the driest on Earth, and which country is it mainly in?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q12-title">
+            <label class="choice"><input type="radio" name="sg-q12" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">The Patagonia desert, mainly in Brazil</span></label>
+            <label class="choice"><input type="radio" name="sg-q12" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">The Atacama Desert, mainly in Brazil</span></label>
+            <label class="choice"><input type="radio" name="sg-q12" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">The Atacama Desert, mainly in Chile</span></label>
+            <label class="choice"><input type="radio" name="sg-q12" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">The Pampas, mainly in Chile</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q12">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q12" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q12-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The notes name the driest desert on Earth. It sits on the Pacific side, in the long, narrow country west of Argentina. The other desert in the notes is in the far south, and the Pampas are grasslands, not a desert.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>The Atacama Desert, mainly in northern Chile. The notes call it the driest desert on Earth. It gets less than 0.6 inches of rain a year, and usually more like 0.04 to 0.12 inches. Patagonia is the other desert in the notes, and it is not mainly in Brazil. The Pampas are grasslands near Buenos Aires, Argentina.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q13">
+          <h3 id="sg-q13-title"><span class="number">13</span><span>Which river is in north central South America and has no permanent bridges across it?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q13-title">
+            <label class="choice"><input type="radio" name="sg-q13" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">The Orinoco River</span></label>
+            <label class="choice"><input type="radio" name="sg-q13" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">The Parana River</span></label>
+            <label class="choice"><input type="radio" name="sg-q13" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">The Amazon River</span></label>
+            <label class="choice"><input type="radio" name="sg-q13" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">The Panama Canal</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q13">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q13" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q13-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The notes place one river in north central South America and say no permanent bridge crosses it. The canal is not a river. Of the other two rivers, one is simply in the north and the other is in the southeast.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>The Amazon River. The notes place it in north central South America, fed by the Amazon Basin. It is about 4,000 miles long, flows through 6 countries, and has no permanent bridges across it. The Orinoco River is in northern South America. The Parana River is in southeastern South America. The Panama Canal connects oceans. It is not a river.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q14">
+          <h3 id="sg-q14-title"><span class="number">14</span><span>The Orinoco River is in which part of South America?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q14-title">
+            <label class="choice"><input type="radio" name="sg-q14" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Southeastern South America</span></label>
+            <label class="choice"><input type="radio" name="sg-q14" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Northern South America</span></label>
+            <label class="choice"><input type="radio" name="sg-q14" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">The far south, in Patagonia</span></label>
+            <label class="choice"><input type="radio" name="sg-q14" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Only along the Pacific coast of Chile</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q14">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q14" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q14-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The notes name three rivers and a region for each. Do not pick the Amazon’s region, and do not pick the region of the river in the southeast. Patagonia and the Chilean coast are not this river’s region.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Northern South America. The notes place the Orinoco River in the north. The Amazon River is in north central South America. The Parana River is in the southeast. Patagonia is the far south, and Chile’s Pacific coast is not where the notes place the Orinoco.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="lesson sg-round">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Round 3 of 4</div>
+          <h2>Physical features</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <div class="question" data-sg="q15">
+          <h3 id="sg-q15-title"><span class="number">15</span><span>Which choice matches the longest mountain range in the world, according to the class notes?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q15-title">
+            <label class="choice"><input type="radio" name="sg-q15" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">The Andes, about 300 miles long</span></label>
+            <label class="choice"><input type="radio" name="sg-q15" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">The Amazon River, about 4,000 miles long</span></label>
+            <label class="choice"><input type="radio" name="sg-q15" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">The Andes, about 4,500 miles long</span></label>
+            <label class="choice"><input type="radio" name="sg-q15" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Angel Falls, about 4,500 feet long</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q15">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q15" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q15-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The notes give this mountain range a length and a width, both in miles. The length is the much larger number. Do not choose the width, the length of a river, or the height of a waterfall.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>The Andes, about 4,500 miles long. The notes say the Andes are the longest mountain range in the world, about 4,500 miles long and around 300 miles wide. Three hundred miles is the width, not the length. About 4,000 miles is the length of the Amazon River. Angel Falls is 3,211 feet high. It is not a mountain range.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q16">
+          <h3 id="sg-q16-title"><span class="number">16</span><span>Which mountain is the highest in South America, and how tall do the notes say it is?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q16-title">
+            <label class="choice"><input type="radio" name="sg-q16" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Aconcagua, 22,837 feet</span></label>
+            <label class="choice"><input type="radio" name="sg-q16" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Aconcagua, 3,211 feet</span></label>
+            <label class="choice"><input type="radio" name="sg-q16" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Angel Falls, 22,837 feet</span></label>
+            <label class="choice"><input type="radio" name="sg-q16" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">The Andes, 4,500 feet</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q16">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q16" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q16-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The notes name South America’s highest mountain and give its height in feet. That height is a five-digit number. The waterfall’s height is a different, smaller number. The length of the mountain range is in miles, not feet.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Aconcagua, 22,837 feet. The notes say Aconcagua is South America’s highest mountain. It stands in the Andes in Argentina, near the border with Chile. 3,211 feet is the height of Angel Falls, not the mountain. The Andes as a range are about 4,500 miles long, which is not a height in feet.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q17">
+          <h3 id="sg-q17-title"><span class="number">17</span><span>Patagonia is the region in the far south, in southern Argentina and Chile. What do the class notes say about the Patagonia desert?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q17-title">
+            <label class="choice"><input type="radio" name="sg-q17" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">It is the driest desert on Earth and gets less than 0.6 inches of rain a year.</span></label>
+            <label class="choice"><input type="radio" name="sg-q17" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">It is the 5th largest desert in the world.</span></label>
+            <label class="choice"><input type="radio" name="sg-q17" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">It is a grassland with an average temperature of about 64°.</span></label>
+            <label class="choice"><input type="radio" name="sg-q17" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">It is a rainforest layer from 95 to 125 feet up.</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q17">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q17" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q17-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The notes rank one desert by its size among deserts in the world. The driest desert is a different place. A temperature of about 64° belongs to the grasslands, and a height range belongs to a rainforest layer.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>It is the 5th largest desert in the world. The notes say that about the Patagonia desert, in the far south of the continent. The Atacama is the driest desert, with less than 0.6 inches of rain a year. The Pampas are the grasslands near Buenos Aires, with an average temperature of about 64°. The canopy is the rainforest layer from 95 to 125 feet.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q18">
+          <h3 id="sg-q18-title"><span class="number">18</span><span>The Pampas are grasslands near Buenos Aires, Argentina. Which plant do the notes describe there?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q18-title">
+            <label class="choice"><input type="radio" name="sg-q18" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">A cactus that needs almost no rain</span></label>
+            <label class="choice"><input type="radio" name="sg-q18" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">The potato, which the Inca discovered</span></label>
+            <label class="choice"><input type="radio" name="sg-q18" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Ombu, a tree-like plant</span></label>
+            <label class="choice"><input type="radio" name="sg-q18" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">A knot system used for writing</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q18">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q18" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q18-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The grassland notes use a short phrase for this plant. It is not a crop the Inca discovered, and it is not a way of writing. The plant that needs almost no rain belongs in the driest desert, not these grasslands.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Ombu, a tree-like plant. The notes place the Pampas near Buenos Aires, Argentina, with an average temperature of about 64°. The dry season is in December, which is summer there, and the notes say the Pampas also contain ombu, a tree-like plant. The potato and the knot system belong to the Inca notes. A plant that needs almost no rain fits the Atacama, not the Pampas.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q19">
+          <h3 id="sg-q19-title"><span class="number">19</span><span>Which rainforest layer contains the largest number of species?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q19-title">
+            <label class="choice"><input type="radio" name="sg-q19" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">The emergent layer, 125 feet and up</span></label>
+            <label class="choice"><input type="radio" name="sg-q19" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">The canopy, 95 to 125 feet</span></label>
+            <label class="choice"><input type="radio" name="sg-q19" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">The understory, 55 to 95 feet</span></label>
+            <label class="choice"><input type="radio" name="sg-q19" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">The forest floor, 15 feet and lower</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q19">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q19" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q19-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The notes list four layers and a height for each. The tallest layer is not the one with the most species. Find the layer the notes mark for the largest number of species.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>The canopy, 95 to 125 feet. The notes say this layer contains the largest number of species. The emergent layer is taller, 125 feet and up, but it does not have the most species. The understory is 55 to 95 feet. The forest floor is 15 feet and lower. Over half of the world’s rainforests are in the Amazon region. Threats in the notes include slash-and-burn farming, cattle, and the lumber industry.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q20">
+          <h3 id="sg-q20-title"><span class="number">20</span><span>Angel Falls is the highest uninterrupted waterfall on Earth. Which country is it in, and how tall do the notes say it is?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q20-title">
+            <label class="choice"><input type="radio" name="sg-q20" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Brazil, 22,837 feet</span></label>
+            <label class="choice"><input type="radio" name="sg-q20" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Peru, 4,500 feet</span></label>
+            <label class="choice"><input type="radio" name="sg-q20" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Chile, 4,000 feet</span></label>
+            <label class="choice"><input type="radio" name="sg-q20" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Venezuela, 3,211 feet</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q20">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q20" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q20-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The notes name the country and a height in feet for this waterfall. The country is on the north coast. Do not use the height of the highest mountain, the length of the Andes, or the length of the Amazon.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Venezuela, 3,211 feet. The notes say Angel Falls is in Venezuela and is the highest uninterrupted waterfall on Earth, at 3,211 feet. 22,837 feet is Aconcagua. About 4,500 miles, not feet, is the length of the Andes. About 4,000 miles is the Amazon River.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="lesson sg-round">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Round 4 of 4</div>
+          <h2>People, history, and today</h2>
+        </div>
+      </div>
+      <div class="lesson-body">
+        <div class="question" data-sg="q21">
+          <h3 id="sg-q21-title"><span class="number">21</span><span>Which people do the notes describe as an indigenous tribe living in the rainforest?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q21-title">
+            <label class="choice"><input type="radio" name="sg-q21" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">The Inca</span></label>
+            <label class="choice"><input type="radio" name="sg-q21" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">The Yanomamo</span></label>
+            <label class="choice"><input type="radio" name="sg-q21" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">The Spanish colonists</span></label>
+            <label class="choice"><input type="radio" name="sg-q21" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">The people who made the Nazca Lines</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q21">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q21" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q21-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The rainforest notes name one indigenous tribe. The empire in the Andes is a different group. The people who drew giant lines in Peru are a different group. Colonists from Europe are not that tribe.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>The Yanomamo. The notes call them an indigenous tribe living in the rainforest. The Inca built their empire in the Andes. The Nazca Lines were made in Peru between 500 BC and 500 AD. Spanish and Portuguese colonists arrived in the 1500s.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q22">
+          <h3 id="sg-q22-title"><span class="number">22</span><span>Which is true about Machu Picchu?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q22-title">
+            <label class="choice"><input type="radio" name="sg-q22" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">The Spanish built it in 1420 as a port on the Pacific.</span></label>
+            <label class="choice"><input type="radio" name="sg-q22" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">The Inca built it in 1420. It is called “The City in the Clouds,” and the Spanish never discovered it.</span></label>
+            <label class="choice"><input type="radio" name="sg-q22" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">The Yanomamo built it on the forest floor in 500 BC.</span></label>
+            <label class="choice"><input type="radio" name="sg-q22" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">The Inca built it in 500 AD as one of the Nazca Lines.</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q22">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q22" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q22-feedback" role="status"></p>
+          <p class="sg-hint" hidden>Find the city the notes call “The City in the Clouds.” Check who built it, the year in the notes, and whether the Spanish found it. The Nazca dates and the rainforest tribe belong to other notes.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>The Inca built Machu Picchu in 1420. The notes call it “The City in the Clouds.” The Inca emperor added an estate in 1425, and the Spanish never discovered it. The Spanish did not build it, and it is not a Pacific port. The Yanomamo are a rainforest people. The Nazca Lines are drawings in Peru from about 500 BC to 500 AD, not this city.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q23">
+          <h3 id="sg-q23-title"><span class="number">23</span><span>The notes say the Inca wrote using which system?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q23-title">
+            <label class="choice"><input type="radio" name="sg-q23" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">An alphabet brought from Spain</span></label>
+            <label class="choice"><input type="radio" name="sg-q23" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Permanent bridges across the Amazon</span></label>
+            <label class="choice"><input type="radio" name="sg-q23" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">A knot system</span></label>
+            <label class="choice"><input type="radio" name="sg-q23" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">The Nazca Lines only</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q23">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q23" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q23-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The Inca notes say how they wrote. It is not an alphabet from Europe, and it is not the giant lines drawn in Peru. Bridges are about the Amazon River, not Inca writing.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>A knot system. The notes say the Inca were expert builders, had a postal system, wrote using a knot system, discovered the potato, and had a tax system. Spanish colonists brought an alphabet later. No permanent bridges cross the Amazon. The Nazca Lines are figures in Peru, not the Inca writing system.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q24">
+          <h3 id="sg-q24-title"><span class="number">24</span><span>The Panama Canal connects which two oceans?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q24-title">
+            <label class="choice"><input type="radio" name="sg-q24" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">The Atlantic Ocean and the Arctic Ocean</span></label>
+            <label class="choice"><input type="radio" name="sg-q24" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">The Pacific Ocean and the Indian Ocean</span></label>
+            <label class="choice"><input type="radio" name="sg-q24" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">The Atlantic Ocean and the Pacific Ocean</span></label>
+            <label class="choice"><input type="radio" name="sg-q24" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">The Caribbean Sea and the Mediterranean Sea</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q24">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q24" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q24-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The canal notes name the two oceans a ship can pass between. Use those two. An ocean far to the north, an ocean east of Africa, and the sea beside Europe are not the pair in the notes.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>The Atlantic Ocean and the Pacific Ocean. The notes say the canal connects those two oceans. A ship takes about 6 to 8 hours to go through. The canal handles about 5% to 6% of the world’s trade, saves ships over a month of travel, and is much safer than the long way around. It does not connect the Arctic, the Indian Ocean, or the Mediterranean.</p>
+          </div>
+        </div>
+        <div class="question" data-sg="q25">
+          <h3 id="sg-q25-title"><span class="number">25</span><span>What are the two main languages of South America, according to the class notes?</span></h3>
+          <div class="options" role="radiogroup" aria-labelledby="sg-q25-title">
+            <label class="choice"><input type="radio" name="sg-q25" value="a" data-sg-single><span class="letter">A</span><span class="choice-text">Spanish and English</span></label>
+            <label class="choice"><input type="radio" name="sg-q25" value="b" data-sg-single><span class="letter">B</span><span class="choice-text">Portuguese and French</span></label>
+            <label class="choice"><input type="radio" name="sg-q25" value="c" data-sg-single><span class="letter">C</span><span class="choice-text">Quechua and Dutch</span></label>
+            <label class="choice"><input type="radio" name="sg-q25" value="d" data-sg-single><span class="letter">D</span><span class="choice-text">Spanish and Portuguese</span></label>
+          </div>
+          <div class="sg-actions">
+            <button type="button" class="primary" data-sg-check="q25">Check</button>
+            <button type="button" class="plain" data-sg-reveal="q25" aria-expanded="false">Show solution</button>
+          </div>
+          <p class="feedback" id="sg-q25-feedback" role="status"></p>
+          <p class="sg-hint" hidden>The notes name two languages brought by colonists in the 1500s. One is used in most of the countries. The other is used in the largest country. English, French, and Dutch are not that pair.</p>
+          <div class="model-answer sg-solution" hidden>
+            <h3>Solution</h3>
+            <p>Spanish and Portuguese. The notes say colonists brought them in the 1500s. Spanish is the main language in most countries. Portuguese is the main language in Brazil, the largest country. The notes also say the main religion is Christianity (Roman Catholic), and that most countries declared independence from Spain and Portugal in the 1800s.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+      <button type="button" class="primary sg-next" id="sg-next" hidden>Next question</button>
+    </div>
+    <div class="sg-results" id="sg-results" hidden>
+      <p class="kicker">Results</p>
+      <p class="sg-results-score" id="sg-results-percent">0%</p>
+      <p id="sg-results-line">0 of 25 correct</p>
+      <p id="sg-results-points">0 game points · best streak 0</p>
+      <p id="sg-results-note"></p>
+    </div>
+    <div class="sg-tools" id="sg-tools" hidden>
+      <button type="button" class="plain" id="sg-retry">Retry missed questions</button>
+      <button type="button" class="plain" id="sg-restart">Start over</button>
+    </div>
+    <p class="note" id="sg-end-note" role="status"></p>
+    <p class="pass-note" data-pass-for="sa-review-game" data-pass-kind="practice" hidden></p>
+    <div id="sg-pop" hidden aria-hidden="true"></div>
   </section>
   <section id="ratios-rates" class="screen" hidden aria-labelledby="ratios-title">
     <div class="index-heading">
@@ -2361,6 +3106,14 @@
     <button class="primary" value="reset">Start over</button>
   </form>
 </dialog>
+<dialog id="sg-reset-dialog" aria-labelledby="sg-reset-title">
+  <div class="dialog-top"><h2 class="dialog-title" id="sg-reset-title">Start this game over?</h2></div>
+  <div class="dialog-body"><p>This clears answers for the South America Review Game only. Your other assignments stay as they are.</p></div>
+  <form method="dialog" class="dialog-actions">
+    <button class="plain" value="cancel" autofocus>Keep my answers</button>
+    <button class="primary" value="reset">Start over</button>
+  </form>
+</dialog>
 <dialog id="fdp-reset-dialog" aria-labelledby="fdp-reset-title">
   <div class="dialog-top"><h2 class="dialog-title" id="fdp-reset-title">Start this practice over?</h2></div>
   <div class="dialog-body"><p>This clears answers for Fractions, Decimals &amp; Percents only. Your other assignments stay as they are.</p></div>
@@ -2380,7 +3133,7 @@
   let storageWorks = true;
 
   function freshState() {
-    return { answers: {}, drafts: {}, numbers: {}, sketches: {}, multi: {}, checks: {}, sa: {}, ratios: {}, fdp: {} };
+    return { answers: {}, drafts: {}, numbers: {}, sketches: {}, multi: {}, checks: {}, sa: {}, ratios: {}, fdp: {}, sarg: {} };
   }
 
   try {
@@ -2389,7 +3142,8 @@
       const sa = saved.sa && typeof saved.sa === 'object' && !Array.isArray(saved.sa) ? {...saved.sa} : {};
       const ratios = saved.ratios && typeof saved.ratios === 'object' && !Array.isArray(saved.ratios) ? {...saved.ratios} : {};
       const fdp = saved.fdp && typeof saved.fdp === 'object' && !Array.isArray(saved.fdp) ? {...saved.fdp} : {};
-      state = {...freshState(), ...saved, checks: {...freshState().checks, ...(saved.checks || {})}, sa, ratios, fdp};
+      const sarg = saved.sarg && typeof saved.sarg === 'object' && !Array.isArray(saved.sarg) ? {...saved.sarg} : {};
+      state = {...freshState(), ...saved, checks: {...freshState().checks, ...(saved.checks || {})}, sa, ratios, fdp, sarg};
     }
     localStorage.setItem(key, JSON.stringify(state));
   } catch {
@@ -3282,7 +4036,7 @@
     block.querySelectorAll('input, textarea').forEach(field => {
       field.disabled = locked;
     });
-    const button = block.querySelector('[data-sa-check], [data-rr-check], [data-fdp-check]');
+    const button = block.querySelector('[data-sa-check], [data-rr-check], [data-fdp-check], [data-sg-check]');
     if (button) button.disabled = locked;
   }
 
@@ -3304,7 +4058,7 @@
   }
 
   function labelCheck(block, entry) {
-    const button = block.querySelector('[data-sa-check], [data-rr-check], [data-fdp-check]');
+    const button = block.querySelector('[data-sa-check], [data-rr-check], [data-fdp-check], [data-sg-check]');
     if (!button) return;
     if (block.dataset.practice === 'open') button.textContent = 'Practice check';
     else if (questionWaiting(entry)) button.textContent = 'Locked';
@@ -4216,6 +4970,55 @@
       resetDialogId: 'fdp-reset-dialog',
       titleId: 'fdp-title',
       spec: FDP_SPEC
+    }),
+    createGradedQuiz({
+      itemId: 'sa-review-game',
+      stateKey: 'sarg',
+      rootId: 'sa-review-game',
+      qAttr: 'sg',
+      singleSelector: 'input[data-sg-single]',
+      fieldSelector: '[data-sg-field]',
+      fieldData: 'sgField',
+      checkSelector: '[data-sg-check]',
+      checkData: 'sgCheck',
+      revealSelector: '[data-sg-reveal]',
+      hintClass: 'sg-hint',
+      solutionClass: 'sg-solution',
+      scoreClass: 'sg-score',
+      checkedClass: 'sg-checked',
+      progressId: 'sg-progress',
+      noteId: 'sg-end-note',
+      retrySelector: '#sg-retry',
+      restartSelector: '#sg-restart',
+      resetDialogId: 'sg-reset-dialog',
+      titleId: 'sg-title',
+      spec: {
+    q1: { type: 'choice', answer: 'c' },
+    q2: { type: 'choice', answer: 'd' },
+    q3: { type: 'choice', answer: 'a' },
+    q4: { type: 'choice', answer: 'c' },
+    q5: { type: 'choice', answer: 'd' },
+    q6: { type: 'choice', answer: 'b' },
+    q7: { type: 'choice', answer: 'a' },
+    q8: { type: 'choice', answer: 'c' },
+    q9: { type: 'choice', answer: 'b' },
+    q10: { type: 'choice', answer: 'd' },
+    q11: { type: 'choice', answer: 'b' },
+    q12: { type: 'choice', answer: 'c' },
+    q13: { type: 'choice', answer: 'c' },
+    q14: { type: 'choice', answer: 'b' },
+    q15: { type: 'choice', answer: 'c' },
+    q16: { type: 'choice', answer: 'a' },
+    q17: { type: 'choice', answer: 'b' },
+    q18: { type: 'choice', answer: 'c' },
+    q19: { type: 'choice', answer: 'b' },
+    q20: { type: 'choice', answer: 'd' },
+    q21: { type: 'choice', answer: 'b' },
+    q22: { type: 'choice', answer: 'b' },
+    q23: { type: 'choice', answer: 'c' },
+    q24: { type: 'choice', answer: 'c' },
+    q25: { type: 'choice', answer: 'd' },
+      }
     })
   ];
 
@@ -4317,7 +5120,7 @@
     const route = location.hash.slice(1) || 'home';
     const known = screens.find(item => item.id === route)?.id || 'home';
     const mathScreen = known === 'ratios-rates' || known === 'fractions-decimals-percents';
-    const socialScreen = known === 'sa-practice-test';
+    const socialScreen = known === 'sa-practice-test' || known === 'sa-review-game';
     const subject = socialScreen ? 'social-studies' : mathScreen ? 'math' : known;
     screens.forEach(item => { item.hidden = item.id !== known; });
     navLinks.forEach(link => {
@@ -4334,8 +5137,236 @@
 
   completion.onChange(refreshCompletionUI);
   completion.init();
+
+  const SG_ITEM = 'sa-review-game';
+  const SG_TOTAL = 25;
+  let sgHold = '';
+  let sgReview = '';
+  let sgArm = '';
+  let sgArmWas = '';
+  let sgPopTimer = 0;
+
+  function sgEntry(qid) {
+    return completion.question(SG_ITEM, qid);
+  }
+
+  function sgStarted() {
+    const play = state.sarg && state.sarg._play;
+    if (play && play.started) return true;
+    for (let i = 1; i <= SG_TOTAL; i += 1) {
+      if (sgEntry('q' + i)) return true;
+    }
+    return false;
+  }
+
+  function sgMarkStarted() {
+    if (!state.sarg || typeof state.sarg !== 'object' || Array.isArray(state.sarg)) state.sarg = {};
+    state.sarg._play = { started: true };
+    save();
+  }
+
+  function sgFirstOpen() {
+    for (let i = 1; i <= SG_TOTAL; i += 1) {
+      if (!questionFinal(sgEntry('q' + i))) return 'q' + i;
+    }
+    return '';
+  }
+
+  function sgVisibleId() {
+    if (sgReview) return sgReview;
+    if (!sgStarted()) return '';
+    if (sgHold && (questionFinal(sgEntry(sgHold)) || questionWaiting(sgEntry(sgHold)))) return sgHold;
+    sgHold = '';
+    return sgFirstOpen();
+  }
+
+  function sgStats() {
+    let streak = 0;
+    let best = 0;
+    let points = 0;
+    for (let i = 1; i <= SG_TOTAL; i += 1) {
+      const entry = sgEntry('q' + i);
+      if (!entry) break;
+      if (entry.result === 'wait') {
+        streak = 0;
+        break;
+      }
+      if (entry.result === 'wrong') streak = 0;
+      else if (entry.result === 'second') {
+        streak = 1;
+        points += 50;
+      } else if (entry.result === 'first') {
+        streak += 1;
+        points += 100 + (streak - 1) * 10;
+      }
+      if (streak > best) best = streak;
+    }
+    return { streak, best, points };
+  }
+
+  function sgCelebrate(kind, streak) {
+    const pop = document.getElementById('sg-pop');
+    if (!pop) return;
+    const label = kind === 'second' ? 'That counts!' : (streak > 1 ? 'Streak ' + streak + '!' : 'Correct!');
+    pop.replaceChildren();
+    const burst = document.createElement('div');
+    burst.className = 'sg-burst';
+    burst.textContent = label;
+    const colors = ['#e6b325', '#e45d9a', '#5fd0a0', '#7a3cff', '#ff7a3c', '#7ec8f0'];
+    for (let i = 0; i < 10; i += 1) {
+      const dot = document.createElement('span');
+      dot.className = 'sg-dot';
+      const angle = (Math.PI * 2 * i) / 10;
+      const dist = 90 + (i % 3) * 28;
+      dot.style.setProperty('--x', Math.round(Math.cos(angle) * dist) + 'px');
+      dot.style.setProperty('--y', Math.round(Math.sin(angle) * dist) + 'px');
+      dot.style.background = colors[i % colors.length];
+      burst.append(dot);
+    }
+    pop.append(burst);
+    pop.hidden = false;
+    burst.style.animation = 'none';
+    void burst.offsetWidth;
+    burst.style.animation = '';
+    clearTimeout(sgPopTimer);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    sgPopTimer = setTimeout(() => { pop.hidden = true; }, reduce ? 700 : 1100);
+  }
+
+  function sgFocusCurrent() {
+    const root = document.getElementById('sa-review-game');
+    if (!root || root.hidden) return;
+    const current = sgVisibleId();
+    if (!current) {
+      const results = document.getElementById('sg-results');
+      if (results && !results.hidden) {
+        const heading = results.querySelector('.kicker');
+        if (heading) heading.setAttribute('tabindex', '-1');
+        if (heading) heading.focus();
+      }
+      return;
+    }
+    const block = root.querySelector('[data-sg="' + current + '"]');
+    const round = block && block.closest('.sg-round');
+    if (round) round.scrollIntoView({ block: 'start' });
+    const title = block && block.querySelector('h3');
+    if (title) {
+      title.setAttribute('tabindex', '-1');
+      title.focus();
+    }
+  }
+
+  function renderSg() {
+    const root = document.getElementById('sa-review-game');
+    if (!root) return;
+    const started = sgStarted();
+    const current = started ? sgVisibleId() : '';
+    const stats = sgStats();
+    const finished = started && sgFirstOpen() === '';
+    document.getElementById('sg-streak').textContent = String(stats.streak);
+    document.getElementById('sg-points').textContent = String(stats.points);
+    document.getElementById('sg-best').textContent = String(stats.best);
+    document.getElementById('sg-hud').hidden = !started;
+    document.getElementById('sg-hud-note').hidden = !started;
+    document.getElementById('sg-start').hidden = started;
+    const showLive = started && !!current;
+    document.getElementById('sg-live').hidden = !showLive;
+    const showResults = finished && !current;
+    document.getElementById('sg-results').hidden = !showResults;
+    document.getElementById('sg-tools').hidden = !started;
+    root.querySelectorAll('[data-sg]').forEach(block => {
+      block.hidden = block.getAttribute('data-sg') !== current;
+    });
+    root.querySelectorAll('.sg-round').forEach(round => {
+      round.hidden = ![...round.querySelectorAll('[data-sg]')].some(block => !block.hidden);
+    });
+    const next = document.getElementById('sg-next');
+    const entry = current ? sgEntry(current) : null;
+    if (sgReview) {
+      next.hidden = false;
+      next.textContent = 'Back to results';
+    } else if (current && questionFinal(entry)) {
+      next.hidden = false;
+      next.textContent = sgFirstOpen() ? 'Next question' : 'See results';
+    } else {
+      next.hidden = true;
+    }
+    if (showResults) {
+      const pop = document.getElementById('sg-pop');
+      if (pop) pop.hidden = true;
+      const tally = completion.tally(SG_ITEM, SG_TOTAL);
+      const percent = scorePercent(tally.correct, tally.total);
+      document.getElementById('sg-results-percent').textContent = percent + '%';
+      document.getElementById('sg-results-line').textContent = tally.correct + ' of ' + tally.total + ' correct';
+      document.getElementById('sg-results-points').textContent = stats.points + ' game points · best streak ' + stats.best;
+      const note = document.getElementById('sg-results-note');
+      if (percent >= 70) note.textContent = 'You passed. This practice is in Completed.';
+      else note.textContent = '70% is the score that moves this game to Completed. This score is saved. Start over to play again. Retry missed questions is practice only.';
+    }
+    if (sgArm) {
+      const armedId = sgArm;
+      const armed = sgEntry(armedId);
+      const now = armed ? armed.result : '';
+      if (now && now !== sgArmWas) {
+        if (now === 'first' || now === 'second') sgCelebrate(now, stats.streak);
+        if (now === 'wait') {
+          const timer = document.querySelector('#sa-review-game [data-sg="' + armedId + '"] .lockout-count');
+          if (timer) timer.scrollIntoView({ block: 'center' });
+        }
+        sgArm = '';
+      }
+    }
+  }
+
+  function bindSgGame() {
+    const root = document.getElementById('sa-review-game');
+    if (!root || root.dataset.gameBound === 'true') return;
+    root.dataset.gameBound = 'true';
+    document.getElementById('sg-start-btn').addEventListener('click', () => {
+      sgMarkStarted();
+      sgHold = '';
+      sgReview = '';
+      renderSg();
+      sgFocusCurrent();
+    });
+    root.addEventListener('click', event => {
+      const check = event.target.closest('[data-sg-check]');
+      if (check && root.contains(check)) {
+        sgArm = check.dataset.sgCheck;
+        sgArmWas = (sgEntry(sgArm) || {}).result || '';
+        sgHold = sgArm;
+        sgReview = '';
+      }
+    }, true);
+    document.getElementById('sg-next').addEventListener('click', () => {
+      if (sgReview) sgReview = '';
+      else sgHold = '';
+      renderSg();
+      sgFocusCurrent();
+    });
+    root.addEventListener('click', event => {
+      if (!event.target.closest('#sg-retry')) return;
+      const open = root.querySelector('[data-practice="open"]');
+      if (!open) return;
+      sgReview = open.getAttribute('data-sg');
+      sgHold = '';
+      renderSg();
+      open.scrollIntoView({ block: 'start' });
+    });
+    document.querySelector('#sg-reset-dialog').querySelector('form').addEventListener('submit', event => {
+      if (event.submitter && event.submitter.value !== 'reset') return;
+      sgHold = '';
+      sgReview = '';
+      sgArm = '';
+      renderSg();
+    });
+  }
+
   bindSaPractice();
   gradedQuizzes.forEach(quiz => quiz.bind());
+  bindSgGame();
+  completion.onChange(renderSg);
+  renderSg();
   refreshCompletionUI();
   showRoute();
   setInterval(refreshLockouts, 250);
@@ -4350,6 +5381,10 @@
     save();
     clearSaPractice();
     gradedQuizzes.forEach(quiz => quiz.clear());
+    sgHold = '';
+    sgReview = '';
+    sgArm = '';
+    renderSg();
   });
 })();
 </script>
