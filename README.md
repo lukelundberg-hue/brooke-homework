@@ -4,6 +4,8 @@ A homework site for Brooke, a 6th grader. It keeps three things: the South Ameri
 
 Answers and written work stay in that browser. Finished scores, and whether a practice is completed, sync between devices through Firebase. New assignments get added to `index.html`.
 
+Social Studies also includes the South America Review Game. It is a separate question set from the South America Practice Test, with its own id, `sa-review-game`.
+
 Pushes to `main` publish this folder with GitHub Pages.
 
 ## Scores and completed practices
